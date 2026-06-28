@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="StudyForge self-hosted study platform">
+  <title>StudyForge</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-view">Skip to content</a>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="StudyForge navigation">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">SF</div>
+        <div>
+          <h1>StudyForge</h1>
+          <p>Self-hosted learning</p>
+        </div>
+      </div>
+
+      <label class="select-label" for="course-select">Course</label>
+      <select id="course-select" class="course-select" aria-label="Select course"></select>
+
+      <nav class="nav-list" aria-label="Primary">
+        <button class="nav-link active" data-view="dashboard" type="button">Dashboard</button>
+        <button class="nav-link" data-view="studyGuide" type="button">Study Guide</button>
+        <button class="nav-link" data-view="practice" type="button">Practice</button>
+        <button class="nav-link" data-view="mock" type="button">Mock OA</button>
+        <button class="nav-link" data-view="flashcards" type="button">Flashcards</button>
+        <button class="nav-link" data-view="review" type="button">Review Missed</button>
+        <button class="nav-link" data-view="bookmarks" type="button">Bookmarks</button>
+        <button class="nav-link" data-view="search" type="button">Search</button>
+        <button class="nav-link" data-view="analytics" type="button">Analytics</button>
+        <button class="nav-link" data-view="courseBuilder" type="button">Course Builder</button>
+        <button class="nav-link" data-view="settings" type="button">Settings</button>
+      </nav>
+
+      <footer class="sidebar-footer">
+        <span id="app-version">v0.2</span>
+      </footer>
+    </aside>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Current course</p>
+          <h2 id="topbar-course">Loading...</h2>
+        </div>
+        <div class="topbar-stats" aria-label="Course statistics">
+          <div>
+            <span id="topbar-total">0</span>
+            <small>Questions</small>
+          </div>
+          <div>
+            <span id="topbar-accuracy">0%</span>
+            <small>Accuracy</small>
+          </div>
+          <div>
+            <span id="topbar-mode">Dashboard</span>
+            <small>Mode</small>
+          </div>
+        </div>
+        <button id="reset-course" class="button button-danger" type="button">Reset Progress</button>
+      </header>
+
+      <main id="main-view" class="view" tabindex="-1" aria-live="polite">
+        <section class="empty-state">
+          <h2>Loading StudyForge...</h2>
+          <p>Course data is being loaded from local JSON files.</p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="status-region" class="status-region" aria-live="polite"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

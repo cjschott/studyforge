@@ -1,0 +1,177 @@
+[
+  {
+    "term": "Bandwidth",
+    "topic": "Signals",
+    "definition": "The difference between the highest and lowest frequency a medium can carry.",
+    "examTip": "Do not confuse bandwidth with throughput.",
+    "relatedTerms": ["Frequency", "Throughput"]
+  },
+  {
+    "term": "Frequency",
+    "topic": "Signals",
+    "definition": "The number of signal cycles per second, measured in hertz.",
+    "examTip": "Frequency is central to FDM, wireless channels, and RF behavior.",
+    "relatedTerms": ["Wavelength", "Bandwidth"]
+  },
+  {
+    "term": "Wavelength",
+    "topic": "Signals",
+    "definition": "The physical distance between matching points on consecutive signal cycles.",
+    "examTip": "In fiber, WDM uses different light wavelengths as separate channels.",
+    "relatedTerms": ["Frequency", "WDM"]
+  },
+  {
+    "term": "FDM",
+    "topic": "Multiplexing",
+    "definition": "Frequency-division multiplexing divides available bandwidth into separate frequency ranges.",
+    "examTip": "Look for radio, TV, cable, or frequency-band clues.",
+    "relatedTerms": ["TDM", "OFDM"]
+  },
+  {
+    "term": "TDM",
+    "topic": "Multiplexing",
+    "definition": "Time-division multiplexing gives each channel a fixed repeating time slot.",
+    "examTip": "Fixed slots are the giveaway.",
+    "relatedTerms": ["STDM", "FDM"]
+  },
+  {
+    "term": "STDM",
+    "topic": "Multiplexing",
+    "definition": "Statistical time-division multiplexing assigns time slots dynamically to active channels.",
+    "examTip": "Choose STDM when idle channels should not waste reserved slots.",
+    "relatedTerms": ["TDM"]
+  },
+  {
+    "term": "WDM",
+    "topic": "Optical Networking",
+    "definition": "Wavelength-division multiplexing carries multiple light wavelengths across one fiber.",
+    "examTip": "Wavelengths of light point to WDM.",
+    "relatedTerms": ["CWDM", "DWDM"]
+  },
+  {
+    "term": "CWDM",
+    "topic": "Optical Networking",
+    "definition": "Coarse WDM uses wider wavelength spacing and lower-cost components.",
+    "examTip": "Often associated with metro or cost-sensitive links.",
+    "relatedTerms": ["WDM", "DWDM"]
+  },
+  {
+    "term": "DWDM",
+    "topic": "Optical Networking",
+    "definition": "Dense WDM packs many tightly spaced wavelengths onto fiber for very high capacity.",
+    "examTip": "Long-haul and very high capacity usually point to DWDM.",
+    "relatedTerms": ["WDM", "CWDM"]
+  },
+  {
+    "term": "OFDM",
+    "topic": "Multiplexing",
+    "definition": "Orthogonal frequency-division multiplexing splits data across many closely spaced subcarriers.",
+    "examTip": "Common in Wi-Fi, LTE, and 5G contexts.",
+    "relatedTerms": ["OFDMA", "Wi-Fi"]
+  },
+  {
+    "term": "CDMA",
+    "topic": "Multiplexing",
+    "definition": "Code-division multiple access separates users with unique spreading codes over shared spectrum.",
+    "examTip": "Unique codes and spread spectrum point to CDMA.",
+    "relatedTerms": ["Spread Spectrum", "Near-Far Problem"]
+  },
+  {
+    "term": "CSMA/CA",
+    "topic": "Wireless",
+    "definition": "Carrier sense multiple access with collision avoidance, used by Wi-Fi to reduce wireless collisions.",
+    "examTip": "Wireless avoids collisions; Ethernet detects them.",
+    "relatedTerms": ["CSMA/CD", "Wi-Fi"]
+  },
+  {
+    "term": "Soft Handoff",
+    "topic": "Cellular",
+    "definition": "A mobile device connects to a new cell before releasing the old one.",
+    "examTip": "Make before break.",
+    "relatedTerms": ["Cellular", "CDMA"]
+  },
+  {
+    "term": "Near-Far Problem",
+    "topic": "Cellular",
+    "definition": "A strong nearby transmitter can overpower a weaker distant transmitter sharing the same channel.",
+    "examTip": "Power control is the usual mitigation.",
+    "relatedTerms": ["CDMA", "Power Control"]
+  },
+  {
+    "term": "OTDR",
+    "topic": "Fiber",
+    "definition": "Optical time-domain reflectometer used to locate fiber faults and measure loss or reflections.",
+    "examTip": "Choose OTDR for finding fiber break distance.",
+    "relatedTerms": ["Attenuation", "Reflection"]
+  },
+  {
+    "term": "Attenuation",
+    "topic": "Signals",
+    "definition": "Signal strength loss over distance or through a medium.",
+    "examTip": "Repeaters or amplifiers may compensate for attenuation.",
+    "relatedTerms": ["Dispersion", "Repeater"]
+  },
+  {
+    "term": "Dispersion",
+    "topic": "Fiber",
+    "definition": "Signal spreading over distance, which can blur pulses and limit fiber performance.",
+    "examTip": "Dispersion affects timing and pulse clarity.",
+    "relatedTerms": ["Single-mode Fiber", "Multimode Fiber"]
+  },
+  {
+    "term": "CRC",
+    "topic": "Error Detection",
+    "definition": "Cyclic redundancy check, a strong error-detection method using polynomial division.",
+    "examTip": "CRC is stronger than simple parity for burst errors.",
+    "relatedTerms": ["Checksum", "Parity"]
+  },
+  {
+    "term": "APIPA",
+    "topic": "IP Basics",
+    "definition": "Automatic Private IP Addressing using 169.254.0.0/16 when DHCP is unavailable.",
+    "examTip": "A 169.254 address usually means DHCP failed.",
+    "relatedTerms": ["DHCP"]
+  },
+  {
+    "term": "NAT",
+    "topic": "IP Basics",
+    "definition": "Network Address Translation maps private internal addresses to one or more public addresses.",
+    "examTip": "NAT lets private networks access the internet through public addresses.",
+    "relatedTerms": ["Private IP", "Router"]
+  },
+  {
+    "term": "DHCP",
+    "topic": "IP Basics",
+    "definition": "Dynamic Host Configuration Protocol automatically assigns IP configuration.",
+    "examTip": "DHCP reduces manual addressing errors.",
+    "relatedTerms": ["APIPA", "DNS"]
+  },
+  {
+    "term": "DNS",
+    "topic": "IP Basics",
+    "definition": "Domain Name System resolves hostnames to IP addresses.",
+    "examTip": "If names fail but IPs work, suspect DNS.",
+    "relatedTerms": ["DHCP"]
+  },
+  {
+    "term": "Baseline",
+    "topic": "Design and Administration",
+    "definition": "A documented record of normal performance and configuration.",
+    "examTip": "Baselines make abnormal behavior visible.",
+    "relatedTerms": ["Documentation"]
+  },
+  {
+    "term": "AUP",
+    "topic": "Design and Administration",
+    "definition": "Acceptable use policy defining permitted and prohibited use of network resources.",
+    "examTip": "AUP questions focus on user behavior expectations.",
+    "relatedTerms": ["Policy"]
+  },
+  {
+    "term": "Gateway",
+    "topic": "Network Devices",
+    "definition": "A device or service that connects dissimilar networks or protocols.",
+    "examTip": "A default gateway sends traffic off the local network.",
+    "relatedTerms": ["Router"]
+  }
+]

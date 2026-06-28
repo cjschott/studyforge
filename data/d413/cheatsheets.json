@@ -1,0 +1,109 @@
+[
+  {
+    "id": "d413-cs0001",
+    "title": "Multiplexing Quick Compare",
+    "topic": "Multiplexing",
+    "priority": 5,
+    "content": [
+      { "label": "FDM", "value": "Frequency bands; radio, TV, cable" },
+      { "label": "TDM", "value": "Fixed repeating time slots" },
+      { "label": "STDM", "value": "Dynamic time slots based on active demand" },
+      { "label": "WDM", "value": "Different light wavelengths over fiber" },
+      { "label": "CWDM", "value": "Coarse wavelength spacing; cheaper; metro links" },
+      { "label": "DWDM", "value": "Dense wavelength spacing; long-haul; high capacity" },
+      { "label": "OFDM", "value": "Orthogonal subcarriers; Wi-Fi, LTE, 5G" },
+      { "label": "CDMA", "value": "Unique spreading codes over shared spectrum" }
+    ]
+  },
+  {
+    "id": "d413-cs0002",
+    "title": "Wireless Standards",
+    "topic": "Wireless",
+    "priority": 5,
+    "content": [
+      { "label": "802.11a", "value": "5 GHz; older OFDM standard" },
+      { "label": "802.11b", "value": "2.4 GHz; 11 Mbps; DSSS" },
+      { "label": "802.11g", "value": "2.4 GHz; OFDM; backward compatible with b" },
+      { "label": "802.11n", "value": "2.4/5 GHz; MIMO" },
+      { "label": "802.11ac", "value": "5 GHz; wider channels; higher throughput" },
+      { "label": "802.11ax", "value": "Wi-Fi 6; OFDMA; better dense-client performance" }
+    ]
+  },
+  {
+    "id": "d413-cs0003",
+    "title": "Fiber Essentials",
+    "topic": "Fiber",
+    "priority": 4,
+    "content": [
+      { "label": "SMF", "value": "Single narrow path; long distance; higher cost optics" },
+      { "label": "MMF", "value": "Multiple light paths; shorter distance; common inside buildings" },
+      { "label": "Attenuation", "value": "Signal loss over distance" },
+      { "label": "Dispersion", "value": "Pulse spreading that can blur signals" },
+      { "label": "OTDR", "value": "Locates breaks, loss, and reflections in fiber" }
+    ]
+  },
+  {
+    "id": "d413-cs0004",
+    "title": "Connector Recognition",
+    "topic": "Cables",
+    "priority": 3,
+    "content": [
+      { "label": "LC", "value": "Small form factor fiber connector; common in dense panels" },
+      { "label": "SC", "value": "Square push-pull fiber connector" },
+      { "label": "ST", "value": "Round bayonet-style fiber connector" },
+      { "label": "MTRJ", "value": "Small duplex fiber connector resembling an RJ form factor" },
+      { "label": "RJ-45", "value": "Ethernet twisted-pair connector" },
+      { "label": "F-type", "value": "Coax connector common with cable TV/modems" }
+    ]
+  },
+  {
+    "id": "d413-cs0005",
+    "title": "Cellular Timeline",
+    "topic": "Cellular",
+    "priority": 4,
+    "content": [
+      { "label": "1G", "value": "Analog voice" },
+      { "label": "2G", "value": "Digital voice, SMS, GSM/CDMA era" },
+      { "label": "3G", "value": "Mobile data becomes practical" },
+      { "label": "4G LTE", "value": "IP-based broadband cellular" },
+      { "label": "5G", "value": "High capacity, low latency, massive device support" }
+    ]
+  },
+  {
+    "id": "d413-cs0006",
+    "title": "Error Detection",
+    "topic": "Error Detection",
+    "priority": 3,
+    "content": [
+      { "label": "Parity", "value": "Simple bit count; weak; misses some errors" },
+      { "label": "Checksum", "value": "Adds data units and compares result; common in protocols" },
+      { "label": "CRC", "value": "Strong detection, especially for burst errors" }
+    ]
+  },
+  {
+    "id": "d413-cs0007",
+    "title": "OSI Layer Cues",
+    "topic": "OSI",
+    "priority": 4,
+    "content": [
+      { "label": "Layer 1", "value": "Bits, cables, fiber, radio, hubs, repeaters" },
+      { "label": "Layer 2", "value": "Frames, MAC addresses, switches, bridges" },
+      { "label": "Layer 3", "value": "Packets, IP addresses, routers" },
+      { "label": "Layer 4", "value": "TCP/UDP, ports, end-to-end transport" },
+      { "label": "Layer 7", "value": "Application protocols and user-facing services" }
+    ]
+  },
+  {
+    "id": "d413-cs0008",
+    "title": "Admin and Design Cues",
+    "topic": "Design and Administration",
+    "priority": 3,
+    "content": [
+      { "label": "Baseline", "value": "Normal performance and configuration reference" },
+      { "label": "Documentation", "value": "Diagrams, IP plans, device inventory, changes" },
+      { "label": "AUP", "value": "Rules for acceptable user behavior" },
+      { "label": "Guest Wi-Fi", "value": "Separate visitor traffic from internal resources" },
+      { "label": "Change control", "value": "Plan, approve, test, document, and review changes" }
+    ]
+  }
+]
