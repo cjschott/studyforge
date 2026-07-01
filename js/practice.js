@@ -53,9 +53,16 @@ function pickQuestion(pool, params, courseState) {
 }
 
 function answerPanel(question, settings, existingNote = "") {
-  const sources = question.sourceTags?.length
-    ? `<p><strong>Sources:</strong> ${question.sourceTags.map((tag) => `<span class="tag">${tag}</span>`).join(" ")}</p>`
-    : "";
+  const sourceTags = question.sourceTags?.length
+    ? question.sourceTags.map((tag) => `<span class="tag">${tag}</span>`).join(" ")
+    : `<span class="tag yellow">Unknown</span>`;
+  const lineage = question.lineage || {};
+  const lineageSummary = Object.keys(lineage).length
+    ? `<details class="lineage-details"><summary>Lineage details</summary><pre>${JSON.stringify(lineage, null, 2)}</pre></details>`
+    : `<p class="helper-text">No lineage details provided.</p>`;
+  const status = question.status || "generated";
+  const confidence = Number.isFinite(Number(question.confidence)) ? `${question.confidence}/10` : "Needs review";
+  const sourceType = question.sourceType || lineage.sourceType || lineage.sourceId || "Unknown";
 
   return `
     <section id="answer-panel" class="answer-panel" hidden>
@@ -71,8 +78,12 @@ function answerPanel(question, settings, existingNote = "") {
           <p class="muted">${question.examTip || "No exam tip provided."}</p>
         </article>
         <article>
-          <h4>Source Tags</h4>
-          ${sources || `<p class="muted">No source tags provided.</p>`}
+          <h4>Source Quality</h4>
+          <p><strong>Source:</strong> ${sourceType}</p>
+          <p><strong>Status:</strong> <span class="tag ${status === "verified" ? "green" : status === "retired" ? "red" : status === "reviewed" ? "blue" : "yellow"}">${status}</span></p>
+          <p><strong>Confidence:</strong> ${confidence}</p>
+          <p><strong>Tags:</strong> ${sourceTags}</p>
+          ${lineageSummary}
         </article>
       </div>
       <div id="missed-note-panel" class="card secondary" hidden style="margin-top: 1rem;">

@@ -6,9 +6,9 @@ from sqlalchemy.orm import Session
 
 from app.auth import get_current_user
 from app.database import get_db
-from app.models import MockExamSession, QuestionAttempt, User, UserBookmark, UserCourseProgress
+from app.models import MockExamSession, QuestionAttempt, ReviewNote, User, UserBookmark, UserCourseProgress
 from app.routers.common import get_course_or_404, get_question_or_404
-from app.schemas import AttemptCreate, MockSessionCreate
+from app.schemas import AttemptCreate, MockSessionCreate, ReviewNoteCreate
 from app.services.analytics_service import course_analytics, progress_summary
 from app.services.course_exporter import question_public_id
 
@@ -120,6 +120,30 @@ def delete_bookmark(question_id: str, db: Session = Depends(get_db), current_use
         db.delete(bookmark)
         db.commit()
     return {"ok": True}
+
+
+@router.post("/api/questions/{question_id}/review-note", status_code=status.HTTP_201_CREATED)
+def save_review_note(
+    question_id: str,
+    payload: ReviewNoteCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    question = get_question_or_404(db, question_id)
+    note = (
+        db.query(ReviewNote)
+        .filter_by(user_id=current_user.id, question_id=question.id)
+        .order_by(ReviewNote.created_at.desc())
+        .first()
+    )
+    if not note:
+        note = ReviewNote(user_id=current_user.id, question_id=question.id, note=payload.note)
+    else:
+        note.note = payload.note
+    db.add(note)
+    db.commit()
+    db.refresh(note)
+    return {"ok": True, "id": note.id, "question_id": question_public_id(question), "note": note.note}
 
 
 @router.get("/api/courses/{course_code}/analytics")

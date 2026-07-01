@@ -183,3 +183,32 @@ def test_validation_flags_question_quality_warnings():
     assert any("missing source" in warning for warning in warnings)
     assert any("missing lineage" in warning for warning in warnings)
     assert any("matching question is malformed" in warning for warning in warnings)
+
+
+def test_validation_flags_generated_answer_leak_and_high_confidence():
+    warnings = validate_course_pack(
+        {
+            "course": {"id": "leaky", "topics": ["Security"]},
+            "questions": [
+                {
+                    "id": "leaky-q1",
+                    "type": "single_choice",
+                    "topic": "Security",
+                    "difficulty": 2,
+                    "probability": 3,
+                    "sourceTags": ["Generated"],
+                    "sourceType": "generated",
+                    "status": "generated",
+                    "confidence": 8,
+                    "question": "Which option is least privilege?",
+                    "choices": ["Least privilege", "Open access", "Implicit trust"],
+                    "answer": "Least privilege",
+                    "explanation": "Least privilege limits access.",
+                    "lineage": {"sourceId": "src"},
+                }
+            ],
+        }
+    )
+
+    assert any("generated stem includes exact answer phrase" in warning for warning in warnings)
+    assert any("generated question confidence should not exceed 6" in warning for warning in warnings)

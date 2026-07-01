@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from sqlalchemy.orm import Session
 
-from app.models import Course, MockExamSession, QuestionAttempt, User, UserBookmark
+from app.models import Course, MockExamSession, QuestionAttempt, ReviewNote, User, UserBookmark
 from app.services.course_exporter import question_public_id
 
 
@@ -20,6 +20,7 @@ def progress_summary(db: Session, user: User, course: Course) -> dict:
         .order_by(MockExamSession.started_at.desc())
         .all()
     )
+    review_notes = db.query(ReviewNote).filter_by(user_id=user.id).all()
 
     answered = {}
     missed = {}
@@ -97,13 +98,21 @@ def progress_summary(db: Session, user: User, course: Course) -> dict:
         }
         for session in mock_sessions
     ]
+    missed_notes = {
+        question_public_id(note.question): note.note
+        for note in review_notes
+        if note.question.course_id == course.id
+    }
+    for qid, note in missed_notes.items():
+        if qid in missed:
+            missed[qid]["note"] = note
 
     return {
         "answered": answered,
         "missed": missed,
         "bookmarks": bookmark_payload,
         "reviewLater": {},
-        "missedNotes": {},
+        "missedNotes": missed_notes,
         "topicStats": dict(topic_stats),
         "sessions": list(reversed(sessions[-35:])),
         "mockExams": mock_payload,

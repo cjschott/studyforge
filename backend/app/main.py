@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.config import get_settings
 from app.database import init_db
 from app.routers import admin, auth, courses, import_export, progress, questions, users
 
@@ -13,16 +14,12 @@ async def lifespan(_app: FastAPI):
     yield
 
 
-app = FastAPI(title="StudyForge API", version="0.3.0-alpha", lifespan=lifespan)
+app = FastAPI(title="StudyForge API", version="0.3.0-alpha.2", lifespan=lifespan)
+settings = get_settings()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:8080",
-        "http://localhost:8080",
-        "http://127.0.0.1:8000",
-        "http://localhost:8000",
-    ],
+    allow_origins=settings.cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

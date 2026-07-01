@@ -33,5 +33,110 @@
     "front": "Common incident response order?",
     "back": "Preparation, identification, containment, eradication, recovery, lessons learned.",
     "memory": "PICERL."
+  },
+  {
+    "id": "secplus-f0006",
+    "topic": "Threats",
+    "front": "What is credential stuffing?",
+    "back": "Using breached username/password pairs against other services.",
+    "memory": "Reused creds get stuffed."
+  },
+  {
+    "id": "secplus-f0007",
+    "topic": "Cryptography",
+    "front": "Symmetric vs asymmetric encryption?",
+    "back": "Symmetric uses one shared key; asymmetric uses public/private key pairs.",
+    "memory": "Same vs pair."
+  },
+  {
+    "id": "secplus-f0008",
+    "topic": "Cryptography",
+    "front": "What does PKI provide?",
+    "back": "A trust framework for certificates and public keys.",
+    "memory": "Trust chain."
+  },
+  {
+    "id": "secplus-f0009",
+    "topic": "Network Security",
+    "front": "What is a DMZ?",
+    "back": "A separated network zone for public-facing services.",
+    "memory": "Middle zone."
+  },
+  {
+    "id": "secplus-f0010",
+    "topic": "Network Security",
+    "front": "Secure replacement for Telnet?",
+    "back": "SSH.",
+    "memory": "Shell securely."
+  },
+  {
+    "id": "secplus-f0011",
+    "topic": "Network Security",
+    "front": "What does WPA3-Enterprise use for identity?",
+    "back": "802.1X authentication, usually backed by RADIUS.",
+    "memory": "Enterprise identity."
+  },
+  {
+    "id": "secplus-f0012",
+    "topic": "Identity and Access",
+    "front": "What is least privilege?",
+    "back": "Minimum access needed for a user, role, or process.",
+    "memory": "Only what is needed."
+  },
+  {
+    "id": "secplus-f0013",
+    "topic": "Identity and Access",
+    "front": "What is zero trust?",
+    "back": "No implicit trust; continuously verify access requests.",
+    "memory": "Verify continuously."
+  },
+  {
+    "id": "secplus-f0014",
+    "topic": "Risk and Governance",
+    "front": "Risk transfer example?",
+    "back": "Cyber insurance or outsourcing some responsibility contractually.",
+    "memory": "Shift impact."
+  },
+  {
+    "id": "secplus-f0015",
+    "topic": "Risk and Governance",
+    "front": "Policy vs procedure?",
+    "back": "Policy states requirements; procedure gives steps.",
+    "memory": "What vs how."
+  },
+  {
+    "id": "secplus-f0016",
+    "topic": "Security Operations",
+    "front": "Why test backups?",
+    "back": "To verify restore works before an incident.",
+    "memory": "Restore proof."
+  },
+  {
+    "id": "secplus-f0017",
+    "topic": "Security Operations",
+    "front": "Containment goal?",
+    "back": "Limit spread and impact while preserving investigation value.",
+    "memory": "Stop spread."
+  },
+  {
+    "id": "secplus-f0018",
+    "topic": "Threats",
+    "front": "What is a rootkit?",
+    "back": "Malware that hides its presence and may provide privileged stealth access.",
+    "memory": "Root hides."
+  },
+  {
+    "id": "secplus-f0019",
+    "topic": "Core Principles",
+    "front": "What supports non-repudiation?",
+    "back": "Digital signatures and reliable audit evidence.",
+    "memory": "Cannot deny."
+  },
+  {
+    "id": "secplus-f0020",
+    "topic": "Security Operations",
+    "front": "What is vulnerability management?",
+    "back": "Discover, prioritize, fix, and verify weaknesses.",
+    "memory": "Find, fix, verify."
   }
 ]

@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.0-alpha.2
+
+- Improved auth/admin workflow with disabled-user handling, role changes, enable/disable controls, duplicate username validation, and password reset.
+- Improved backend progress sync with review-note persistence and visible frontend sync warnings.
+- Added question review workflow lists, status counts, low-confidence queues, validation-warning queues, and generated/reviewed/verified/retired actions.
+- Added source lineage, status, source type, and confidence display in question explanations.
+- Improved question type rendering for multi-select, matching, ordering, diagram fallback, and PBQ manual-check placeholders.
+- Expanded Security+ starter pack to 50 generated/example questions, 20 flashcards, 30 glossary terms, and 5 cheat sheets.
+- Improved schweb2 deployment docs, backend environment variable support, and test coverage.
+
 ## v0.3.0-alpha
 
 - Added FastAPI backend foundation.

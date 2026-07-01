@@ -9,5 +9,8 @@ build/
 .idea/
 backend/.venv/
 backend/studyforge.db
+backend/*.db
+.venv/
 __pycache__/
 .pytest_cache/
+*.pyc

@@ -5,12 +5,30 @@
     "topic": "Core Principles",
     "priority": 5,
     "content": [
-      { "label": "Confidentiality", "value": "Prevents unauthorized disclosure." },
-      { "label": "Integrity", "value": "Prevents or detects unauthorized changes." },
-      { "label": "Availability", "value": "Keeps systems and data reachable." },
-      { "label": "Authentication", "value": "Proves identity." },
-      { "label": "Authorization", "value": "Determines allowed access." },
-      { "label": "Accounting", "value": "Records activity." }
+      {
+        "label": "Confidentiality",
+        "value": "Prevents unauthorized disclosure."
+      },
+      {
+        "label": "Integrity",
+        "value": "Prevents or detects unauthorized changes."
+      },
+      {
+        "label": "Availability",
+        "value": "Keeps systems and data reachable."
+      },
+      {
+        "label": "Authentication",
+        "value": "Proves identity."
+      },
+      {
+        "label": "Authorization",
+        "value": "Determines allowed access."
+      },
+      {
+        "label": "Accounting",
+        "value": "Records activity."
+      }
     ]
   },
   {
@@ -19,10 +37,98 @@
     "topic": "Network Security",
     "priority": 4,
     "content": [
-      { "label": "Telnet", "value": "Use SSH." },
-      { "label": "FTP", "value": "Use SFTP or FTPS." },
-      { "label": "HTTP admin", "value": "Use HTTPS." },
-      { "label": "Insecure remote desktop exposure", "value": "Use VPN, ZTNA, MFA, and restricted access." }
+      {
+        "label": "Telnet",
+        "value": "Use SSH."
+      },
+      {
+        "label": "FTP",
+        "value": "Use SFTP or FTPS."
+      },
+      {
+        "label": "HTTP admin",
+        "value": "Use HTTPS."
+      },
+      {
+        "label": "Insecure remote desktop exposure",
+        "value": "Use VPN, ZTNA, MFA, and restricted access."
+      }
+    ]
+  },
+  {
+    "id": "secplus-cs0003",
+    "title": "Access Control Models",
+    "topic": "Identity and Access",
+    "priority": 4,
+    "content": [
+      {
+        "label": "DAC",
+        "value": "Owner grants access."
+      },
+      {
+        "label": "MAC",
+        "value": "Labels and clearances."
+      },
+      {
+        "label": "RBAC",
+        "value": "Roles map to job functions."
+      },
+      {
+        "label": "ABAC",
+        "value": "Attributes and policies drive decisions."
+      }
+    ]
+  },
+  {
+    "id": "secplus-cs0004",
+    "title": "Crypto Quick Compare",
+    "topic": "Cryptography",
+    "priority": 4,
+    "content": [
+      {
+        "label": "Symmetric",
+        "value": "One shared key; fast for bulk data."
+      },
+      {
+        "label": "Asymmetric",
+        "value": "Public/private pair; key exchange and signatures."
+      },
+      {
+        "label": "Hashing",
+        "value": "One-way integrity digest."
+      },
+      {
+        "label": "Digital signature",
+        "value": "Integrity, origin, and non-repudiation support."
+      },
+      {
+        "label": "PKI",
+        "value": "Certificate trust framework."
+      }
+    ]
+  },
+  {
+    "id": "secplus-cs0005",
+    "title": "Operations Flow",
+    "topic": "Security Operations",
+    "priority": 4,
+    "content": [
+      {
+        "label": "Incident response",
+        "value": "Preparation, identification, containment, eradication, recovery, lessons learned."
+      },
+      {
+        "label": "Vulnerability management",
+        "value": "Discover assets, scan, prioritize, remediate, verify."
+      },
+      {
+        "label": "Backups",
+        "value": "Protect, isolate, and test restore."
+      },
+      {
+        "label": "SIEM",
+        "value": "Aggregate logs, correlate events, alert for triage."
+      }
     ]
   }
 ]

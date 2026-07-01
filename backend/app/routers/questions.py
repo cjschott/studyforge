@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.auth import get_current_user, require_roles
@@ -30,6 +31,53 @@ def list_course_questions(course_code: str, db: Session = Depends(get_db), _: Us
     course = get_course_or_404(db, course_code)
     questions = db.query(Question).filter_by(course_id=course.id).order_by(Question.id).all()
     return [question_to_static(question) for question in questions]
+
+
+@router.get("/api/questions")
+def list_questions(
+    status_filter: str | None = Query(default=None, alias="status"),
+    course_code: str | None = None,
+    limit: int = Query(default=100, ge=1, le=500),
+    db: Session = Depends(get_db),
+    _: User = Depends(require_roles("admin", "instructor")),
+):
+    query = db.query(Question)
+    if status_filter:
+        query = query.filter(Question.status == status_filter)
+    if course_code:
+        course = get_course_or_404(db, course_code)
+        query = query.filter(Question.course_id == course.id)
+    return [question_to_static(question) for question in query.order_by(Question.updated_at.desc()).limit(limit).all()]
+
+
+@router.get("/api/questions/status-counts")
+def question_status_counts(db: Session = Depends(get_db), _: User = Depends(require_roles("admin", "instructor"))):
+    rows = db.query(Question.status, func.count(Question.id)).group_by(Question.status).all()
+    counts = {"generated": 0, "reviewed": 0, "verified": 0, "retired": 0}
+    counts.update({status_name: count for status_name, count in rows})
+    return counts
+
+
+@router.get("/api/questions/low-confidence")
+def low_confidence_questions(
+    threshold: int = Query(default=6, ge=1, le=10),
+    db: Session = Depends(get_db),
+    _: User = Depends(require_roles("admin", "instructor")),
+):
+    questions = db.query(Question).filter(Question.confidence <= threshold).order_by(Question.confidence.asc(), Question.id.asc()).limit(100).all()
+    return [question_to_static(question) for question in questions]
+
+
+@router.get("/api/questions/validation-warnings")
+def questions_with_validation_warnings(db: Session = Depends(get_db), _: User = Depends(require_roles("admin", "instructor"))):
+    payload = []
+    for question in db.query(Question).order_by(Question.updated_at.desc()).limit(500).all():
+        warnings = validate_db_question(question)
+        if warnings:
+            item = question_to_static(question)
+            item["warnings"] = warnings
+            payload.append(item)
+    return payload
 
 
 @router.get("/api/questions/{question_id}")
@@ -104,10 +152,17 @@ def patch_question(
 
 def set_status(question_id: str, next_status: str, db: Session) -> dict:
     question = get_question_or_404(db, question_id)
+    if next_status not in {"generated", "reviewed", "verified", "retired"}:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid question status")
     question.status = next_status
     db.add(question)
     db.commit()
     return {"id": question.legacy_id or str(question.id), "status": question.status, "warnings": validate_db_question(question)}
+
+
+@router.post("/api/questions/{question_id}/generated")
+def generated_question(question_id: str, db: Session = Depends(get_db), _: User = Depends(require_roles("admin", "instructor"))):
+    return set_status(question_id, "generated", db)
 
 
 @router.post("/api/questions/{question_id}/review")

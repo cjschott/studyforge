@@ -17,8 +17,10 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 @router.post("/login", response_model=LoginResponse)
 def login(payload: LoginRequest, response: Response, db: Session = Depends(get_db)):
     user = db.query(User).filter_by(username=payload.username).one_or_none()
-    if not user or not user.is_active or not auth_service.verify_password(payload.password, user.password_hash):
+    if not user or not auth_service.verify_password(payload.password, user.password_hash):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
+    if not user.is_active:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User account is disabled")
 
     user.last_login_at = datetime.now(timezone.utc)
     db.add(user)

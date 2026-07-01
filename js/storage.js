@@ -1,5 +1,5 @@
 import { APP_CONFIG } from "./config.js";
-import { syncBookmark, syncMockExam, syncQuestionAttempt } from "./backendProgress.js";
+import { syncBookmark, syncMockExam, syncQuestionAttempt, syncReviewNote } from "./backendProgress.js";
 
 const STORAGE_KEY = APP_CONFIG.storageKey;
 
@@ -211,6 +211,7 @@ export function saveMissedNote(courseId, question, note) {
     courseState.missed[question.id].note = cleanNote;
   }
   writeState(state);
+  syncReviewNote(question, cleanNote);
   return cleanNote;
 }
 

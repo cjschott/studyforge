@@ -7,15 +7,17 @@ from fastapi import Depends, HTTPException, Request, status
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
+from app.config import get_settings
 from app.database import get_db
 from app.models import User
 
 
+settings = get_settings()
 SESSION_COOKIE = "studyforge_session"
-SECRET_KEY = os.getenv("STUDYFORGE_SECRET_KEY", "change-this-dev-secret")
+SECRET_KEY = settings.secret_key
 ALGORITHM = "HS256"
-SESSION_MINUTES = int(os.getenv("STUDYFORGE_SESSION_MINUTES", "10080"))
-COOKIE_SECURE = os.getenv("STUDYFORGE_COOKIE_SECURE", "false").lower() == "true"
+SESSION_MINUTES = settings.session_minutes
+COOKIE_SECURE = settings.cookie_secure
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

@@ -6,17 +6,27 @@
     "subtopic": "CIA Triad",
     "difficulty": 1,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which part of the CIA triad focuses on preventing unauthorized disclosure of data?",
-    "choices": ["Confidentiality", "Integrity", "Availability", "Accounting"],
+    "choices": [
+      "Confidentiality",
+      "Integrity",
+      "Availability",
+      "Accounting"
+    ],
     "answer": "Confidentiality",
     "explanation": "Confidentiality protects data from unauthorized access or disclosure.",
     "memory": "Confidential means kept private.",
     "examTip": "Map disclosure to confidentiality, tampering to integrity, and uptime to availability.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0002",
@@ -25,12 +35,23 @@
     "subtopic": "AAA",
     "difficulty": 2,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Match each AAA function to its purpose.",
     "choices": {
-      "left": ["Authentication", "Authorization", "Accounting"],
-      "right": ["Proves identity", "Determines allowed access", "Records activity"]
+      "left": [
+        "Authentication",
+        "Authorization",
+        "Accounting"
+      ],
+      "right": [
+        "Proves identity",
+        "Determines allowed access",
+        "Records activity"
+      ]
     },
     "answer": {
       "Authentication": "Proves identity",
@@ -42,7 +63,9 @@
     "examTip": "If a question asks what a user can access, choose authorization.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0003",
@@ -51,17 +74,31 @@
     "subtopic": "MFA",
     "difficulty": 2,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which options are valid MFA factor categories? Select all that apply.",
-    "choices": ["Something you know", "Something you have", "Something you are", "Something you hope"],
-    "answer": ["Something you know", "Something you have", "Something you are"],
+    "choices": [
+      "Something you know",
+      "Something you have",
+      "Something you are",
+      "Something you hope"
+    ],
+    "answer": [
+      "Something you know",
+      "Something you have",
+      "Something you are"
+    ],
     "explanation": "MFA combines different factor categories such as knowledge, possession, and inherence.",
     "memory": "Know, have, are.",
     "examTip": "Two passwords are not true MFA because they use the same factor category.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0004",
@@ -70,17 +107,27 @@
     "subtopic": "Phishing",
     "difficulty": 2,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "A user receives an email that imitates the help desk and asks them to enter credentials on a fake portal. What attack is this?",
-    "choices": ["Phishing", "Tailgating", "Dumpster diving", "Privilege escalation"],
+    "choices": [
+      "Phishing",
+      "Tailgating",
+      "Dumpster diving",
+      "Privilege escalation"
+    ],
     "answer": "Phishing",
     "explanation": "Phishing uses deceptive messages to trick users into revealing sensitive information or taking unsafe actions.",
     "memory": "Phishing hooks users with messages.",
     "examTip": "Look for email, SMS, voice, or targeted variants in social engineering scenarios.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0005",
@@ -89,17 +136,31 @@
     "subtopic": "Malware",
     "difficulty": 3,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which behaviors are commonly associated with ransomware? Select all that apply.",
-    "choices": ["Encrypting files", "Demanding payment", "Providing transparent audit logs", "Disabling recovery options"],
-    "answer": ["Encrypting files", "Demanding payment", "Disabling recovery options"],
+    "choices": [
+      "Encrypting files",
+      "Demanding payment",
+      "Providing transparent audit logs",
+      "Disabling recovery options"
+    ],
+    "answer": [
+      "Encrypting files",
+      "Demanding payment",
+      "Disabling recovery options"
+    ],
     "explanation": "Ransomware commonly encrypts data, demands payment, and may target backups or recovery paths.",
     "memory": "Ransomware locks and demands.",
     "examTip": "Backup strategy and recovery testing are key mitigations.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0006",
@@ -108,17 +169,27 @@
     "subtopic": "Social Engineering",
     "difficulty": 2,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "An attacker follows an employee through a secure door without presenting a badge. Which technique is this?",
-    "choices": ["Tailgating", "Vishing", "Watering hole", "Bluejacking"],
+    "choices": [
+      "Tailgating",
+      "Vishing",
+      "Watering hole",
+      "Bluejacking"
+    ],
     "answer": "Tailgating",
     "explanation": "Tailgating is physical social engineering where an unauthorized person follows an authorized person into a restricted area.",
     "memory": "Tailgating follows close behind.",
     "examTip": "Physical access clues often point to tailgating or piggybacking.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0007",
@@ -127,17 +198,27 @@
     "subtopic": "Symmetric vs Asymmetric",
     "difficulty": 2,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which statement best describes symmetric encryption?",
-    "choices": ["It uses one shared key for encryption and decryption", "It uses unrelated public and private keys", "It only verifies integrity", "It replaces authentication"],
+    "choices": [
+      "It uses one shared key for encryption and decryption",
+      "It uses unrelated public and private keys",
+      "It only verifies integrity",
+      "It replaces authentication"
+    ],
     "answer": "It uses one shared key for encryption and decryption",
     "explanation": "Symmetric encryption uses the same shared secret key to encrypt and decrypt data.",
     "memory": "Symmetric means same key.",
     "examTip": "Symmetric is fast for bulk data; asymmetric helps with key exchange and digital signatures.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0008",
@@ -146,17 +227,27 @@
     "subtopic": "Hashing",
     "difficulty": 2,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "What is the primary purpose of a cryptographic hash?",
-    "choices": ["Verify integrity", "Encrypt traffic with a shared key", "Authenticate with biometrics", "Assign network ports"],
+    "choices": [
+      "Verify integrity",
+      "Encrypt traffic with a shared key",
+      "Authenticate with biometrics",
+      "Assign network ports"
+    ],
     "answer": "Verify integrity",
     "explanation": "A hash creates a fixed-length digest that changes when the input changes, supporting integrity checks.",
     "memory": "Hash detects change.",
     "examTip": "Hashing is one-way and is not encryption.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0009",
@@ -165,17 +256,27 @@
     "subtopic": "TLS",
     "difficulty": 3,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "What does TLS primarily provide for HTTPS sessions?",
-    "choices": ["Encrypted transport and server authentication", "Disk encryption", "Wireless channel hopping", "Physical access control"],
+    "choices": [
+      "Encrypted transport and server authentication",
+      "Disk encryption",
+      "Wireless channel hopping",
+      "Physical access control"
+    ],
     "answer": "Encrypted transport and server authentication",
     "explanation": "TLS protects transport confidentiality/integrity and uses certificates to authenticate servers.",
     "memory": "TLS protects traffic.",
     "examTip": "Certificate trust and handshake clues often point to TLS.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0010",
@@ -184,12 +285,25 @@
     "subtopic": "Ports and Protocols",
     "difficulty": 3,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Match each common protocol to its default port.",
     "choices": {
-      "left": ["HTTPS", "SSH", "DNS", "RDP"],
-      "right": ["443", "22", "53", "3389"]
+      "left": [
+        "HTTPS",
+        "SSH",
+        "DNS",
+        "RDP"
+      ],
+      "right": [
+        "443",
+        "22",
+        "53",
+        "3389"
+      ]
     },
     "answer": {
       "HTTPS": "443",
@@ -202,7 +316,9 @@
     "examTip": "Secure protocol questions often contrast SSH/SFTP/HTTPS with Telnet/FTP/HTTP.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0011",
@@ -211,17 +327,27 @@
     "subtopic": "Firewalls",
     "difficulty": 2,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which control filters traffic based on rules such as source, destination, port, and protocol?",
-    "choices": ["Firewall", "SIEM", "Password manager", "Hash function"],
+    "choices": [
+      "Firewall",
+      "SIEM",
+      "Password manager",
+      "Hash function"
+    ],
     "answer": "Firewall",
     "explanation": "Firewalls enforce traffic rules at network, host, or application boundaries.",
     "memory": "Firewall filters flows.",
     "examTip": "Look for allow/deny rules, ACLs, zones, and traffic filtering.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0012",
@@ -230,17 +356,27 @@
     "subtopic": "IDS/IPS",
     "difficulty": 3,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "What is the key difference between an IDS and an IPS?",
-    "choices": ["An IDS detects and alerts; an IPS can actively block", "An IDS encrypts disks; an IPS hashes passwords", "An IDS is only physical; an IPS is only administrative", "There is no operational difference"],
+    "choices": [
+      "An IDS detects and alerts; an IPS can actively block",
+      "An IDS encrypts disks; an IPS hashes passwords",
+      "An IDS is only physical; an IPS is only administrative",
+      "There is no operational difference"
+    ],
     "answer": "An IDS detects and alerts; an IPS can actively block",
     "explanation": "IDS is typically detective, while IPS is inline and can prevent or block malicious traffic.",
     "memory": "IDS sees; IPS stops.",
     "examTip": "Inline prevention clues usually point to IPS.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0013",
@@ -249,17 +385,27 @@
     "subtopic": "SIEM",
     "difficulty": 3,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which platform aggregates logs and correlates events to support security monitoring?",
-    "choices": ["SIEM", "NAT", "RAID", "TPM"],
+    "choices": [
+      "SIEM",
+      "NAT",
+      "RAID",
+      "TPM"
+    ],
     "answer": "SIEM",
     "explanation": "A SIEM collects and correlates security events from multiple sources for monitoring and investigation.",
     "memory": "SIEM sees events in many logs.",
     "examTip": "Correlation, dashboards, and alerting across log sources point to SIEM.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0014",
@@ -268,17 +414,36 @@
     "subtopic": "Incident Response",
     "difficulty": 3,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Place these incident response phases in a common high-level order.",
-    "choices": ["Preparation", "Identification", "Containment", "Eradication", "Recovery", "Lessons learned"],
-    "answer": ["Preparation", "Identification", "Containment", "Eradication", "Recovery", "Lessons learned"],
+    "choices": [
+      "Preparation",
+      "Identification",
+      "Containment",
+      "Eradication",
+      "Recovery",
+      "Lessons learned"
+    ],
+    "answer": [
+      "Preparation",
+      "Identification",
+      "Containment",
+      "Eradication",
+      "Recovery",
+      "Lessons learned"
+    ],
     "explanation": "A common incident response flow starts with preparation, then identifies and contains the incident before eradication, recovery, and lessons learned.",
     "memory": "PICERL.",
     "examTip": "Contain before eradication when an active incident is spreading.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-002" }
+    "lineage": {
+      "sourceId": "secplus-src-002"
+    }
   },
   {
     "id": "secplus-q0015",
@@ -287,17 +452,27 @@
     "subtopic": "Risk Management",
     "difficulty": 2,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which risk response accepts the risk because mitigation cost is higher than the expected loss?",
-    "choices": ["Acceptance", "Transfer", "Avoidance", "Mitigation"],
+    "choices": [
+      "Acceptance",
+      "Transfer",
+      "Avoidance",
+      "Mitigation"
+    ],
     "answer": "Acceptance",
     "explanation": "Risk acceptance is choosing to live with the risk when that decision is justified and documented.",
     "memory": "Accept means live with it.",
     "examTip": "Insurance is transfer; stopping the activity is avoidance; reducing likelihood or impact is mitigation.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-002" }
+    "lineage": {
+      "sourceId": "secplus-src-002"
+    }
   },
   {
     "id": "secplus-q0016",
@@ -306,17 +481,27 @@
     "subtopic": "Least Privilege",
     "difficulty": 2,
     "probability": 5,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which principle gives users only the access required to perform their job duties?",
-    "choices": ["Least privilege", "Open access", "Implicit trust", "Privilege inheritance"],
+    "choices": [
+      "Least privilege",
+      "Open access",
+      "Implicit trust",
+      "Privilege inheritance"
+    ],
     "answer": "Least privilege",
     "explanation": "Least privilege limits access to the minimum permissions needed for a role or task.",
     "memory": "Least needed access.",
     "examTip": "Excessive permissions and role cleanup scenarios often test least privilege.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0017",
@@ -325,17 +510,27 @@
     "subtopic": "Zero Trust",
     "difficulty": 3,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Which idea best fits a zero trust architecture?",
-    "choices": ["Continuously verify access requests", "Trust all internal network traffic", "Disable logging after authentication", "Use one shared administrator account"],
+    "choices": [
+      "Continuously verify access requests",
+      "Trust all internal network traffic",
+      "Disable logging after authentication",
+      "Use one shared administrator account"
+    ],
     "answer": "Continuously verify access requests",
     "explanation": "Zero trust assumes no implicit trust and continuously evaluates identity, device, context, and policy.",
     "memory": "Never trust, always verify.",
     "examTip": "Microsegmentation, least privilege, and continuous verification are common zero trust clues.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-001" }
+    "lineage": {
+      "sourceId": "secplus-src-001"
+    }
   },
   {
     "id": "secplus-q0018",
@@ -344,17 +539,27 @@
     "subtopic": "Vulnerability Scanning",
     "difficulty": 2,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "What is the main purpose of vulnerability scanning?",
-    "choices": ["Identify known weaknesses", "Guarantee exploitation is impossible", "Replace patch management", "Encrypt backups"],
+    "choices": [
+      "Identify known weaknesses",
+      "Guarantee exploitation is impossible",
+      "Replace patch management",
+      "Encrypt backups"
+    ],
     "answer": "Identify known weaknesses",
     "explanation": "Vulnerability scanning looks for known weaknesses so teams can prioritize remediation.",
     "memory": "Scan to find weaknesses.",
     "examTip": "Scanning finds; penetration testing attempts to exploit within scope.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-002" }
+    "lineage": {
+      "sourceId": "secplus-src-002"
+    }
   },
   {
     "id": "secplus-q0019",
@@ -363,17 +568,27 @@
     "subtopic": "Patching",
     "difficulty": 2,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "question": "Why should critical security patches be tested before broad deployment when possible?",
-    "choices": ["To reduce the chance of service disruption", "To make vulnerabilities permanent", "To disable rollback planning", "To avoid documenting changes"],
+    "choices": [
+      "To reduce the chance of service disruption",
+      "To make vulnerabilities permanent",
+      "To disable rollback planning",
+      "To avoid documenting changes"
+    ],
     "answer": "To reduce the chance of service disruption",
     "explanation": "Testing helps catch compatibility and stability issues before patches are widely deployed.",
     "memory": "Test before wide rollout.",
     "examTip": "Emergency patching may compress testing, but change control and rollback planning still matter.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-002" }
+    "lineage": {
+      "sourceId": "secplus-src-002"
+    }
   },
   {
     "id": "secplus-q0020",
@@ -382,7 +597,10 @@
     "subtopic": "Secure Protocols",
     "difficulty": 4,
     "probability": 4,
-    "sourceTags": ["Generated", "Starter Example"],
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
     "sourceType": "generated",
     "scenario": "A small company exposes remote administration and file transfer services to administrators.",
     "task": "Choose secure replacements for Telnet, FTP, and HTTP administration traffic.",
@@ -390,13 +608,986 @@
     "choices": [],
     "answer": {
       "manualCheck": true,
-      "expected": ["SSH instead of Telnet", "SFTP or FTPS instead of FTP", "HTTPS instead of HTTP"]
+      "expected": [
+        "SSH instead of Telnet",
+        "SFTP or FTPS instead of FTP",
+        "HTTPS instead of HTTP"
+      ]
     },
     "explanation": "Secure protocol replacements include SSH for shell access, SFTP/FTPS for file transfer, and HTTPS for web administration. This PBQ is marked for manual review in v0.3.",
     "memory": "Prefer protocols with encryption and authentication.",
     "examTip": "In PBQ-style tasks, replace legacy cleartext protocols first.",
     "status": "generated",
     "confidence": 5,
-    "lineage": { "sourceId": "secplus-src-002" }
+    "lineage": {
+      "sourceId": "secplus-src-002"
+    }
+  },
+  {
+    "id": "secplus-q0021",
+    "type": "single_choice",
+    "topic": "Identity and Access",
+    "subtopic": "IAM",
+    "difficulty": 2,
+    "probability": 5,
+    "question": "Which IAM activity assigns permissions based on a user job function?",
+    "choices": [
+      "Role-based access control",
+      "Hash verification",
+      "Packet filtering",
+      "Log aggregation"
+    ],
+    "answer": "Role-based access control",
+    "explanation": "Role-based access control maps permissions to roles so users receive access based on job responsibilities.",
+    "memory": "Roles follow jobs.",
+    "examTip": "Job function and role clues usually point to RBAC.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0022",
+    "type": "matching",
+    "topic": "Identity and Access",
+    "subtopic": "Access Control Models",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Match each access control model to its main idea.",
+    "choices": {
+      "left": [
+        "DAC",
+        "MAC",
+        "RBAC",
+        "ABAC"
+      ],
+      "right": [
+        "Owner grants access",
+        "Labels and clearance",
+        "Permissions tied to roles",
+        "Attributes and policies"
+      ]
+    },
+    "answer": {
+      "DAC": "Owner grants access",
+      "MAC": "Labels and clearance",
+      "RBAC": "Permissions tied to roles",
+      "ABAC": "Attributes and policies"
+    },
+    "explanation": "DAC lets owners grant access, MAC uses labels and clearances, RBAC maps access to roles, and ABAC evaluates attributes.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0023",
+    "type": "single_choice",
+    "topic": "Cryptography",
+    "subtopic": "Asymmetric Encryption",
+    "difficulty": 3,
+    "probability": 5,
+    "question": "Which key pair property supports encrypted communication to a recipient?",
+    "choices": [
+      "Data encrypted with the public key can be decrypted with the private key",
+      "Both parties use one shared secret key",
+      "A hash can be reversed with a salt",
+      "A certificate removes the need for trust"
+    ],
+    "answer": "Data encrypted with the public key can be decrypted with the private key",
+    "explanation": "Asymmetric encryption uses a mathematically related public/private key pair. Public-key encryption lets only the private-key holder decrypt.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0024",
+    "type": "single_choice",
+    "topic": "Cryptography",
+    "subtopic": "PKI",
+    "difficulty": 3,
+    "probability": 5,
+    "question": "What is the role of a certificate authority in PKI?",
+    "choices": [
+      "Issue and sign digital certificates",
+      "Generate firewall ACLs",
+      "Store SIEM event logs",
+      "Scan for missing patches"
+    ],
+    "answer": "Issue and sign digital certificates",
+    "explanation": "A certificate authority issues and signs certificates so relying parties can validate certificate trust chains.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0025",
+    "type": "multi_select",
+    "topic": "Cryptography",
+    "subtopic": "PKI",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Which items are commonly associated with PKI? Select all that apply.",
+    "choices": [
+      "Certificate authority",
+      "Certificate revocation list",
+      "Public/private key pair",
+      "Open guest Wi-Fi"
+    ],
+    "answer": [
+      "Certificate authority",
+      "Certificate revocation list",
+      "Public/private key pair"
+    ],
+    "explanation": "PKI uses public/private key pairs, trusted certificate authorities, and revocation mechanisms such as CRLs or OCSP.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0026",
+    "type": "single_choice",
+    "topic": "Network Security",
+    "subtopic": "Secure Wireless",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Which wireless configuration provides stronger enterprise authentication than a pre-shared key?",
+    "choices": [
+      "WPA3-Enterprise with 802.1X",
+      "WEP with a static key",
+      "Open network with captive portal only",
+      "SSID hiding"
+    ],
+    "answer": "WPA3-Enterprise with 802.1X",
+    "explanation": "Enterprise wireless uses 802.1X authentication with a RADIUS-backed identity flow instead of one shared passphrase.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0027",
+    "type": "single_choice",
+    "topic": "Network Security",
+    "subtopic": "Secure Wireless",
+    "difficulty": 2,
+    "probability": 4,
+    "question": "Why is WEP considered unsafe for modern wireless networks?",
+    "choices": [
+      "Its cryptographic design is weak and can be cracked",
+      "It requires certificates for every device",
+      "It blocks all management frames",
+      "It only supports multifactor authentication"
+    ],
+    "answer": "Its cryptographic design is weak and can be cracked",
+    "explanation": "WEP has known cryptographic weaknesses and should be replaced by modern WPA2/WPA3 configurations.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0028",
+    "type": "multi_select",
+    "topic": "Network Security",
+    "subtopic": "Secure Protocols",
+    "difficulty": 2,
+    "probability": 4,
+    "question": "Which protocols are encrypted alternatives to older cleartext protocols? Select all that apply.",
+    "choices": [
+      "SSH",
+      "SFTP",
+      "HTTPS",
+      "Telnet"
+    ],
+    "answer": [
+      "SSH",
+      "SFTP",
+      "HTTPS"
+    ],
+    "explanation": "SSH, SFTP, and HTTPS protect traffic. Telnet is cleartext and should be avoided for administration.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0029",
+    "type": "single_choice",
+    "topic": "Network Security",
+    "subtopic": "Network Segmentation",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "What is the main benefit of segmenting a network into security zones?",
+    "choices": [
+      "Limit lateral movement and reduce blast radius",
+      "Remove the need for authentication",
+      "Guarantee malware cannot execute",
+      "Replace incident response procedures"
+    ],
+    "answer": "Limit lateral movement and reduce blast radius",
+    "explanation": "Segmentation limits how far an attacker or incident can spread by separating systems into controlled zones.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0030",
+    "type": "single_choice",
+    "topic": "Security Operations",
+    "subtopic": "Logging",
+    "difficulty": 2,
+    "probability": 4,
+    "question": "Which log property helps prove events have not been altered?",
+    "choices": [
+      "Integrity protection",
+      "Screen resolution",
+      "Port mirroring",
+      "SSID broadcast"
+    ],
+    "answer": "Integrity protection",
+    "explanation": "Log integrity controls such as hashing, signing, and restricted access help detect or prevent tampering.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0031",
+    "type": "ordering",
+    "topic": "Security Operations",
+    "subtopic": "Vulnerability Management",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Place these vulnerability management actions in a practical high-level order.",
+    "choices": [
+      "Discover assets",
+      "Scan for weaknesses",
+      "Prioritize findings",
+      "Remediate or mitigate",
+      "Verify the fix"
+    ],
+    "answer": [
+      "Discover assets",
+      "Scan for weaknesses",
+      "Prioritize findings",
+      "Remediate or mitigate",
+      "Verify the fix"
+    ],
+    "explanation": "Teams need an asset view before scanning, then prioritize, remediate, and verify changes.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0032",
+    "type": "single_choice",
+    "topic": "Risk and Governance",
+    "subtopic": "Risk Management",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "A company buys cyber insurance to reduce financial impact from some incidents. Which risk response is this?",
+    "choices": [
+      "Transfer",
+      "Accept",
+      "Avoid",
+      "Ignore"
+    ],
+    "answer": "Transfer",
+    "explanation": "Insurance shifts some financial risk to a third party, which is a transfer strategy.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0033",
+    "type": "single_choice",
+    "topic": "Risk and Governance",
+    "subtopic": "Governance",
+    "difficulty": 2,
+    "probability": 3,
+    "question": "Which document usually defines mandatory organizational security requirements?",
+    "choices": [
+      "Policy",
+      "Procedure",
+      "Playbook note",
+      "Informal chat"
+    ],
+    "answer": "Policy",
+    "explanation": "Policies define mandatory requirements. Standards, procedures, and guidelines provide more implementation detail.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0034",
+    "type": "matching",
+    "topic": "Risk and Governance",
+    "subtopic": "Control Types",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Match each control type to a fitting example.",
+    "choices": {
+      "left": [
+        "Preventive",
+        "Detective",
+        "Corrective",
+        "Deterrent"
+      ],
+      "right": [
+        "Access control",
+        "SIEM alert",
+        "Restore from backup",
+        "Warning banner"
+      ]
+    },
+    "answer": {
+      "Preventive": "Access control",
+      "Detective": "SIEM alert",
+      "Corrective": "Restore from backup",
+      "Deterrent": "Warning banner"
+    },
+    "explanation": "Preventive controls stop events, detective controls find events, corrective controls recover, and deterrent controls discourage behavior.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0035",
+    "type": "single_choice",
+    "topic": "Threats",
+    "subtopic": "Credential Attacks",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "An attacker uses previously breached username/password pairs against another site. What is this called?",
+    "choices": [
+      "Credential stuffing",
+      "On-path attack",
+      "Bluejacking",
+      "War driving"
+    ],
+    "answer": "Credential stuffing",
+    "explanation": "Credential stuffing reuses known breached credentials against other services where users may have reused passwords.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0036",
+    "type": "single_choice",
+    "topic": "Threats",
+    "subtopic": "On-Path Attacks",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "An attacker secretly intercepts and relays traffic between two parties. Which attack category fits?",
+    "choices": [
+      "On-path attack",
+      "Tailgating",
+      "Logic bomb",
+      "Data remanence"
+    ],
+    "answer": "On-path attack",
+    "explanation": "An on-path attacker can intercept, observe, or alter communications between parties.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0037",
+    "type": "single_choice",
+    "topic": "Threats",
+    "subtopic": "Malware",
+    "difficulty": 2,
+    "probability": 4,
+    "question": "Which malware type hides its presence and may provide privileged stealth access?",
+    "choices": [
+      "Rootkit",
+      "Spam filter",
+      "Load balancer",
+      "Certificate pin"
+    ],
+    "answer": "Rootkit",
+    "explanation": "Rootkits are designed to hide malicious activity and may operate with elevated privileges.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0038",
+    "type": "multi_select",
+    "topic": "Threats",
+    "subtopic": "Social Engineering",
+    "difficulty": 2,
+    "probability": 4,
+    "question": "Which are social engineering techniques? Select all that apply.",
+    "choices": [
+      "Pretexting",
+      "Baiting",
+      "Tailgating",
+      "Hashing"
+    ],
+    "answer": [
+      "Pretexting",
+      "Baiting",
+      "Tailgating"
+    ],
+    "explanation": "Pretexting, baiting, and tailgating manipulate people or physical access. Hashing is a cryptographic operation.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0039",
+    "type": "single_choice",
+    "topic": "Core Principles",
+    "subtopic": "Non-repudiation",
+    "difficulty": 3,
+    "probability": 3,
+    "question": "Which mechanism most directly supports proof that a sender performed an action?",
+    "choices": [
+      "Digital signature",
+      "NAT translation",
+      "Open guest access",
+      "Shared administrator password"
+    ],
+    "answer": "Digital signature",
+    "explanation": "Digital signatures can support non-repudiation by tying an action to a private key holder.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0040",
+    "type": "single_choice",
+    "topic": "Core Principles",
+    "subtopic": "Availability",
+    "difficulty": 2,
+    "probability": 4,
+    "question": "Which design most directly improves service uptime after one server fails?",
+    "choices": [
+      "Redundancy",
+      "Weak encryption",
+      "Single administrator account",
+      "Open firewall rule"
+    ],
+    "answer": "Redundancy",
+    "explanation": "Redundancy provides alternate capacity or paths so service can continue when one component fails.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0041",
+    "type": "single_choice",
+    "topic": "Security Operations",
+    "subtopic": "Backups",
+    "difficulty": 2,
+    "probability": 4,
+    "question": "Why should backups be tested regularly?",
+    "choices": [
+      "To verify data can be restored",
+      "To replace encryption",
+      "To avoid patching systems",
+      "To publish sensitive data"
+    ],
+    "answer": "To verify data can be restored",
+    "explanation": "A backup is useful only if restoration works. Testing validates recovery assumptions.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0042",
+    "type": "multi_select",
+    "topic": "Security Operations",
+    "subtopic": "Incident Response",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Which actions are appropriate during containment? Select all that apply.",
+    "choices": [
+      "Isolate affected systems",
+      "Block malicious indicators",
+      "Preserve evidence where possible",
+      "Delete all logs immediately"
+    ],
+    "answer": [
+      "Isolate affected systems",
+      "Block malicious indicators",
+      "Preserve evidence where possible"
+    ],
+    "explanation": "Containment limits spread while preserving useful evidence. Deleting logs damages investigation value.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0043",
+    "type": "single_choice",
+    "topic": "Identity and Access",
+    "subtopic": "Privileged Access",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Which practice reduces risk from administrator accounts?",
+    "choices": [
+      "Just-in-time privileged access",
+      "Shared permanent admin credentials",
+      "No logging for administrators",
+      "Password reuse across services"
+    ],
+    "answer": "Just-in-time privileged access",
+    "explanation": "Just-in-time access grants elevated permissions only when needed and for a limited time.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0044",
+    "type": "single_choice",
+    "topic": "Identity and Access",
+    "subtopic": "Account Lifecycle",
+    "difficulty": 2,
+    "probability": 4,
+    "question": "What should happen when an employee leaves an organization?",
+    "choices": [
+      "Disable or remove their access promptly",
+      "Keep accounts active indefinitely",
+      "Share their password with a replacement",
+      "Move them to a public group"
+    ],
+    "answer": "Disable or remove their access promptly",
+    "explanation": "Timely deprovisioning reduces the risk of orphaned or misused accounts.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0045",
+    "type": "diagram",
+    "topic": "Network Security",
+    "subtopic": "Firewall Placement",
+    "difficulty": 3,
+    "probability": 3,
+    "question": "A diagram shows an internet edge, DMZ, and internal LAN. Where should public web servers usually reside?",
+    "image": "assets/images/secplus-dmz-placeholder.png",
+    "choices": [
+      "DMZ",
+      "Domain controller subnet",
+      "Backup vault only",
+      "Administrator laptop"
+    ],
+    "answer": "DMZ",
+    "explanation": "Public-facing services are commonly placed in a DMZ to separate them from the internal LAN. If the image is unavailable, use the network-zone clue in the stem.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0046",
+    "type": "pbq",
+    "topic": "Security Operations",
+    "subtopic": "Alert Triage",
+    "difficulty": 4,
+    "probability": 3,
+    "scenario": "A SIEM alert reports impossible travel for a user account followed by a successful VPN login.",
+    "task": "List two immediate triage actions.",
+    "question": "Performance-based placeholder: enter two triage actions.",
+    "choices": [],
+    "answer": {
+      "manualCheck": true,
+      "expected": [
+        "Verify user activity",
+        "Review VPN/authentication logs",
+        "Temporarily disable or challenge the account"
+      ]
+    },
+    "explanation": "A reasonable response includes verifying with the user, reviewing authentication/VPN logs, and applying a temporary control such as step-up authentication or account disablement.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0047",
+    "type": "single_choice",
+    "topic": "Cryptography",
+    "subtopic": "Salting",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Why are salts added before password hashing?",
+    "choices": [
+      "To make identical passwords produce different hashes",
+      "To make the hash reversible",
+      "To replace password length requirements",
+      "To disable account lockout"
+    ],
+    "answer": "To make identical passwords produce different hashes",
+    "explanation": "A salt is unique data added before hashing so identical passwords do not create identical stored hashes.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0048",
+    "type": "single_choice",
+    "topic": "Risk and Governance",
+    "subtopic": "Data Classification",
+    "difficulty": 2,
+    "probability": 3,
+    "question": "What is the purpose of data classification labels?",
+    "choices": [
+      "Guide handling and protection requirements",
+      "Increase wireless signal strength",
+      "Replace identity proofing",
+      "Generate random passwords"
+    ],
+    "answer": "Guide handling and protection requirements",
+    "explanation": "Classification labels help determine storage, access, sharing, retention, and protection requirements.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0049",
+    "type": "matching",
+    "topic": "Network Security",
+    "subtopic": "Secure Protocols",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "Match each insecure protocol to a safer alternative.",
+    "choices": {
+      "left": [
+        "Telnet",
+        "FTP",
+        "HTTP",
+        "SNMPv1"
+      ],
+      "right": [
+        "SSH",
+        "SFTP",
+        "HTTPS",
+        "SNMPv3"
+      ]
+    },
+    "answer": {
+      "Telnet": "SSH",
+      "FTP": "SFTP",
+      "HTTP": "HTTPS",
+      "SNMPv1": "SNMPv3"
+    },
+    "explanation": "SSH, SFTP, HTTPS, and SNMPv3 provide stronger protection than the older cleartext alternatives.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
+  },
+  {
+    "id": "secplus-q0050",
+    "type": "single_choice",
+    "topic": "Security Operations",
+    "subtopic": "Patch Management",
+    "difficulty": 3,
+    "probability": 4,
+    "question": "A critical actively exploited vulnerability affects internet-facing servers. What is the best next action?",
+    "choices": [
+      "Prioritize emergency patching or mitigation",
+      "Wait for the annual maintenance window",
+      "Disable all monitoring",
+      "Publish admin passwords for testing"
+    ],
+    "answer": "Prioritize emergency patching or mitigation",
+    "explanation": "Actively exploited internet-facing vulnerabilities require urgent remediation or compensating controls with appropriate change tracking.",
+    "sourceTags": [
+      "Generated",
+      "Starter Example"
+    ],
+    "sourceType": "generated",
+    "memory": "",
+    "examTip": "Starter example for StudyForge practice; verify against trusted course objectives before marking reviewed.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": {
+      "sourceId": "secplus-src-001",
+      "note": "Original StudyForge generated starter example, not official exam content."
+    }
   }
 ]

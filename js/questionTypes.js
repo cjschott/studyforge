@@ -34,7 +34,7 @@ export function formatAnswer(answer) {
 export function renderQuestionMedia(question) {
   const image = question.image || question.imagePath;
   if (!image) return "";
-  return `<img class="question-image" src="${escapeHtml(image)}" alt="">`;
+  return `<img class="question-image" src="${escapeHtml(image)}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'helper-text',textContent:'Diagram image unavailable.'}))">`;
 }
 
 function renderChoiceQuestion(question, name, selected, multiple = false) {

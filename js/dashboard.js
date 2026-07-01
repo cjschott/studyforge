@@ -1,5 +1,5 @@
 import { calculateMetrics, progressClass } from "./analytics.js";
-import { apiGet, apiPost } from "./api.js";
+import { apiGet, apiPatch, apiPost } from "./api.js";
 import { APP_CONFIG } from "./config.js";
 import { exportProgress, getCourseState, getSettings, importProgress, resetAllProgress, updateSettings } from "./storage.js";
 
@@ -506,11 +506,16 @@ export function renderAdmin(ctx) {
       </article>
       <article class="card">
         <h3>Course Import / Export</h3>
-        <p class="muted">Import the active static course into SQLite or export the DB course back to a static-compatible bundle.</p>
+        <p class="muted">Import a static course from a server path or export the DB course back to a static-compatible bundle.</p>
+        <div class="field">
+          <label for="admin-import-path">Server import path</label>
+          <input id="admin-import-path" class="input" value="../data/${ctx.bundle.meta.id}">
+        </div>
         <div class="button-row">
-          <button id="admin-import-course" class="button button-primary" type="button">Import Active Static Course</button>
+          <button id="admin-import-course" class="button button-primary" type="button">Import Static Course</button>
           <button id="admin-export-course" class="button" type="button">Export Active DB Course</button>
         </div>
+        <div id="admin-import-result" class="helper-text"></div>
       </article>
     </section>
 
@@ -546,6 +551,22 @@ export function renderAdmin(ctx) {
         <div id="admin-users"><p class="muted">Loading users...</p></div>
       </article>
     </section>
+
+    <section class="grid grid-2" style="margin-top: 1rem;">
+      <article class="card">
+        <h3>Question Review</h3>
+        <div id="admin-question-counts"><p class="muted">Loading question status counts...</p></div>
+        <div class="button-row" style="margin-top: 0.75rem;">
+          <button id="admin-load-generated" class="button" type="button">Generated</button>
+          <button id="admin-load-low-confidence" class="button" type="button">Low Confidence</button>
+          <button id="admin-load-warnings" class="button" type="button">Validation Warnings</button>
+        </div>
+      </article>
+      <article class="card">
+        <h3>Review Queue</h3>
+        <div id="admin-review-list"><p class="muted">Choose a review queue.</p></div>
+      </article>
+    </section>
   `;
 
   const renderHealth = async () => {
@@ -570,29 +591,132 @@ export function renderAdmin(ctx) {
     const users = await apiGet("/api/users");
     ctx.root.querySelector("#admin-users").innerHTML = `
       <table class="data-table">
-        <thead><tr><th>User</th><th>Role</th><th>Status</th></tr></thead>
+        <thead><tr><th>User</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           ${users.map((user) => `
-            <tr>
+            <tr data-user-id="${user.id}">
               <td>${user.display_name}<br><small>${user.username}</small></td>
-              <td>${user.role}</td>
+              <td>
+                <select class="course-select admin-role-select" data-user-role="${user.id}">
+                  ${["admin", "instructor", "student"].map((role) => `<option value="${role}" ${user.role === role ? "selected" : ""}>${role}</option>`).join("")}
+                </select>
+              </td>
               <td>${user.is_active ? "Active" : "Disabled"}</td>
+              <td>
+                <div class="button-row">
+                  <button class="button" data-user-toggle="${user.id}" data-next-active="${!user.is_active}" type="button">${user.is_active ? "Disable" : "Enable"}</button>
+                  <button class="button" data-user-reset="${user.id}" type="button">Reset Password</button>
+                </div>
+              </td>
             </tr>
-          `).join("") || `<tr><td colspan="3">No users.</td></tr>`}
+          `).join("") || `<tr><td colspan="4">No users.</td></tr>`}
         </tbody>
       </table>
     `;
+
+    ctx.root.querySelectorAll("[data-user-role]").forEach((select) => {
+      select.addEventListener("change", async () => {
+        try {
+          await apiPatch(`/api/users/${select.dataset.userRole}`, { role: select.value });
+          ctx.showStatus("User role updated.");
+          await renderUsers();
+        } catch (error) {
+          ctx.showStatus(`Role update failed: ${error.message}`);
+        }
+      });
+    });
+    ctx.root.querySelectorAll("[data-user-toggle]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        try {
+          await apiPatch(`/api/users/${button.dataset.userToggle}`, { is_active: button.dataset.nextActive === "true" });
+          ctx.showStatus("User status updated.");
+          await renderUsers();
+        } catch (error) {
+          ctx.showStatus(`User status update failed: ${error.message}`);
+        }
+      });
+    });
+    ctx.root.querySelectorAll("[data-user-reset]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const password = prompt("Temporary password (minimum 6 characters)");
+        if (!password) return;
+        try {
+          await apiPost(`/api/users/${button.dataset.userReset}/reset-password`, { password });
+          ctx.showStatus("Password reset.");
+        } catch (error) {
+          ctx.showStatus(`Password reset failed: ${error.message}`);
+        }
+      });
+    });
+  };
+
+  const renderQuestionCounts = async () => {
+    const counts = await apiGet("/api/questions/status-counts");
+    ctx.root.querySelector("#admin-question-counts").innerHTML = `
+      <div class="button-row">
+        ${["generated", "reviewed", "verified", "retired"].map((status) => `<span class="tag ${status === "verified" ? "green" : status === "retired" ? "red" : status === "reviewed" ? "blue" : "yellow"}">${status}: ${counts[status] || 0}</span>`).join("")}
+      </div>
+    `;
+  };
+
+  const renderReviewList = (items) => {
+    ctx.root.querySelector("#admin-review-list").innerHTML = items.length ? `
+      <div class="admin-review-list">
+        ${items.slice(0, 15).map((question) => `
+          <article class="review-item" data-review-question="${question.id}">
+            <div class="button-row">
+              <span class="tag blue">${question.topic || "General"}</span>
+              <span class="tag">${question.status || "generated"}</span>
+              <span class="tag yellow">Confidence ${question.confidence || "?"}</span>
+            </div>
+            <h4>${question.id}</h4>
+            <p>${question.question}</p>
+            ${question.warnings?.length ? `<ul class="warning-list">${question.warnings.map((warning) => `<li>${warning}</li>`).join("")}</ul>` : ""}
+            <div class="button-row">
+              <button class="button" data-status-target="${question.id}" data-status-value="generated" type="button">Generated</button>
+              <button class="button" data-status-target="${question.id}" data-status-value="review" type="button">Reviewed</button>
+              <button class="button button-success" data-status-target="${question.id}" data-status-value="verify" type="button">Verified</button>
+              <button class="button button-danger" data-status-target="${question.id}" data-status-value="retire" type="button">Retire</button>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    ` : `<p class="muted">No questions in this queue.</p>`;
+
+    ctx.root.querySelectorAll("[data-status-target]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        try {
+          await apiPost(`/api/questions/${encodeURIComponent(button.dataset.statusTarget)}/${button.dataset.statusValue}`, {});
+          ctx.showStatus("Question status updated.");
+          await renderQuestionCounts();
+          button.closest(".review-item")?.remove();
+        } catch (error) {
+          ctx.showStatus(`Question status update failed: ${error.message}`);
+        }
+      });
+    });
+  };
+
+  const loadReviewQueue = async (path) => {
+    try {
+      renderReviewList(await apiGet(path));
+    } catch (error) {
+      ctx.showStatus(`Review queue failed: ${error.message}`);
+    }
   };
 
   const refresh = async () => {
     try {
-      await Promise.all([renderHealth(), renderUsers()]);
+      await Promise.all([renderHealth(), renderUsers(), renderQuestionCounts()]);
     } catch (error) {
       ctx.showStatus(`Admin refresh failed: ${error.message}`);
     }
   };
 
   ctx.root.querySelector("#admin-refresh").addEventListener("click", refresh);
+  ctx.root.querySelector("#admin-load-generated").addEventListener("click", () => loadReviewQueue("/api/questions?status=generated"));
+  ctx.root.querySelector("#admin-load-low-confidence").addEventListener("click", () => loadReviewQueue("/api/questions/low-confidence?threshold=6"));
+  ctx.root.querySelector("#admin-load-warnings").addEventListener("click", () => loadReviewQueue("/api/questions/validation-warnings"));
   ctx.root.querySelector("#admin-create-user").addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -612,7 +736,9 @@ export function renderAdmin(ctx) {
   });
   ctx.root.querySelector("#admin-import-course").addEventListener("click", async () => {
     try {
-      const result = await apiPost(`/api/import/legacy-static-course/${ctx.bundle.meta.id}`, {});
+      const importPath = ctx.root.querySelector("#admin-import-path").value.trim();
+      const result = await apiPost(`/api/import/legacy-static-course/${ctx.bundle.meta.id}`, importPath ? { path: importPath } : {});
+      ctx.root.querySelector("#admin-import-result").textContent = `Imported ${result.result.course_code}: ${result.result.questions} questions, ${result.result.flashcards} flashcards, ${result.result.glossary || 0} glossary terms.`;
       ctx.showStatus(`Imported ${result.result.course_code}.`);
       await refresh();
     } catch (error) {

@@ -4,10 +4,12 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+from app.config import get_settings
+
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_DATABASE_URL = f"sqlite:///{BACKEND_DIR / 'studyforge.db'}"
-DATABASE_URL = os.getenv("STUDYFORGE_DATABASE_URL", DEFAULT_DATABASE_URL)
+DATABASE_URL = os.getenv("STUDYFORGE_DATABASE_URL", get_settings().database_url)
 
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 

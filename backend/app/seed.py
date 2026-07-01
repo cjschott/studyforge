@@ -3,6 +3,7 @@ from pathlib import Path
 
 from sqlalchemy.orm import Session
 
+from app.config import get_settings
 from app.auth import hash_password
 from app.database import SessionLocal, init_db
 from app.models import User
@@ -52,19 +53,21 @@ def main():
     parser.add_argument("--admin-display-name", default="Administrator")
     args = parser.parse_args()
 
+    settings = get_settings()
+    admin_password = args.admin_password if args.admin_password != "changeme" else settings.admin_password
     init_db()
     with SessionLocal() as db:
         admin_result = ensure_admin(
             db,
             username=args.admin_username,
-            password=args.admin_password,
+            password=admin_password,
             display_name=args.admin_display_name,
         )
         print(f"Admin user: {admin_result['username']} ({'created' if admin_result['created'] else 'exists'})")
         if args.import_static:
             result = import_static_course_pack(db, resolve_static_path(args.import_static))
             print(f"Imported {result['course_code']}: {result['questions']} questions, {result['flashcards']} flashcards")
-        elif admin_result["created"] and args.admin_password == "changeme":
+        elif admin_result["created"] and admin_password == "changeme":
             print("WARNING: default admin password is changeme. Change it before deployment.")
 
 

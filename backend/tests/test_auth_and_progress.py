@@ -57,6 +57,15 @@ def make_client():
                 lineage_json={"sourceTags": ["Practice Test"]},
             )
         )
+        db.add(
+            User(
+                username="disabled",
+                display_name="Disabled User",
+                password_hash=hash_password("changeme"),
+                role="student",
+                is_active=False,
+            )
+        )
         db.commit()
 
     def override_get_db():
@@ -87,6 +96,24 @@ def test_admin_login_sets_cookie_and_me_returns_user():
     assert me.json()["username"] == "admin"
 
 
+def test_login_failure_and_disabled_user_are_rejected():
+    client = make_client()
+
+    wrong_password = client.post(
+        "/api/auth/login",
+        json={"username": "admin", "password": "wrongpass"},
+    )
+    disabled = client.post(
+        "/api/auth/login",
+        json={"username": "disabled", "password": "changeme"},
+    )
+
+    assert wrong_password.status_code == 401
+    assert "Invalid username or password" in wrong_password.json()["detail"]
+    assert disabled.status_code == 403
+    assert "disabled" in disabled.json()["detail"].lower()
+
+
 def test_admin_can_create_student_user():
     client = make_client()
     client.post("/api/auth/login", json={"username": "admin", "password": "changeme"})
@@ -104,6 +131,45 @@ def test_admin_can_create_student_user():
     assert response.status_code == 201
     assert response.json()["username"] == "student1"
     assert response.json()["role"] == "student"
+
+
+def test_admin_user_management_duplicate_patch_and_reset_password():
+    client = make_client()
+    client.post("/api/auth/login", json={"username": "admin", "password": "changeme"})
+
+    created = client.post(
+        "/api/users",
+        json={
+            "username": "student1",
+            "display_name": "Student One",
+            "password": "learnit",
+            "role": "student",
+        },
+    )
+    duplicate = client.post(
+        "/api/users",
+        json={
+            "username": "student1",
+            "display_name": "Student Duplicate",
+            "password": "learnit",
+            "role": "student",
+        },
+    )
+    patched = client.patch(
+        f"/api/users/{created.json()['id']}",
+        json={"role": "instructor", "is_active": False},
+    )
+    reset = client.post(
+        f"/api/users/{created.json()['id']}/reset-password",
+        json={"password": "newpass1"},
+    )
+
+    assert duplicate.status_code == 409
+    assert patched.status_code == 200
+    assert patched.json()["role"] == "instructor"
+    assert patched.json()["is_active"] is False
+    assert reset.status_code == 200
+    assert reset.json()["ok"] is True
 
 
 def test_attempts_bookmarks_and_progress_round_trip():
@@ -127,3 +193,17 @@ def test_attempts_bookmarks_and_progress_round_trip():
     assert body["answered"]["sample-q1"]["correct"] == 1
     assert body["topicStats"]["Identity"]["answered"] == 1
     assert body["bookmarks"]["sample-q1"]["id"] == "sample-q1"
+
+
+def test_review_note_persists_into_progress_state():
+    client = make_client()
+    client.post("/api/auth/login", json={"username": "admin", "password": "changeme"})
+
+    response = client.post(
+        "/api/questions/sample-q1/review-note",
+        json={"note": "Confused authorization with authentication."},
+    )
+    progress = client.get("/api/courses/sample/progress")
+
+    assert response.status_code == 201
+    assert progress.json()["missedNotes"]["sample-q1"] == "Confused authorization with authentication."

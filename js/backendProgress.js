@@ -4,6 +4,9 @@ function runSync(label, callback) {
   if (!isBackendMode()) return;
   callback().catch((error) => {
     console.warn(`StudyForge backend sync failed for ${label}: ${error.message}`);
+    document.dispatchEvent(new CustomEvent("studyforge:sync-warning", {
+      detail: { label, message: error.message }
+    }));
   });
 }
 
@@ -35,5 +38,11 @@ export function syncMockExam(courseId, result) {
     passEstimate: result.passEstimate,
     topicBreakdown: result.topicBreakdown || [],
     review: result.review || []
+  }));
+}
+
+export function syncReviewNote(question, note) {
+  runSync("review note", () => apiPost(`/api/questions/${encodeURIComponent(question.id)}/review-note`, {
+    note
   }));
 }

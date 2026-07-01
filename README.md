@@ -1,6 +1,6 @@
 # StudyForge
 
-StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.3.0-alpha` adds a FastAPI + SQLite backend foundation for accounts, DB-backed course data, progress sync, administration, and course import/export.
+StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.3.0-alpha.2` adds a more usable FastAPI + SQLite alpha for accounts, DB-backed course data, synced progress, administration, question review, and course import/export.
 
 The existing static app is preserved. If the backend is not running, StudyForge loads JSON course packs from `data/` and stores progress in browser `localStorage`.
 
@@ -64,10 +64,13 @@ SQLite database:
 backend/studyforge.db
 ```
 
-Override with:
+Backend environment variables:
 
 ```bash
 export STUDYFORGE_DATABASE_URL=sqlite:////opt/studyforge/studyforge.db
+export STUDYFORGE_SECRET_KEY='replace-with-a-long-random-secret'
+export STUDYFORGE_ADMIN_PASSWORD='replace-default-password'
+export STUDYFORGE_ENV=production
 ```
 
 ## Default Admin
@@ -78,7 +81,7 @@ Seed creates:
 - Password: `changeme`
 - Role: `admin`
 
-Change this before deployment. The default password is only for local bootstrap.
+Set `STUDYFORGE_ADMIN_PASSWORD` before seeding on a deployed host. The default password is only for local bootstrap.
 
 ## Import Existing D413 Data
 
@@ -118,35 +121,42 @@ Frontend:
 - Backend mode: Administration -> Export Active DB Course.
 - Static mode: Settings -> Export Current Course Pack.
 
-## Ubuntu / Nginx Deployment
+## Ubuntu / Nginx Deployment For schweb2
 
-Install backend:
+Deployment target:
+
+- Frontend: `/var/www/html/studyforge`
+- Backend: `/opt/studyforge/backend`
+- API: `http://127.0.0.1:8000`
+- nginx: `/studyforge/` serves the frontend and `/api/` proxies to FastAPI
+
+Install:
 
 ```bash
-cd /opt/studyforge/backend
+sudo mkdir -p /opt/studyforge /var/www/html/studyforge /opt/backups
+cd /opt/studyforge
+git clone https://github.com/cjschott/studyforge.git .
+cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+export STUDYFORGE_ADMIN_PASSWORD='replace-default-password'
 python -m app.seed --import-static ../data/d413
-uvicorn app.main:app --host 127.0.0.1 --port 8000
+python -m app.seed --import-static ../data/secplus
+sudo cp -r ../index.html ../css ../js ../data /var/www/html/studyforge/
 ```
 
-Serve frontend from:
+Install service and nginx config:
 
-```text
-/var/www/html/studyforge
+```bash
+sudo cp ../deploy/systemd/studyforge-api.service /etc/systemd/system/studyforge-api.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now studyforge-api
+sudo cp ../deploy/nginx/studyforge.conf /etc/nginx/sites-available/studyforge.conf
+sudo ln -sf /etc/nginx/sites-available/studyforge.conf /etc/nginx/sites-enabled/studyforge.conf
+sudo nginx -t
+sudo systemctl reload nginx
 ```
-
-Proxy `/api` to:
-
-```text
-http://127.0.0.1:8000
-```
-
-Examples:
-
-- `deploy/nginx/studyforge.conf`
-- `deploy/systemd/studyforge-api.service`
 
 ## SQLite Backup
 
@@ -157,6 +167,14 @@ sqlite3 /opt/studyforge/backend/studyforge.db ".backup '/opt/backups/studyforge-
 ```
 
 Also keep static course packs under version control.
+
+## Known Limitations
+
+- v0.3 remains an alpha: permissions are intentionally simple and not full RBAC.
+- PBQ questions are manual-check placeholders unless a simplified answer is configured.
+- Diagram questions render images and choices but do not support clickable regions yet.
+- Course Builder files are prompt/template scaffolding, not an automated source-ingestion UI.
+- Security+ content is generated/example starter material, not official exam content and not verified.
 
 ## Project Layout
 

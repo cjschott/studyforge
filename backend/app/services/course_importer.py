@@ -77,6 +77,8 @@ def infer_confidence(source_tags: list[str], source_type: str | None = None) -> 
     combined = " ".join(source_tags + [source_type or ""]).lower()
     if "practice test" in combined or "official" in combined or "end-of-section quiz" in combined:
         return 9
+    if "transcript" in combined:
+        return 8
     if "generated" in combined:
         return 5
     if "reddit" in combined:
@@ -228,6 +230,8 @@ def import_course_bundle(db: Session, bundle: dict[str, Any]) -> dict[str, Any]:
         "course_code": course.course_code,
         "questions": len(bundle.get("questions") or []),
         "flashcards": len(bundle.get("flashcards") or []),
+        "glossary": len(bundle.get("glossary") or []),
+        "cheatsheets": len(bundle.get("cheatsheets") or bundle.get("cheatSheets") or []),
         "sources": len(bundle.get("sources") or []),
     }
 

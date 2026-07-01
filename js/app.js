@@ -117,6 +117,7 @@ function updateBackendChrome() {
   if (app.user) {
     userArea.hidden = false;
     userArea.innerHTML = `
+      <small>Logged in as</small>
       <span>${app.user.display_name || app.user.username}</span>
       <small>${app.user.role}</small>
       <button id="logout-button" class="button" type="button">Logout</button>
@@ -220,6 +221,10 @@ function setupEvents() {
       showStatus("Course progress reset.");
       render();
     }
+  });
+
+  document.addEventListener("studyforge:sync-warning", (event) => {
+    showStatus(`Backend sync warning: ${event.detail?.label || "update"} was saved locally only.`);
   });
 }
 

@@ -72,6 +72,8 @@ def validate_course_pack(pack: dict[str, Any]) -> list[str]:
         confidence = question.get("confidence")
         if confidence is None or not isinstance(confidence, int) or confidence < 1 or confidence > 10:
             warnings.append(f"Question {qid} confidence should be between 1 and 10.")
+        if question.get("status") == "generated" and isinstance(confidence, int) and confidence > 6:
+            warnings.append(f"Question {qid} generated question confidence should not exceed 6.")
 
         if not question.get("explanation"):
             warnings.append(f"Question {qid} missing explanation.")

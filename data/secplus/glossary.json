@@ -34,5 +34,149 @@
     "topic": "Identity and Access",
     "definition": "Security model that avoids implicit trust and continuously verifies access.",
     "examTip": "Look for least privilege, continuous verification, and microsegmentation."
+  },
+  {
+    "term": "Integrity",
+    "topic": "Core Principles",
+    "definition": "Protection against unauthorized modification of data.",
+    "examTip": "Tampering scenarios map to integrity."
+  },
+  {
+    "term": "Availability",
+    "topic": "Core Principles",
+    "definition": "Ensuring systems and data are accessible when needed.",
+    "examTip": "Outage and redundancy clues map to availability."
+  },
+  {
+    "term": "Authentication",
+    "topic": "Identity and Access",
+    "definition": "The process of proving an identity.",
+    "examTip": "Identity proofing comes before authorization."
+  },
+  {
+    "term": "Authorization",
+    "topic": "Identity and Access",
+    "definition": "The process of determining allowed access.",
+    "examTip": "Access decisions map to authorization."
+  },
+  {
+    "term": "Accounting",
+    "topic": "Identity and Access",
+    "definition": "Recording user or system activity for accountability.",
+    "examTip": "AAA logging maps to accounting."
+  },
+  {
+    "term": "RBAC",
+    "topic": "Identity and Access",
+    "definition": "Access control model that assigns permissions through roles.",
+    "examTip": "Job function clues often point to RBAC."
+  },
+  {
+    "term": "ABAC",
+    "topic": "Identity and Access",
+    "definition": "Access control model that evaluates attributes and policies.",
+    "examTip": "Context and attributes point to ABAC."
+  },
+  {
+    "term": "DAC",
+    "topic": "Identity and Access",
+    "definition": "Access model where owners can grant permissions.",
+    "examTip": "Owner-controlled sharing points to DAC."
+  },
+  {
+    "term": "MAC",
+    "topic": "Identity and Access",
+    "definition": "Access model based on labels and clearances.",
+    "examTip": "Classification and clearance point to MAC."
+  },
+  {
+    "term": "PKI",
+    "topic": "Cryptography",
+    "definition": "Framework for issuing, managing, and validating digital certificates.",
+    "examTip": "Trust chain and certificates point to PKI."
+  },
+  {
+    "term": "Certificate Authority",
+    "topic": "Cryptography",
+    "definition": "Trusted entity that issues and signs digital certificates.",
+    "examTip": "CA signs certificates."
+  },
+  {
+    "term": "Digital Signature",
+    "topic": "Cryptography",
+    "definition": "Cryptographic proof of origin and integrity using a private key.",
+    "examTip": "Supports integrity, authentication, and non-repudiation."
+  },
+  {
+    "term": "Salt",
+    "topic": "Cryptography",
+    "definition": "Unique value added before hashing to reduce precomputed hash attacks.",
+    "examTip": "Salt makes same passwords hash differently."
+  },
+  {
+    "term": "SSH",
+    "topic": "Network Security",
+    "definition": "Secure remote shell protocol commonly using port 22.",
+    "examTip": "Secure replacement for Telnet."
+  },
+  {
+    "term": "SFTP",
+    "topic": "Network Security",
+    "definition": "Secure file transfer over SSH.",
+    "examTip": "Secure replacement for FTP."
+  },
+  {
+    "term": "DMZ",
+    "topic": "Network Security",
+    "definition": "Network zone separating public-facing services from internal networks.",
+    "examTip": "Public servers often live in a DMZ."
+  },
+  {
+    "term": "Network Segmentation",
+    "topic": "Network Security",
+    "definition": "Dividing networks into zones to control traffic and reduce blast radius.",
+    "examTip": "Limits lateral movement."
+  },
+  {
+    "term": "WPA3-Enterprise",
+    "topic": "Network Security",
+    "definition": "Enterprise wireless security mode using stronger authentication such as 802.1X.",
+    "examTip": "Enterprise Wi-Fi points to 802.1X."
+  },
+  {
+    "term": "Vulnerability Scan",
+    "topic": "Security Operations",
+    "definition": "Automated check for known weaknesses.",
+    "examTip": "Scanning identifies known issues."
+  },
+  {
+    "term": "Patch Management",
+    "topic": "Security Operations",
+    "definition": "Process for testing, deploying, and verifying updates.",
+    "examTip": "Emergency patching may accelerate change flow."
+  },
+  {
+    "term": "Containment",
+    "topic": "Security Operations",
+    "definition": "Incident response phase focused on limiting spread and impact.",
+    "examTip": "Contain before eradication."
+  },
+  {
+    "term": "Rootkit",
+    "topic": "Threats",
+    "definition": "Stealthy malware that hides activity and may maintain privileged access.",
+    "examTip": "Rootkits hide."
+  },
+  {
+    "term": "Credential Stuffing",
+    "topic": "Threats",
+    "definition": "Automated use of breached credentials against other services.",
+    "examTip": "Password reuse makes it worse."
+  },
+  {
+    "term": "On-path Attack",
+    "topic": "Threats",
+    "definition": "Attack where traffic is intercepted or relayed between parties.",
+    "examTip": "Previously called man-in-the-middle in many materials."
   }
 ]

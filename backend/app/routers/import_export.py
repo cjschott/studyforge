@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.auth import get_current_user, require_roles
@@ -25,8 +25,11 @@ def import_json_course_pack(
     db: Session = Depends(get_db),
     _: User = Depends(require_roles("admin", "instructor")),
 ):
-    warnings = validate_course_pack(payload.bundle)
-    result = import_course_bundle(db, payload.bundle)
+    try:
+        warnings = validate_course_pack(payload.bundle)
+        result = import_course_bundle(db, payload.bundle)
+    except (FileNotFoundError, ValueError, TypeError) as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Malformed import: {exc}") from exc
     return {"result": result, "warnings": warnings}
 
 
@@ -43,5 +46,8 @@ def import_legacy_static_course(
     _: User = Depends(require_roles("admin", "instructor")),
 ):
     source_path = Path(payload.path).resolve() if payload and payload.path else repo_root() / "data" / course_code
-    result = import_static_course_pack(db, source_path)
+    try:
+        result = import_static_course_pack(db, source_path)
+    except (FileNotFoundError, ValueError, TypeError) as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Malformed import: {exc}") from exc
     return {"result": result, "path": str(source_path)}
