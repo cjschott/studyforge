@@ -1,177 +1,530 @@
 [
   {
-    "term": "Bandwidth",
-    "topic": "Signals",
-    "definition": "The difference between the highest and lowest frequency a medium can carry.",
-    "examTip": "Do not confuse bandwidth with throughput.",
-    "relatedTerms": ["Frequency", "Throughput"]
+    "term": "Transmission Media",
+    "topic": "Transmission Media",
+    "definition": "Bandwidth is a range of frequencies, not raw throughput. Throughput is the actual data rate.",
+    "examTip": "Study the concept, not just the answer letter."
   },
   {
-    "term": "Frequency",
-    "topic": "Signals",
-    "definition": "The number of signal cycles per second, measured in hertz.",
-    "examTip": "Frequency is central to FDM, wireless channels, and RF behavior.",
-    "relatedTerms": ["Wavelength", "Bandwidth"]
+    "term": "Fiber",
+    "topic": "Fiber",
+    "definition": "Attenuation is signal weakening or degradation; noise is a common contributor.",
+    "examTip": "Study the concept, not just the answer letter."
   },
   {
-    "term": "Wavelength",
+    "term": "Signals",
     "topic": "Signals",
-    "definition": "The physical distance between matching points on consecutive signal cycles.",
-    "examTip": "In fiber, WDM uses different light wavelengths as separate channels.",
-    "relatedTerms": ["Frequency", "WDM"]
+    "definition": "Frequency is cycles per second and is measured in hertz.",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Wireless",
+    "topic": "Wireless",
+    "definition": "Fiber is glass/plastic and can be fragile or require careful handling, even though it has low attenuation and excellent distance.\nWireless",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Wi-Fi Standards",
+    "topic": "Wi-Fi Standards",
+    "definition": "CDPD is an older packet-data service for mobile Internet access. WAP is an application protocol, not the radio access service.",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "General Networking",
+    "topic": "General Networking",
+    "definition": "Electric motors are common industrial EMI/noise sources.\nCabling",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Multiplexing",
+    "topic": "Multiplexing",
+    "definition": "Encryption protects packet contents from being read by unauthorized parties.\nMultiplexing",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Optical Networking",
+    "topic": "Optical Networking",
+    "definition": "Asynchronous/statistical TDM dynamically assigns slots to active sources.\nModems & Access",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Network Devices",
+    "topic": "Network Devices",
+    "definition": "Routers connect different IP networks and forward traffic to the Internet.",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "IP Basics",
+    "topic": "IP Basics",
+    "definition": "All three are within RFC1918 private ranges; the PA expected 10.0.1.0/24 due single-answer format, but in real networking all three are valid private /24s.\nCabling",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Error Detection",
+    "topic": "Error Detection",
+    "definition": "Policies define acceptable and unacceptable network use.\nError Detection",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Design and Administration",
+    "topic": "Design and Administration",
+    "definition": "Start with needs before selecting hardware or implementation details.\nFacilities",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Cellular",
+    "topic": "Cellular",
+    "definition": "Broadband supports multiple channels/signals.",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "OSI",
+    "topic": "OSI",
+    "definition": "Layer 2 handles framing and MAC addressing.",
+    "examTip": "Study the concept, not just the answer letter."
+  },
+  {
+    "term": "Application Protocols",
+    "topic": "Application Protocols",
+    "definition": "HTTP is an application-layer protocol, so HTTP errors are application-associated.",
+    "examTip": "Application error often points to HTTP."
+  },
+  {
+    "term": "Telecom Access",
+    "topic": "Telecom Access",
+    "definition": "DSL is a common broadband access technology that uses telephone copper infrastructure.",
+    "examTip": "Common modem/access type points to DSL."
+  },
+  {
+    "term": "Network Topology",
+    "topic": "Network Topology",
+    "definition": "A mesh topology connects nodes to one or more other nodes, often providing multiple paths.",
+    "examTip": "Multiple host-to-host connections points to mesh."
   },
   {
     "term": "FDM",
     "topic": "Multiplexing",
-    "definition": "Frequency-division multiplexing divides available bandwidth into separate frequency ranges.",
-    "examTip": "Look for radio, TV, cable, or frequency-band clues.",
-    "relatedTerms": ["TDM", "OFDM"]
+    "definition": "Each TV channel occupies a separate frequency range, which is frequency-division multiplexing.",
+    "examTip": "If the scenario separates by frequency, choose FDM."
   },
   {
     "term": "TDM",
     "topic": "Multiplexing",
-    "definition": "Time-division multiplexing gives each channel a fixed repeating time slot.",
-    "examTip": "Fixed slots are the giveaway.",
-    "relatedTerms": ["STDM", "FDM"]
+    "definition": "Fixed recurring time slots are synchronous TDM.",
+    "examTip": "Reserved slots even when idle means synchronous TDM."
   },
   {
     "term": "STDM",
     "topic": "Multiplexing",
-    "definition": "Statistical time-division multiplexing assigns time slots dynamically to active channels.",
-    "examTip": "Choose STDM when idle channels should not waste reserved slots.",
-    "relatedTerms": ["TDM"]
-  },
-  {
-    "term": "WDM",
-    "topic": "Optical Networking",
-    "definition": "Wavelength-division multiplexing carries multiple light wavelengths across one fiber.",
-    "examTip": "Wavelengths of light point to WDM.",
-    "relatedTerms": ["CWDM", "DWDM"]
-  },
-  {
-    "term": "CWDM",
-    "topic": "Optical Networking",
-    "definition": "Coarse WDM uses wider wavelength spacing and lower-cost components.",
-    "examTip": "Often associated with metro or cost-sensitive links.",
-    "relatedTerms": ["WDM", "DWDM"]
-  },
-  {
-    "term": "DWDM",
-    "topic": "Optical Networking",
-    "definition": "Dense WDM packs many tightly spaced wavelengths onto fiber for very high capacity.",
-    "examTip": "Long-haul and very high capacity usually point to DWDM.",
-    "relatedTerms": ["WDM", "CWDM"]
-  },
-  {
-    "term": "OFDM",
-    "topic": "Multiplexing",
-    "definition": "Orthogonal frequency-division multiplexing splits data across many closely spaced subcarriers.",
-    "examTip": "Common in Wi-Fi, LTE, and 5G contexts.",
-    "relatedTerms": ["OFDMA", "Wi-Fi"]
+    "definition": "Statistical TDM dynamically assigns time slots to active sources.",
+    "examTip": "Active-only slots means STDM."
   },
   {
     "term": "CDMA",
     "topic": "Multiplexing",
-    "definition": "Code-division multiple access separates users with unique spreading codes over shared spectrum.",
-    "examTip": "Unique codes and spread spectrum point to CDMA.",
-    "relatedTerms": ["Spread Spectrum", "Near-Far Problem"]
+    "definition": "CDMA separates users by unique codes rather than time or frequency.",
+    "examTip": "Same time and frequency with codes means CDMA."
   },
   {
-    "term": "CSMA/CA",
-    "topic": "Wireless",
-    "definition": "Carrier sense multiple access with collision avoidance, used by Wi-Fi to reduce wireless collisions.",
-    "examTip": "Wireless avoids collisions; Ethernet detects them.",
-    "relatedTerms": ["CSMA/CD", "Wi-Fi"]
+    "term": "CDMA near-far",
+    "topic": "Multiplexing",
+    "definition": "CDMA systems use power control to manage the near-far problem.",
+    "examTip": "Near-far issue points to CDMA power control."
   },
   {
-    "term": "Soft Handoff",
-    "topic": "Cellular",
-    "definition": "A mobile device connects to a new cell before releasing the old one.",
-    "examTip": "Make before break.",
-    "relatedTerms": ["Cellular", "CDMA"]
+    "term": "Soft handoff",
+    "topic": "Multiplexing",
+    "definition": "CDMA soft handoff maintains multiple tower connections during transition.",
+    "examTip": "Multiple towers during transition means soft handoff."
   },
   {
-    "term": "Near-Far Problem",
-    "topic": "Cellular",
-    "definition": "A strong nearby transmitter can overpower a weaker distant transmitter sharing the same channel.",
-    "examTip": "Power control is the usual mitigation.",
-    "relatedTerms": ["CDMA", "Power Control"]
+    "term": "OFDM",
+    "topic": "Multiplexing",
+    "definition": "OFDM uses orthogonal subcarriers and performs well in multipath environments.",
+    "examTip": "Multipath resistance and subcarriers point to OFDM."
   },
   {
-    "term": "OTDR",
+    "term": "OFDM vs FDM",
+    "topic": "Multiplexing",
+    "definition": "OFDM allows overlapping orthogonal subcarriers, unlike traditional FDM with guard bands.",
+    "examTip": "Overlap without interference means OFDM."
+  },
+  {
+    "term": "WDM",
+    "topic": "Optical Networking",
+    "definition": "WDM uses multiple wavelengths of light on one fiber.",
+    "examTip": "Existing fiber plus multiple light channels means WDM."
+  },
+  {
+    "term": "CWDM",
+    "topic": "Optical Networking",
+    "definition": "CWDM is lower-cost, uses wider spacing, and is common for shorter metro links.",
+    "examTip": "Cheaper metro WDM means CWDM."
+  },
+  {
+    "term": "DWDM",
+    "topic": "Optical Networking",
+    "definition": "DWDM uses densely spaced wavelengths for high-capacity long-haul fiber networks.",
+    "examTip": "Long-haul dense wavelengths means DWDM."
+  },
+  {
+    "term": "Optical amplifier",
+    "topic": "Optical Networking",
+    "definition": "Optical amplifiers boost light directly without converting it back to electrical form.",
+    "examTip": "No electrical conversion means optical amplifier."
+  },
+  {
+    "term": "SMF vs MMF",
     "topic": "Fiber",
-    "definition": "Optical time-domain reflectometer used to locate fiber faults and measure loss or reflections.",
-    "examTip": "Choose OTDR for finding fiber break distance.",
-    "relatedTerms": ["Attenuation", "Reflection"]
+    "definition": "Single-mode fiber supports longer distances and lower modal dispersion than multimode fiber.",
+    "examTip": "Long distance fiber usually means SMF."
+  },
+  {
+    "term": "MMF",
+    "topic": "Fiber",
+    "definition": "Multimode fiber has a larger core and is common for shorter runs.",
+    "examTip": "Large core means MMF."
   },
   {
     "term": "Attenuation",
-    "topic": "Signals",
-    "definition": "Signal strength loss over distance or through a medium.",
-    "examTip": "Repeaters or amplifiers may compensate for attenuation.",
-    "relatedTerms": ["Dispersion", "Repeater"]
+    "topic": "Fiber",
+    "definition": "Attenuation is signal loss or weakening over distance.",
+    "examTip": "Weak signal over distance means attenuation."
   },
   {
     "term": "Dispersion",
     "topic": "Fiber",
-    "definition": "Signal spreading over distance, which can blur pulses and limit fiber performance.",
-    "examTip": "Dispersion affects timing and pulse clarity.",
-    "relatedTerms": ["Single-mode Fiber", "Multimode Fiber"]
+    "definition": "Dispersion spreads pulses over time, causing overlap and distortion.",
+    "examTip": "Pulse spreading means dispersion."
+  },
+  {
+    "term": "OTDR",
+    "topic": "Fiber",
+    "definition": "An OTDR locates fiber faults by measuring reflected light.",
+    "examTip": "Fiber break distance means OTDR."
+  },
+  {
+    "term": "CSMA/CA",
+    "topic": "Wireless",
+    "definition": "Wi-Fi uses CSMA/CA because collision detection is impractical in wireless.",
+    "examTip": "Wi-Fi collision avoidance means CSMA/CA."
+  },
+  {
+    "term": "802.11n",
+    "topic": "Wi-Fi Standards",
+    "definition": "802.11n introduced MIMO and can use both 2.4 GHz and 5 GHz.",
+    "examTip": "MIMO dual-band means 802.11n."
+  },
+  {
+    "term": "802.11ax",
+    "topic": "Wi-Fi Standards",
+    "definition": "802.11ax is Wi-Fi 6 and uses OFDMA.",
+    "examTip": "Wi-Fi 6/OFDMA means 802.11ax."
+  },
+  {
+    "term": "802.15",
+    "topic": "Wi-Fi Standards",
+    "definition": "Bluetooth is part of IEEE 802.15 wireless PAN standards.",
+    "examTip": "Bluetooth means 802.15."
+  },
+  {
+    "term": "1G-5G",
+    "topic": "Cellular",
+    "definition": "2G introduced digital voice and SMS.",
+    "examTip": "Digital voice/SMS means 2G."
+  },
+  {
+    "term": "LTE",
+    "topic": "Cellular",
+    "definition": "LTE is associated with 4G mobile broadband.",
+    "examTip": "LTE means 4G."
+  },
+  {
+    "term": "5G",
+    "topic": "Cellular",
+    "definition": "These features are associated with 5G networks.",
+    "examTip": "Massive MIMO and low latency point to 5G."
+  },
+  {
+    "term": "GSM",
+    "topic": "Cellular",
+    "definition": "GSM is associated with SIM cards and TDMA-style access.",
+    "examTip": "SIM cards point to GSM."
   },
   {
     "term": "CRC",
     "topic": "Error Detection",
-    "definition": "Cyclic redundancy check, a strong error-detection method using polynomial division.",
-    "examTip": "CRC is stronger than simple parity for burst errors.",
-    "relatedTerms": ["Checksum", "Parity"]
+    "definition": "CRC is stronger than simple parity and is widely used for frame error detection.",
+    "examTip": "Strong frame error detection points to CRC."
   },
   {
-    "term": "APIPA",
-    "topic": "IP Basics",
-    "definition": "Automatic Private IP Addressing using 169.254.0.0/16 when DHCP is unavailable.",
-    "examTip": "A 169.254 address usually means DHCP failed.",
-    "relatedTerms": ["DHCP"]
+    "term": "Jitter buffer",
+    "topic": "Error Detection",
+    "definition": "Jitter buffers compensate for variation in packet arrival timing.",
+    "examTip": "VoIP stutter means jitter buffer."
   },
   {
-    "term": "NAT",
-    "topic": "IP Basics",
-    "definition": "Network Address Translation maps private internal addresses to one or more public addresses.",
-    "examTip": "NAT lets private networks access the internet through public addresses.",
-    "relatedTerms": ["Private IP", "Router"]
+    "term": "Router",
+    "topic": "Network Devices",
+    "definition": "Routers forward packets between networks using IP information.",
+    "examTip": "Between IP networks means router."
+  },
+  {
+    "term": "Switch",
+    "topic": "Network Devices",
+    "definition": "Switches use MAC address tables for LAN frame forwarding.",
+    "examTip": "MAC-based forwarding means switch."
+  },
+  {
+    "term": "Repeater",
+    "topic": "Network Devices",
+    "definition": "A repeater regenerates the signal at the physical layer.",
+    "examTip": "Signal regeneration means repeater."
+  },
+  {
+    "term": "RADIUS",
+    "topic": "Network Devices",
+    "definition": "RADIUS provides centralized authentication for network access, including enterprise Wi-Fi.",
+    "examTip": "Enterprise Wi-Fi authentication points to RADIUS."
   },
   {
     "term": "DHCP",
     "topic": "IP Basics",
-    "definition": "Dynamic Host Configuration Protocol automatically assigns IP configuration.",
-    "examTip": "DHCP reduces manual addressing errors.",
-    "relatedTerms": ["APIPA", "DNS"]
+    "definition": "DHCP automatically leases IP configuration to clients.",
+    "examTip": "Automatic IP settings means DHCP."
   },
   {
     "term": "DNS",
     "topic": "IP Basics",
-    "definition": "Domain Name System resolves hostnames to IP addresses.",
-    "examTip": "If names fail but IPs work, suspect DNS.",
-    "relatedTerms": ["DHCP"]
+    "definition": "DNS resolves names to IP addresses.",
+    "examTip": "Name resolution means DNS."
+  },
+  {
+    "term": "Private IP",
+    "topic": "IP Basics",
+    "definition": "192.168.0.0/16 is private IPv4 address space.",
+    "examTip": "Private ranges include 10/8, 172.16/12, and 192.168/16."
   },
   {
     "term": "Baseline",
     "topic": "Design and Administration",
-    "definition": "A documented record of normal performance and configuration.",
-    "examTip": "Baselines make abnormal behavior visible.",
-    "relatedTerms": ["Documentation"]
+    "definition": "A baseline captures normal performance for future comparison.",
+    "examTip": "Normal performance record means baseline."
   },
   {
-    "term": "AUP",
+    "term": "QoS",
     "topic": "Design and Administration",
-    "definition": "Acceptable use policy defining permitted and prohibited use of network resources.",
-    "examTip": "AUP questions focus on user behavior expectations.",
-    "relatedTerms": ["Policy"]
+    "definition": "QoS prioritizes time-sensitive traffic like voice and video.",
+    "examTip": "Prioritizing voice/video means QoS."
+  },
+  {
+    "term": "Guest wireless",
+    "topic": "Design and Administration",
+    "definition": "Guest traffic should be isolated from internal trusted networks.",
+    "examTip": "Guest Wi-Fi should be isolated."
+  },
+  {
+    "term": "DSL",
+    "topic": "Telecom Access",
+    "definition": "DSL uses telephone copper lines for broadband service.",
+    "examTip": "Telephone copper broadband means DSL."
+  },
+  {
+    "term": "DOCSIS",
+    "topic": "Telecom Access",
+    "definition": "DOCSIS defines data over cable service interface specifications for cable broadband.",
+    "examTip": "Cable broadband over coax means DOCSIS."
+  },
+  {
+    "term": "ISDN",
+    "topic": "Telecom Access",
+    "definition": "ISDN provides digital service with BRI and PRI interfaces.",
+    "examTip": "BRI/PRI means ISDN."
+  },
+  {
+    "term": "SONET",
+    "topic": "Telecom Access",
+    "definition": "SONET is a synchronous optical networking technology used by carriers.",
+    "examTip": "Synchronous optical carrier/backbone means SONET."
+  },
+  {
+    "term": "Cat cable",
+    "topic": "Transmission Media",
+    "definition": "Cat 6A supports 10GBASE-T to 100 meters.",
+    "examTip": "10Gb copper to 100m means Cat 6A."
+  },
+  {
+    "term": "Coax RG-6",
+    "topic": "Transmission Media",
+    "definition": "RG-6 is commonly used for cable television and broadband coax drops.",
+    "examTip": "Cable TV coax often means RG-6."
+  },
+  {
+    "term": "Coax RG-58",
+    "topic": "Transmission Media",
+    "definition": "RG-58 was used with 10BASE2 thin Ethernet.",
+    "examTip": "Thin Ethernet points to RG-58."
+  },
+  {
+    "term": "Firewall",
+    "topic": "Network Devices",
+    "definition": "Firewalls filter traffic based on policy.",
+    "examTip": "Policy-based traffic filtering means firewall."
   },
   {
     "term": "Gateway",
     "topic": "Network Devices",
-    "definition": "A device or service that connects dissimilar networks or protocols.",
-    "examTip": "A default gateway sends traffic off the local network.",
-    "relatedTerms": ["Router"]
+    "definition": "Gateways connect unlike networks or translate protocols.",
+    "examTip": "Protocol translation means gateway."
+  },
+  {
+    "term": "Data Link",
+    "topic": "OSI",
+    "definition": "The Data Link layer handles frames and MAC addresses.",
+    "examTip": "Frames and MACs mean Data Link."
+  },
+  {
+    "term": "Network",
+    "topic": "OSI",
+    "definition": "The Network layer handles routing and logical addressing such as IP.",
+    "examTip": "Routing means Network layer."
+  },
+  {
+    "term": "Transport",
+    "topic": "OSI",
+    "definition": "The Transport layer manages TCP/UDP transport and ports.",
+    "examTip": "Ports mean Transport."
+  },
+  {
+    "term": "Presentation",
+    "topic": "OSI",
+    "definition": "The Presentation layer handles data format representation.",
+    "examTip": "Formatting/encryption representation means Presentation."
+  },
+  {
+    "term": "Modulation",
+    "topic": "Signals",
+    "definition": "Modulation changes a carrier signal to encode information.",
+    "examTip": "Carrier wave changed for data means modulation."
+  },
+  {
+    "term": "Amplitude",
+    "topic": "Signals",
+    "definition": "Amplitude is the magnitude or height of a wave.",
+    "examTip": "Wave height means amplitude."
+  },
+  {
+    "term": "Frequency",
+    "topic": "Signals",
+    "definition": "Frequency is cycles per second.",
+    "examTip": "More cycles per second means frequency."
+  },
+  {
+    "term": "Phase",
+    "topic": "Signals",
+    "definition": "Phase is a wave's position relative to a reference.",
+    "examTip": "Relative position in cycle means phase."
+  },
+  {
+    "term": "Parity",
+    "topic": "Error Detection",
+    "definition": "Parity uses an extra bit for odd/even checking.",
+    "examTip": "Extra odd/even bit means parity."
+  },
+  {
+    "term": "Checksum",
+    "topic": "Error Detection",
+    "definition": "Checksums compare calculated values to detect errors.",
+    "examTip": "Calculated comparison means checksum."
+  },
+  {
+    "term": "Interference",
+    "topic": "Wireless",
+    "definition": "Channel planning reduces co-channel and adjacent-channel interference.",
+    "examTip": "Overlapping Wi-Fi channels means channel planning."
+  },
+  {
+    "term": "Encryption",
+    "topic": "Wireless",
+    "definition": "Encryption hides packet contents from unauthorized readers.",
+    "examTip": "Hiding contents means encryption."
+  },
+  {
+    "term": "Documentation",
+    "topic": "Design and Administration",
+    "definition": "Network policies and procedures define expected and prohibited use.",
+    "examTip": "Should/should not be used points to policies."
+  },
+  {
+    "term": "Growth planning",
+    "topic": "Design and Administration",
+    "definition": "Good network design plans for future growth and scalability.",
+    "examTip": "Future users/traffic means scalability planning."
+  },
+  {
+    "term": "CDPD",
+    "topic": "Cellular",
+    "definition": "CDPD provided cellular packet data service.",
+    "examTip": "Older cellular packet data means CDPD."
+  },
+  {
+    "term": "Beamforming",
+    "topic": "Cellular",
+    "definition": "Beamforming steers signal energy toward users or directions.",
+    "examTip": "Focused wireless energy means beamforming."
+  },
+  {
+    "term": "Massive MIMO",
+    "topic": "Cellular",
+    "definition": "Massive MIMO uses many antennas to improve capacity and performance.",
+    "examTip": "Lots of antennas in 5G means massive MIMO."
+  },
+  {
+    "term": "DWDM channels",
+    "topic": "Optical Networking",
+    "definition": "DWDM uses very tight spacing and supports many channels.",
+    "examTip": "0.8/0.4 nm spacing means DWDM."
+  },
+  {
+    "term": "CWDM spacing",
+    "topic": "Optical Networking",
+    "definition": "CWDM uses coarse 20 nm spacing and cheaper optics.",
+    "examTip": "20 nm spacing means CWDM."
+  },
+  {
+    "term": "WDM components",
+    "topic": "Optical Networking",
+    "definition": "A multiplexer combines wavelengths, and a demultiplexer separates them.",
+    "examTip": "Combine/separate optical channels means mux/demux."
+  },
+  {
+    "term": "T1",
+    "topic": "Telecom Access",
+    "definition": "A T1 circuit provides 1.544 Mbps service.",
+    "examTip": "1.544 Mbps means T1."
+  },
+  {
+    "term": "T3",
+    "topic": "Telecom Access",
+    "definition": "A T3 circuit provides about 44.736 Mbps.",
+    "examTip": "44.736 Mbps means T3."
+  },
+  {
+    "term": "APIPA",
+    "topic": "IP Basics",
+    "definition": "APIPA assigns link-local 169.254.x.x addresses when DHCP fails.",
+    "examTip": "169.254 address means APIPA."
+  },
+  {
+    "term": "NAT",
+    "topic": "IP Basics",
+    "definition": "NAT translates private internal addresses to public addresses.",
+    "examTip": "Private-to-public sharing means NAT."
+  },
+  {
+    "term": "CSU/DSU",
+    "topic": "Network Devices",
+    "definition": "A CSU/DSU terminates digital leased circuits such as T1.",
+    "examTip": "T1 provider circuit means CSU/DSU."
   }
 ]

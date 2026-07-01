@@ -1,0 +1,177 @@
+[
+  {
+    "id": "d413-f0001",
+    "topic": "Multiplexing",
+    "front": "What does FDM separate signals by?",
+    "back": "Frequency bands.",
+    "memory": "FDM = Frequency lanes."
+  },
+  {
+    "id": "d413-f0002",
+    "topic": "Multiplexing",
+    "front": "What does TDM separate signals by?",
+    "back": "Fixed time slots.",
+    "memory": "TDM = Time slices."
+  },
+  {
+    "id": "d413-f0003",
+    "topic": "Multiplexing",
+    "front": "How is STDM different from TDM?",
+    "back": "STDM assigns time slots dynamically based on demand instead of reserving fixed slots.",
+    "memory": "Statistical means used when needed."
+  },
+  {
+    "id": "d413-f0004",
+    "topic": "Optical Networking",
+    "front": "What does WDM combine on one fiber?",
+    "back": "Multiple wavelengths of light.",
+    "memory": "WDM = Wavelength lanes."
+  },
+  {
+    "id": "d413-f0005",
+    "topic": "Optical Networking",
+    "front": "CWDM versus DWDM?",
+    "back": "CWDM uses wider wavelength spacing and is cheaper; DWDM uses dense spacing for high-capacity long-haul links.",
+    "memory": "Dense equals distance and density."
+  },
+  {
+    "id": "d413-f0006",
+    "topic": "Multiplexing",
+    "front": "What distinguishes CDMA?",
+    "back": "Users share the same frequency band at the same time but are separated by unique spreading codes.",
+    "memory": "CDMA = Code separates callers."
+  },
+  {
+    "id": "d413-f0007",
+    "topic": "Wi-Fi Standards",
+    "front": "Which Wi-Fi standard introduced OFDMA and improved dense-client efficiency?",
+    "back": "802.11ax, also called Wi-Fi 6.",
+    "memory": "AX adds apartment-like subchannel scheduling."
+  },
+  {
+    "id": "d413-f0008",
+    "topic": "Wireless",
+    "front": "Why does Wi-Fi use CSMA/CA instead of CSMA/CD?",
+    "back": "Wireless clients cannot reliably detect collisions while transmitting, so they try to avoid collisions.",
+    "memory": "Wireless avoids; wired detects."
+  },
+  {
+    "id": "d413-f0009",
+    "topic": "Cellular",
+    "front": "What is a soft handoff?",
+    "back": "A mobile device connects to a new cell before dropping the old one.",
+    "memory": "Soft means make before break."
+  },
+  {
+    "id": "d413-f0010",
+    "topic": "Fiber",
+    "front": "Single-mode fiber is best for what use case?",
+    "back": "Long-distance, high-bandwidth links using a narrow light path.",
+    "memory": "Single path goes far."
+  },
+  {
+    "id": "d413-f0011",
+    "topic": "Fiber",
+    "front": "Multimode fiber is commonly used where?",
+    "back": "Shorter building or campus links where cost matters more than long distance.",
+    "memory": "Multiple paths are local."
+  },
+  {
+    "id": "d413-f0012",
+    "topic": "Fiber",
+    "front": "What does an OTDR help find?",
+    "back": "Fiber breaks, losses, reflections, and approximate fault distance.",
+    "memory": "OTDR sends light and reads reflections."
+  },
+  {
+    "id": "d413-f0013",
+    "topic": "Signals",
+    "front": "What is bandwidth in signal terms?",
+    "back": "The range between the highest and lowest frequencies a medium can carry.",
+    "memory": "Band width is frequency width."
+  },
+  {
+    "id": "d413-f0014",
+    "topic": "Error Detection",
+    "front": "Which error detection method is strongest among parity, checksum, and CRC?",
+    "back": "CRC is generally strongest for detecting burst errors.",
+    "memory": "CRC catches runs."
+  },
+  {
+    "id": "d413-f0015",
+    "topic": "Network Devices",
+    "front": "Which device forwards frames using MAC addresses?",
+    "back": "A switch.",
+    "memory": "Switches speak MAC."
+  },
+  {
+    "id": "d413-f0016",
+    "topic": "Network Devices",
+    "front": "Which device routes packets between IP networks?",
+    "back": "A router.",
+    "memory": "Routers read routes."
+  },
+  {
+    "id": "d413-f0017",
+    "topic": "IP Basics",
+    "front": "What does DHCP provide?",
+    "back": "Automatic IP configuration such as address, subnet mask, gateway, and DNS servers.",
+    "memory": "DHCP hands out host settings."
+  },
+  {
+    "id": "d413-f0018",
+    "topic": "IP Basics",
+    "front": "What is APIPA?",
+    "back": "Automatic private addressing in the 169.254.0.0/16 range when DHCP fails.",
+    "memory": "APIPA appears after DHCP absence."
+  },
+  {
+    "id": "d413-f0019",
+    "topic": "Design and Administration",
+    "front": "Why create a network baseline?",
+    "back": "To know normal performance so deviations are easier to identify.",
+    "memory": "Baseline before blame."
+  },
+  {
+    "id": "d413-f0020",
+    "topic": "Design and Administration",
+    "front": "Why isolate guest wireless?",
+    "back": "To give visitors internet access without exposing internal resources.",
+    "memory": "Guests get internet, not inside access."
+  },
+  {
+    "id": "d413-f0021",
+    "topic": "Transmission Media",
+    "front": "What media is most immune to electromagnetic interference?",
+    "back": "Fiber optic cable.",
+    "memory": "Light ignores EMI."
+  },
+  {
+    "id": "d413-f0022",
+    "topic": "Wireless",
+    "front": "Which frequency band usually has better wall penetration: 2.4 GHz or 5 GHz?",
+    "back": "2.4 GHz generally penetrates better, while 5 GHz usually offers more capacity and less congestion.",
+    "memory": "Lower frequency travels farther."
+  },
+  {
+    "id": "d413-f0023",
+    "topic": "OSI",
+    "front": "Which OSI layer handles routing?",
+    "back": "Layer 3, the Network layer.",
+    "memory": "Layer 3 finds the path."
+  },
+  {
+    "id": "d413-f0024",
+    "topic": "OSI",
+    "front": "Which OSI layer handles frames and MAC addressing?",
+    "back": "Layer 2, the Data Link layer.",
+    "memory": "Layer 2 local delivery."
+  },
+  {
+    "id": "d413-f0025",
+    "topic": "Cellular",
+    "front": "Which generation introduced LTE as a major broadband cellular technology?",
+    "back": "4G.",
+    "memory": "4G made LTE mainstream."
+  }
+]

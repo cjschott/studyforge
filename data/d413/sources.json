@@ -1,14 +1,26 @@
 [
   {
-    "id": "d413-source-001",
-    "title": "D413 Starter Course Pack Notes",
-    "type": "Original StudyForge Notes",
-    "summary": "Original OA-style practice items emphasizing multiplexing, wireless standards, fiber, cellular, devices, IP basics, error detection, and administration."
+    "id": "d413-src-001",
+    "title": "Uploaded Practice Test Questions",
+    "type": "Practice Test",
+    "summary": "Used as the primary gold/source-first layer where available."
   },
   {
-    "id": "d413-source-002",
-    "title": "Common Telecommunications Concepts",
-    "type": "Topic Map",
-    "summary": "Concept coverage is based on standard telecommunications and wireless networking study areas. Questions are original and not copied from exam material."
+    "id": "d413-src-002",
+    "title": "End-of-Section Quiz",
+    "type": "Official Quiz",
+    "summary": "Converted into StudyForge questions with original answers and explanations."
+  },
+  {
+    "id": "d413-src-003",
+    "title": "Multiplexing Video Transcripts",
+    "type": "Transcript",
+    "summary": "Used to create scenario-based reinforcement questions for FDM, TDM, STDM, WDM, CWDM, DWDM, and OFDM."
+  },
+  {
+    "id": "d413-src-004",
+    "title": "Reddit OA Notes",
+    "type": "Student Notes",
+    "summary": "Used to weight topics such as multiplexing, 802 standards, cables, fiber, and access technologies."
   }
 ]

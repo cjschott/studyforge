@@ -1,177 +1,618 @@
 [
   {
     "id": "d413-f0001",
-    "topic": "Multiplexing",
-    "front": "What does FDM separate signals by?",
-    "back": "Frequency bands.",
-    "memory": "FDM = Frequency lanes."
+    "topic": "Transmission Media",
+    "front": "Transmission Media: what is the key exam clue?",
+    "back": "Bandwidth is a range of frequencies, not raw throughput. Throughput is the actual data rate.",
+    "memory": ""
   },
   {
     "id": "d413-f0002",
-    "topic": "Multiplexing",
-    "front": "What does TDM separate signals by?",
-    "back": "Fixed time slots.",
-    "memory": "TDM = Time slices."
+    "topic": "Fiber",
+    "front": "Fiber: what is the key exam clue?",
+    "back": "Attenuation is signal weakening or degradation; noise is a common contributor.",
+    "memory": ""
   },
   {
     "id": "d413-f0003",
-    "topic": "Multiplexing",
-    "front": "How is STDM different from TDM?",
-    "back": "STDM assigns time slots dynamically based on demand instead of reserving fixed slots.",
-    "memory": "Statistical means used when needed."
+    "topic": "Signals",
+    "front": "Signals: what is the key exam clue?",
+    "back": "Frequency is cycles per second and is measured in hertz.",
+    "memory": ""
   },
   {
     "id": "d413-f0004",
-    "topic": "Optical Networking",
-    "front": "What does WDM combine on one fiber?",
-    "back": "Multiple wavelengths of light.",
-    "memory": "WDM = Wavelength lanes."
+    "topic": "Wireless",
+    "front": "Wireless: what is the key exam clue?",
+    "back": "Fiber is glass/plastic and can be fragile or require careful handling, even though it has low attenuation and excellent distance.\nWireless",
+    "memory": ""
   },
   {
     "id": "d413-f0005",
-    "topic": "Optical Networking",
-    "front": "CWDM versus DWDM?",
-    "back": "CWDM uses wider wavelength spacing and is cheaper; DWDM uses dense spacing for high-capacity long-haul links.",
-    "memory": "Dense equals distance and density."
+    "topic": "Wi-Fi Standards",
+    "front": "Wi-Fi Standards: what is the key exam clue?",
+    "back": "CDPD is an older packet-data service for mobile Internet access. WAP is an application protocol, not the radio access service.",
+    "memory": ""
   },
   {
     "id": "d413-f0006",
-    "topic": "Multiplexing",
-    "front": "What distinguishes CDMA?",
-    "back": "Users share the same frequency band at the same time but are separated by unique spreading codes.",
-    "memory": "CDMA = Code separates callers."
+    "topic": "General Networking",
+    "front": "General Networking: what is the key exam clue?",
+    "back": "Electric motors are common industrial EMI/noise sources.\nCabling",
+    "memory": ""
   },
   {
     "id": "d413-f0007",
-    "topic": "Wi-Fi Standards",
-    "front": "Which Wi-Fi standard introduced OFDMA and improved dense-client efficiency?",
-    "back": "802.11ax, also called Wi-Fi 6.",
-    "memory": "AX adds apartment-like subchannel scheduling."
+    "topic": "Multiplexing",
+    "front": "Multiplexing: what is the key exam clue?",
+    "back": "Encryption protects packet contents from being read by unauthorized parties.\nMultiplexing",
+    "memory": ""
   },
   {
     "id": "d413-f0008",
-    "topic": "Wireless",
-    "front": "Why does Wi-Fi use CSMA/CA instead of CSMA/CD?",
-    "back": "Wireless clients cannot reliably detect collisions while transmitting, so they try to avoid collisions.",
-    "memory": "Wireless avoids; wired detects."
+    "topic": "Optical Networking",
+    "front": "Optical Networking: what is the key exam clue?",
+    "back": "Asynchronous/statistical TDM dynamically assigns slots to active sources.\nModems & Access",
+    "memory": ""
   },
   {
     "id": "d413-f0009",
-    "topic": "Cellular",
-    "front": "What is a soft handoff?",
-    "back": "A mobile device connects to a new cell before dropping the old one.",
-    "memory": "Soft means make before break."
+    "topic": "Network Devices",
+    "front": "Network Devices: what is the key exam clue?",
+    "back": "Routers connect different IP networks and forward traffic to the Internet.",
+    "memory": ""
   },
   {
     "id": "d413-f0010",
-    "topic": "Fiber",
-    "front": "Single-mode fiber is best for what use case?",
-    "back": "Long-distance, high-bandwidth links using a narrow light path.",
-    "memory": "Single path goes far."
+    "topic": "IP Basics",
+    "front": "IP Basics: what is the key exam clue?",
+    "back": "All three are within RFC1918 private ranges; the PA expected 10.0.1.0/24 due single-answer format, but in real networking all three are valid private /24s.\nCabling",
+    "memory": ""
   },
   {
     "id": "d413-f0011",
-    "topic": "Fiber",
-    "front": "Multimode fiber is commonly used where?",
-    "back": "Shorter building or campus links where cost matters more than long distance.",
-    "memory": "Multiple paths are local."
+    "topic": "Error Detection",
+    "front": "Error Detection: what is the key exam clue?",
+    "back": "Policies define acceptable and unacceptable network use.\nError Detection",
+    "memory": ""
   },
   {
     "id": "d413-f0012",
-    "topic": "Fiber",
-    "front": "What does an OTDR help find?",
-    "back": "Fiber breaks, losses, reflections, and approximate fault distance.",
-    "memory": "OTDR sends light and reads reflections."
+    "topic": "Design and Administration",
+    "front": "Design and Administration: what is the key exam clue?",
+    "back": "Start with needs before selecting hardware or implementation details.\nFacilities",
+    "memory": ""
   },
   {
     "id": "d413-f0013",
-    "topic": "Signals",
-    "front": "What is bandwidth in signal terms?",
-    "back": "The range between the highest and lowest frequencies a medium can carry.",
-    "memory": "Band width is frequency width."
+    "topic": "Cellular",
+    "front": "Cellular: what is the key exam clue?",
+    "back": "Broadband supports multiple channels/signals.",
+    "memory": ""
   },
   {
     "id": "d413-f0014",
-    "topic": "Error Detection",
-    "front": "Which error detection method is strongest among parity, checksum, and CRC?",
-    "back": "CRC is generally strongest for detecting burst errors.",
-    "memory": "CRC catches runs."
+    "topic": "OSI",
+    "front": "OSI: what is the key exam clue?",
+    "back": "Layer 2 handles framing and MAC addressing.",
+    "memory": ""
   },
   {
     "id": "d413-f0015",
-    "topic": "Network Devices",
-    "front": "Which device forwards frames using MAC addresses?",
-    "back": "A switch.",
-    "memory": "Switches speak MAC."
+    "topic": "Application Protocols",
+    "front": "Application Protocols: what is the key exam clue?",
+    "back": "HTTP is an application-layer protocol, so HTTP errors are application-associated.",
+    "memory": "HTTP lives at the application layer."
   },
   {
     "id": "d413-f0016",
-    "topic": "Network Devices",
-    "front": "Which device routes packets between IP networks?",
-    "back": "A router.",
-    "memory": "Routers read routes."
+    "topic": "Telecom Access",
+    "front": "Telecom Access: what is the key exam clue?",
+    "back": "DSL is a common broadband access technology that uses telephone copper infrastructure.",
+    "memory": "DSL = phone-line broadband."
   },
   {
     "id": "d413-f0017",
-    "topic": "IP Basics",
-    "front": "What does DHCP provide?",
-    "back": "Automatic IP configuration such as address, subnet mask, gateway, and DNS servers.",
-    "memory": "DHCP hands out host settings."
+    "topic": "Network Topology",
+    "front": "Network Topology: what is the key exam clue?",
+    "back": "A mesh topology connects nodes to one or more other nodes, often providing multiple paths.",
+    "memory": "Mesh = many interconnections."
   },
   {
     "id": "d413-f0018",
-    "topic": "IP Basics",
-    "front": "What is APIPA?",
-    "back": "Automatic private addressing in the 169.254.0.0/16 range when DHCP fails.",
-    "memory": "APIPA appears after DHCP absence."
+    "topic": "Multiplexing",
+    "front": "FDM: what is the key exam clue?",
+    "back": "Each TV channel occupies a separate frequency range, which is frequency-division multiplexing.",
+    "memory": "TV/radio channels live in frequency lanes."
   },
   {
     "id": "d413-f0019",
-    "topic": "Design and Administration",
-    "front": "Why create a network baseline?",
-    "back": "To know normal performance so deviations are easier to identify.",
-    "memory": "Baseline before blame."
+    "topic": "Multiplexing",
+    "front": "TDM: what is the key exam clue?",
+    "back": "Fixed recurring time slots are synchronous TDM.",
+    "memory": "Fixed turns = synchronous TDM."
   },
   {
     "id": "d413-f0020",
-    "topic": "Design and Administration",
-    "front": "Why isolate guest wireless?",
-    "back": "To give visitors internet access without exposing internal resources.",
-    "memory": "Guests get internet, not inside access."
+    "topic": "Multiplexing",
+    "front": "STDM: what is the key exam clue?",
+    "back": "Statistical TDM dynamically assigns time slots to active sources.",
+    "memory": "Smart TDM avoids idle turns."
   },
   {
     "id": "d413-f0021",
-    "topic": "Transmission Media",
-    "front": "What media is most immune to electromagnetic interference?",
-    "back": "Fiber optic cable.",
-    "memory": "Light ignores EMI."
+    "topic": "Multiplexing",
+    "front": "CDMA: what is the key exam clue?",
+    "back": "CDMA separates users by unique codes rather than time or frequency.",
+    "memory": "Code separates users."
   },
   {
     "id": "d413-f0022",
-    "topic": "Wireless",
-    "front": "Which frequency band usually has better wall penetration: 2.4 GHz or 5 GHz?",
-    "back": "2.4 GHz generally penetrates better, while 5 GHz usually offers more capacity and less congestion.",
-    "memory": "Lower frequency travels farther."
+    "topic": "Multiplexing",
+    "front": "CDMA near-far: what is the key exam clue?",
+    "back": "CDMA systems use power control to manage the near-far problem.",
+    "memory": "Power control quiets the close phone."
   },
   {
     "id": "d413-f0023",
-    "topic": "OSI",
-    "front": "Which OSI layer handles routing?",
-    "back": "Layer 3, the Network layer.",
-    "memory": "Layer 3 finds the path."
+    "topic": "Multiplexing",
+    "front": "Soft handoff: what is the key exam clue?",
+    "back": "CDMA soft handoff maintains multiple tower connections during transition.",
+    "memory": "Connect before letting go."
   },
   {
     "id": "d413-f0024",
-    "topic": "OSI",
-    "front": "Which OSI layer handles frames and MAC addressing?",
-    "back": "Layer 2, the Data Link layer.",
-    "memory": "Layer 2 local delivery."
+    "topic": "Multiplexing",
+    "front": "OFDM: what is the key exam clue?",
+    "back": "OFDM uses orthogonal subcarriers and performs well in multipath environments.",
+    "memory": "Orthogonal subcarriers = OFDM."
   },
   {
     "id": "d413-f0025",
+    "topic": "Multiplexing",
+    "front": "OFDM vs FDM: what is the key exam clue?",
+    "back": "OFDM allows overlapping orthogonal subcarriers, unlike traditional FDM with guard bands.",
+    "memory": "Orthogonal allows overlap."
+  },
+  {
+    "id": "d413-f0026",
+    "topic": "Optical Networking",
+    "front": "WDM: what is the key exam clue?",
+    "back": "WDM uses multiple wavelengths of light on one fiber.",
+    "memory": "Fiber colors = WDM."
+  },
+  {
+    "id": "d413-f0027",
+    "topic": "Optical Networking",
+    "front": "CWDM: what is the key exam clue?",
+    "back": "CWDM is lower-cost, uses wider spacing, and is common for shorter metro links.",
+    "memory": "Coarse/cheap metro WDM."
+  },
+  {
+    "id": "d413-f0028",
+    "topic": "Optical Networking",
+    "front": "DWDM: what is the key exam clue?",
+    "back": "DWDM uses densely spaced wavelengths for high-capacity long-haul fiber networks.",
+    "memory": "Dense = many channels."
+  },
+  {
+    "id": "d413-f0029",
+    "topic": "Optical Networking",
+    "front": "Optical amplifier: what is the key exam clue?",
+    "back": "Optical amplifiers boost light directly without converting it back to electrical form.",
+    "memory": "Boost light as light."
+  },
+  {
+    "id": "d413-f0030",
+    "topic": "Fiber",
+    "front": "SMF vs MMF: what is the key exam clue?",
+    "back": "Single-mode fiber supports longer distances and lower modal dispersion than multimode fiber.",
+    "memory": "Single path, long haul."
+  },
+  {
+    "id": "d413-f0031",
+    "topic": "Fiber",
+    "front": "MMF: what is the key exam clue?",
+    "back": "Multimode fiber has a larger core and is common for shorter runs.",
+    "memory": "Many modes, shorter runs."
+  },
+  {
+    "id": "d413-f0032",
+    "topic": "Fiber",
+    "front": "Attenuation: what is the key exam clue?",
+    "back": "Attenuation is signal loss or weakening over distance.",
+    "memory": "Attenuation = fades."
+  },
+  {
+    "id": "d413-f0033",
+    "topic": "Fiber",
+    "front": "Dispersion: what is the key exam clue?",
+    "back": "Dispersion spreads pulses over time, causing overlap and distortion.",
+    "memory": "Dispersion = spread."
+  },
+  {
+    "id": "d413-f0034",
+    "topic": "Fiber",
+    "front": "OTDR: what is the key exam clue?",
+    "back": "An OTDR locates fiber faults by measuring reflected light.",
+    "memory": "Fiber radar."
+  },
+  {
+    "id": "d413-f0035",
+    "topic": "Wireless",
+    "front": "CSMA/CA: what is the key exam clue?",
+    "back": "Wi-Fi uses CSMA/CA because collision detection is impractical in wireless.",
+    "memory": "Wireless avoids."
+  },
+  {
+    "id": "d413-f0036",
+    "topic": "Wi-Fi Standards",
+    "front": "802.11n: what is the key exam clue?",
+    "back": "802.11n introduced MIMO and can use both 2.4 GHz and 5 GHz.",
+    "memory": "N = MIMO dual-band."
+  },
+  {
+    "id": "d413-f0037",
+    "topic": "Wi-Fi Standards",
+    "front": "802.11ax: what is the key exam clue?",
+    "back": "802.11ax is Wi-Fi 6 and uses OFDMA.",
+    "memory": "AX = Wi-Fi 6."
+  },
+  {
+    "id": "d413-f0038",
+    "topic": "Wi-Fi Standards",
+    "front": "802.15: what is the key exam clue?",
+    "back": "Bluetooth is part of IEEE 802.15 wireless PAN standards.",
+    "memory": "802.15 = Bluetooth."
+  },
+  {
+    "id": "d413-f0039",
     "topic": "Cellular",
-    "front": "Which generation introduced LTE as a major broadband cellular technology?",
-    "back": "4G.",
-    "memory": "4G made LTE mainstream."
+    "front": "1G-5G: what is the key exam clue?",
+    "back": "2G introduced digital voice and SMS.",
+    "memory": "2G = digital + SMS."
+  },
+  {
+    "id": "d413-f0040",
+    "topic": "Cellular",
+    "front": "LTE: what is the key exam clue?",
+    "back": "LTE is associated with 4G mobile broadband.",
+    "memory": "LTE = 4G."
+  },
+  {
+    "id": "d413-f0041",
+    "topic": "Cellular",
+    "front": "5G: what is the key exam clue?",
+    "back": "These features are associated with 5G networks.",
+    "memory": "5G = low latency + beamforming."
+  },
+  {
+    "id": "d413-f0042",
+    "topic": "Cellular",
+    "front": "GSM: what is the key exam clue?",
+    "back": "GSM is associated with SIM cards and TDMA-style access.",
+    "memory": "GSM = SIM world."
+  },
+  {
+    "id": "d413-f0043",
+    "topic": "Error Detection",
+    "front": "CRC: what is the key exam clue?",
+    "back": "CRC is stronger than simple parity and is widely used for frame error detection.",
+    "memory": "CRC = strong check."
+  },
+  {
+    "id": "d413-f0044",
+    "topic": "Error Detection",
+    "front": "Jitter buffer: what is the key exam clue?",
+    "back": "Jitter buffers compensate for variation in packet arrival timing.",
+    "memory": "Jitter = timing variation."
+  },
+  {
+    "id": "d413-f0045",
+    "topic": "Network Devices",
+    "front": "Router: what is the key exam clue?",
+    "back": "Routers forward packets between networks using IP information.",
+    "memory": "Router routes."
+  },
+  {
+    "id": "d413-f0046",
+    "topic": "Network Devices",
+    "front": "Switch: what is the key exam clue?",
+    "back": "Switches use MAC address tables for LAN frame forwarding.",
+    "memory": "Switch = MAC table."
+  },
+  {
+    "id": "d413-f0047",
+    "topic": "Network Devices",
+    "front": "Repeater: what is the key exam clue?",
+    "back": "A repeater regenerates the signal at the physical layer.",
+    "memory": "Repeater repeats."
+  },
+  {
+    "id": "d413-f0048",
+    "topic": "Network Devices",
+    "front": "RADIUS: what is the key exam clue?",
+    "back": "RADIUS provides centralized authentication for network access, including enterprise Wi-Fi.",
+    "memory": "RADIUS authenticates users."
+  },
+  {
+    "id": "d413-f0049",
+    "topic": "IP Basics",
+    "front": "DHCP: what is the key exam clue?",
+    "back": "DHCP automatically leases IP configuration to clients.",
+    "memory": "DHCP hands out addresses."
+  },
+  {
+    "id": "d413-f0050",
+    "topic": "IP Basics",
+    "front": "DNS: what is the key exam clue?",
+    "back": "DNS resolves names to IP addresses.",
+    "memory": "DNS = names to numbers."
+  },
+  {
+    "id": "d413-f0051",
+    "topic": "IP Basics",
+    "front": "Private IP: what is the key exam clue?",
+    "back": "192.168.0.0/16 is private IPv4 address space.",
+    "memory": "192.168 = private."
+  },
+  {
+    "id": "d413-f0052",
+    "topic": "Design and Administration",
+    "front": "Baseline: what is the key exam clue?",
+    "back": "A baseline captures normal performance for future comparison.",
+    "memory": "Baseline = normal."
+  },
+  {
+    "id": "d413-f0053",
+    "topic": "Design and Administration",
+    "front": "QoS: what is the key exam clue?",
+    "back": "QoS prioritizes time-sensitive traffic like voice and video.",
+    "memory": "QoS = VIP lane."
+  },
+  {
+    "id": "d413-f0054",
+    "topic": "Design and Administration",
+    "front": "Guest wireless: what is the key exam clue?",
+    "back": "Guest traffic should be isolated from internal trusted networks.",
+    "memory": "Guests get their own lane."
+  },
+  {
+    "id": "d413-f0055",
+    "topic": "Telecom Access",
+    "front": "DSL: what is the key exam clue?",
+    "back": "DSL uses telephone copper lines for broadband service.",
+    "memory": "DSL = phone-line broadband."
+  },
+  {
+    "id": "d413-f0056",
+    "topic": "Telecom Access",
+    "front": "DOCSIS: what is the key exam clue?",
+    "back": "DOCSIS defines data over cable service interface specifications for cable broadband.",
+    "memory": "DOCSIS = cable internet."
+  },
+  {
+    "id": "d413-f0057",
+    "topic": "Telecom Access",
+    "front": "ISDN: what is the key exam clue?",
+    "back": "ISDN provides digital service with BRI and PRI interfaces.",
+    "memory": "ISDN = BRI/PRI."
+  },
+  {
+    "id": "d413-f0058",
+    "topic": "Telecom Access",
+    "front": "SONET: what is the key exam clue?",
+    "back": "SONET is a synchronous optical networking technology used by carriers.",
+    "memory": "SONET = synchronous optical."
+  },
+  {
+    "id": "d413-f0059",
+    "topic": "Transmission Media",
+    "front": "Cat cable: what is the key exam clue?",
+    "back": "Cat 6A supports 10GBASE-T to 100 meters.",
+    "memory": "6A is 10G copper workhorse."
+  },
+  {
+    "id": "d413-f0060",
+    "topic": "Transmission Media",
+    "front": "Coax RG-6: what is the key exam clue?",
+    "back": "RG-6 is commonly used for cable television and broadband coax drops.",
+    "memory": "RG-6 = cable TV."
+  },
+  {
+    "id": "d413-f0061",
+    "topic": "Transmission Media",
+    "front": "Coax RG-58: what is the key exam clue?",
+    "back": "RG-58 was used with 10BASE2 thin Ethernet.",
+    "memory": "RG-58 = thin Ethernet."
+  },
+  {
+    "id": "d413-f0062",
+    "topic": "Network Devices",
+    "front": "Firewall: what is the key exam clue?",
+    "back": "Firewalls filter traffic based on policy.",
+    "memory": "Firewall = traffic guard."
+  },
+  {
+    "id": "d413-f0063",
+    "topic": "Network Devices",
+    "front": "Gateway: what is the key exam clue?",
+    "back": "Gateways connect unlike networks or translate protocols.",
+    "memory": "Gateway = translator."
+  },
+  {
+    "id": "d413-f0064",
+    "topic": "OSI",
+    "front": "Data Link: what is the key exam clue?",
+    "back": "The Data Link layer handles frames and MAC addresses.",
+    "memory": "Layer 2 = frames/MACs."
+  },
+  {
+    "id": "d413-f0065",
+    "topic": "OSI",
+    "front": "Network: what is the key exam clue?",
+    "back": "The Network layer handles routing and logical addressing such as IP.",
+    "memory": "Layer 3 = IP/routing."
+  },
+  {
+    "id": "d413-f0066",
+    "topic": "OSI",
+    "front": "Transport: what is the key exam clue?",
+    "back": "The Transport layer manages TCP/UDP transport and ports.",
+    "memory": "Layer 4 = TCP/UDP."
+  },
+  {
+    "id": "d413-f0067",
+    "topic": "OSI",
+    "front": "Presentation: what is the key exam clue?",
+    "back": "The Presentation layer handles data format representation.",
+    "memory": "Presentation = format."
+  },
+  {
+    "id": "d413-f0068",
+    "topic": "Signals",
+    "front": "Modulation: what is the key exam clue?",
+    "back": "Modulation changes a carrier signal to encode information.",
+    "memory": "Modulation modifies carrier."
+  },
+  {
+    "id": "d413-f0069",
+    "topic": "Signals",
+    "front": "Amplitude: what is the key exam clue?",
+    "back": "Amplitude is the magnitude or height of a wave.",
+    "memory": "Amplitude = height."
+  },
+  {
+    "id": "d413-f0070",
+    "topic": "Signals",
+    "front": "Frequency: what is the key exam clue?",
+    "back": "Frequency is cycles per second.",
+    "memory": "Frequency = cycles/sec."
+  },
+  {
+    "id": "d413-f0071",
+    "topic": "Signals",
+    "front": "Phase: what is the key exam clue?",
+    "back": "Phase is a wave's position relative to a reference.",
+    "memory": "Phase = cycle position."
+  },
+  {
+    "id": "d413-f0072",
+    "topic": "Error Detection",
+    "front": "Parity: what is the key exam clue?",
+    "back": "Parity uses an extra bit for odd/even checking.",
+    "memory": "Parity = odd/even bit."
+  },
+  {
+    "id": "d413-f0073",
+    "topic": "Error Detection",
+    "front": "Checksum: what is the key exam clue?",
+    "back": "Checksums compare calculated values to detect errors.",
+    "memory": "Checksum = calculated check value."
+  },
+  {
+    "id": "d413-f0074",
+    "topic": "Wireless",
+    "front": "Interference: what is the key exam clue?",
+    "back": "Channel planning reduces co-channel and adjacent-channel interference.",
+    "memory": "Plan channels, reduce overlap."
+  },
+  {
+    "id": "d413-f0075",
+    "topic": "Wireless",
+    "front": "Encryption: what is the key exam clue?",
+    "back": "Encryption hides packet contents from unauthorized readers.",
+    "memory": "Encryption hides contents."
+  },
+  {
+    "id": "d413-f0076",
+    "topic": "Design and Administration",
+    "front": "Documentation: what is the key exam clue?",
+    "back": "Network policies and procedures define expected and prohibited use.",
+    "memory": "Policies = rules."
+  },
+  {
+    "id": "d413-f0077",
+    "topic": "Design and Administration",
+    "front": "Growth planning: what is the key exam clue?",
+    "back": "Good network design plans for future growth and scalability.",
+    "memory": "Design ahead."
+  },
+  {
+    "id": "d413-f0078",
+    "topic": "Cellular",
+    "front": "CDPD: what is the key exam clue?",
+    "back": "CDPD provided cellular packet data service.",
+    "memory": "CDPD = cellular packet data."
+  },
+  {
+    "id": "d413-f0079",
+    "topic": "Cellular",
+    "front": "Beamforming: what is the key exam clue?",
+    "back": "Beamforming steers signal energy toward users or directions.",
+    "memory": "Beamforming = focused RF."
+  },
+  {
+    "id": "d413-f0080",
+    "topic": "Cellular",
+    "front": "Massive MIMO: what is the key exam clue?",
+    "back": "Massive MIMO uses many antennas to improve capacity and performance.",
+    "memory": "Many antennas = massive MIMO."
+  },
+  {
+    "id": "d413-f0081",
+    "topic": "Optical Networking",
+    "front": "DWDM channels: what is the key exam clue?",
+    "back": "DWDM uses very tight spacing and supports many channels.",
+    "memory": "Dense means many tiny-spaced channels."
+  },
+  {
+    "id": "d413-f0082",
+    "topic": "Optical Networking",
+    "front": "CWDM spacing: what is the key exam clue?",
+    "back": "CWDM uses coarse 20 nm spacing and cheaper optics.",
+    "memory": "20 nm = coarse."
+  },
+  {
+    "id": "d413-f0083",
+    "topic": "Optical Networking",
+    "front": "WDM components: what is the key exam clue?",
+    "back": "A multiplexer combines wavelengths, and a demultiplexer separates them.",
+    "memory": "Mux combines; demux separates."
+  },
+  {
+    "id": "d413-f0084",
+    "topic": "Telecom Access",
+    "front": "T1: what is the key exam clue?",
+    "back": "A T1 circuit provides 1.544 Mbps service.",
+    "memory": "T1 = 1.544 Mbps."
+  },
+  {
+    "id": "d413-f0085",
+    "topic": "Telecom Access",
+    "front": "T3: what is the key exam clue?",
+    "back": "A T3 circuit provides about 44.736 Mbps.",
+    "memory": "T3 is bigger T-carrier."
+  },
+  {
+    "id": "d413-f0086",
+    "topic": "IP Basics",
+    "front": "APIPA: what is the key exam clue?",
+    "back": "APIPA assigns link-local 169.254.x.x addresses when DHCP fails.",
+    "memory": "169.254 = DHCP failed."
+  },
+  {
+    "id": "d413-f0087",
+    "topic": "IP Basics",
+    "front": "NAT: what is the key exam clue?",
+    "back": "NAT translates private internal addresses to public addresses.",
+    "memory": "NAT = many behind one."
+  },
+  {
+    "id": "d413-f0088",
+    "topic": "Network Devices",
+    "front": "CSU/DSU: what is the key exam clue?",
+    "back": "A CSU/DSU terminates digital leased circuits such as T1.",
+    "memory": "CSU/DSU = T1 handoff."
   }
 ]

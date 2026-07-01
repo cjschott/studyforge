@@ -1,9 +1,38 @@
 [
   {
-    "id": "d413-mock-template",
-    "name": "Default Mock OA",
-    "defaultQuestions": 75,
-    "defaultMinutes": 120,
-    "selection": "High-probability questions first, then random fill."
+    "id": "d413-mock-001",
+    "title": "D413 Source-First Mock OA",
+    "questionCount": 75,
+    "timeLimitMinutes": 120,
+    "selection": {
+      "probabilityMinimum": 3,
+      "shuffle": true
+    }
+  },
+  {
+    "id": "d413-mock-002",
+    "title": "D413 Official/Quiz Drill",
+    "questionCount": 50,
+    "timeLimitMinutes": 75,
+    "selection": {
+      "sourceTags": [
+        "Practice Test",
+        "End-of-Section Quiz"
+      ],
+      "shuffle": true
+    }
+  },
+  {
+    "id": "d413-mock-003",
+    "title": "D413 Multiplexing Intensive",
+    "questionCount": 50,
+    "timeLimitMinutes": 75,
+    "selection": {
+      "topics": [
+        "Multiplexing",
+        "Optical Networking"
+      ],
+      "shuffle": true
+    }
   }
 ]

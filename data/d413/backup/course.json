@@ -1,0 +1,22 @@
+{
+  "id": "d413",
+  "name": "D413 Telecommunications & Wireless Communications",
+  "shortName": "D413",
+  "description": "WGU Telecommunications and Wireless Communications",
+  "version": "1.0",
+  "topics": [
+    "Multiplexing",
+    "Optical Networking",
+    "Wireless",
+    "Wi-Fi Standards",
+    "Cellular",
+    "Fiber",
+    "Transmission Media",
+    "Signals",
+    "OSI",
+    "Error Detection",
+    "Network Devices",
+    "IP Basics",
+    "Design and Administration"
+  ]
+}
