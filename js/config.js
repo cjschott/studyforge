@@ -1,6 +1,6 @@
 export const APP_CONFIG = {
   name: "StudyForge",
-  version: "0.2.0",
-  displayVersion: "v0.2",
+  version: "0.3.0-alpha",
+  displayVersion: "v0.3 alpha",
   storageKey: "studyforge:v1"
 };

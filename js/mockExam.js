@@ -1,4 +1,5 @@
 import { recordMockExam } from "./storage.js";
+import { collectAnswer, formatAnswer, hasAnswer, questionType, renderQuestionControl, renderQuestionMedia, scoreQuestion } from "./questionTypes.js";
 
 function shuffle(items) {
   return items
@@ -28,6 +29,7 @@ function buildResult(bundle, exam) {
   const review = exam.questionIds.map((id) => {
     const question = questionsById.get(id);
     const selected = exam.answers[id] || "";
+    const correct = scoreQuestion(question, selected);
     return {
       id,
       topic: question.topic,
@@ -35,7 +37,7 @@ function buildResult(bundle, exam) {
       selected,
       answer: question.answer,
       explanation: question.explanation,
-      correct: selected === question.answer
+      correct
     };
   });
   const correct = review.filter((item) => item.correct).length;
@@ -176,16 +178,11 @@ function renderActive(ctx, exam) {
           <span class="tag blue">${question.topic}</span>
           <span class="tag">${question.subtopic || "General"}</span>
           <span class="tag yellow">Probability ${question.probability}</span>
+          <span class="tag">${questionType(question)}</span>
         </div>
         <p class="question-text">${question.question}</p>
-        <div class="choice-list" role="radiogroup" aria-label="Mock answer choices">
-          ${question.choices.map((choice) => `
-            <label class="choice ${answer === choice ? "selected" : ""}">
-              <input type="radio" name="mock-choice" value="${choice}" ${answer === choice ? "checked" : ""}>
-              <span>${choice}</span>
-            </label>
-          `).join("")}
-        </div>
+        ${renderQuestionMedia(question)}
+        ${renderQuestionControl(question, "mock-choice", answer)}
         <div class="button-row">
           <button id="mock-prev" class="button" type="button" ${exam.index === 0 ? "disabled" : ""}>Previous</button>
           <button id="mock-next" class="button" type="button" ${exam.index === exam.questionIds.length - 1 ? "disabled" : ""}>Next</button>
@@ -204,9 +201,15 @@ function renderActive(ctx, exam) {
     </section>
   `;
 
-  ctx.root.querySelectorAll("input[name='mock-choice']").forEach((input) => {
-    input.addEventListener("change", () => {
-      exam.answers[currentId] = input.value;
+  ctx.root.querySelectorAll("[data-question-input]").forEach((input) => {
+    const eventName = input.tagName === "TEXTAREA" ? "input" : "change";
+    input.addEventListener(eventName, () => {
+      const selected = collectAnswer(ctx.root, question, "mock-choice");
+      if (hasAnswer(question, selected)) {
+        exam.answers[currentId] = selected;
+      } else {
+        delete exam.answers[currentId];
+      }
       ctx.rerender();
     });
   });
@@ -359,8 +362,8 @@ function renderResult(ctx, result) {
             <span class="tag">Missed ${index + 1}</span>
           </div>
           <p class="question-text">${item.question}</p>
-          <p><strong>Your answer:</strong> ${item.selected || "No answer"}</p>
-          <p><strong>Correct answer:</strong> ${item.answer}</p>
+          <p><strong>Your answer:</strong> ${item.selected ? formatAnswer(item.selected) : "No answer"}</p>
+          <p><strong>Correct answer:</strong> ${formatAnswer(item.answer)}</p>
           <p class="muted">${item.explanation}</p>
         </article>
       `).join("") : `

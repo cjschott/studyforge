@@ -1,0 +1,37 @@
+[
+  {
+    "id": "secplus-f0001",
+    "topic": "Core Principles",
+    "front": "What does the CIA triad stand for?",
+    "back": "Confidentiality, Integrity, and Availability.",
+    "memory": "Private, unchanged, reachable."
+  },
+  {
+    "id": "secplus-f0002",
+    "topic": "Identity and Access",
+    "front": "What is the difference between authentication and authorization?",
+    "back": "Authentication proves identity; authorization determines allowed access.",
+    "memory": "AuthN = name; AuthZ = zones."
+  },
+  {
+    "id": "secplus-f0003",
+    "topic": "Cryptography",
+    "front": "What is hashing used for?",
+    "back": "Integrity verification with a one-way digest.",
+    "memory": "Hash detects change."
+  },
+  {
+    "id": "secplus-f0004",
+    "topic": "Network Security",
+    "front": "IDS vs IPS?",
+    "back": "IDS detects and alerts; IPS can actively block traffic.",
+    "memory": "IDS sees; IPS stops."
+  },
+  {
+    "id": "secplus-f0005",
+    "topic": "Security Operations",
+    "front": "Common incident response order?",
+    "back": "Preparation, identification, containment, eradication, recovery, lessons learned.",
+    "memory": "PICERL."
+  }
+]

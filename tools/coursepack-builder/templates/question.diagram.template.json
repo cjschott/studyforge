@@ -1,0 +1,20 @@
+{
+  "id": "course-q0005",
+  "type": "diagram",
+  "topic": "Topic",
+  "subtopic": "Subtopic",
+  "difficulty": 3,
+  "probability": 3,
+  "sourceTags": ["Generated"],
+  "sourceType": "generated",
+  "question": "Use the diagram to answer the question.",
+  "image": "assets/images/example-diagram.png",
+  "choices": ["A", "B", "C", "D"],
+  "answer": "A",
+  "explanation": "Explain the diagram clue.",
+  "memory": "",
+  "examTip": "",
+  "status": "generated",
+  "confidence": 5,
+  "lineage": { "sourceId": "source-id" }
+}

@@ -1,4 +1,5 @@
 import { getCourseState, getSettings, recordQuestionAnswer, saveMissedNote, toggleBookmark, toggleReviewLater } from "./storage.js";
+import { collectAnswer, formatAnswer, hasAnswer, markQuestionResult, questionType, renderQuestionControl, renderQuestionMedia, scoreQuestion } from "./questionTypes.js";
 
 function unique(values) {
   return Array.from(new Set(values.filter(Boolean))).sort();
@@ -10,6 +11,9 @@ function optionList(values, selected, allLabel = "All") {
 
 function matchesQuery(question, query) {
   if (!query) return true;
+  const choiceValues = Array.isArray(question.choices)
+    ? question.choices
+    : Object.values(question.choices || {}).flat();
   const text = [
     question.question,
     question.topic,
@@ -18,7 +22,7 @@ function matchesQuery(question, query) {
     question.explanation,
     question.memory,
     question.examTip,
-    ...(question.choices || [])
+    ...choiceValues
   ].join(" ").toLowerCase();
   return text.includes(query.toLowerCase());
 }
@@ -55,7 +59,7 @@ function answerPanel(question, settings, existingNote = "") {
 
   return `
     <section id="answer-panel" class="answer-panel" hidden>
-      <h4>Answer: ${question.answer}</h4>
+      <h4>Answer: ${formatAnswer(question.answer)}</h4>
       <p>${question.explanation}</p>
       <div class="answer-grid">
         <article>
@@ -149,16 +153,11 @@ export function renderQuestionMode(ctx, mode) {
           <span class="tag">${current.subtopic || "General"}</span>
           <span class="tag yellow">Probability ${current.probability}</span>
           <span class="tag">${current.difficulty}</span>
+          <span class="tag">${questionType(current)}</span>
         </div>
         <p class="question-text">${current.question}</p>
-        <div class="choice-list" role="radiogroup" aria-label="Answer choices">
-          ${current.choices.map((choice, index) => `
-            <label class="choice" data-choice-index="${index}">
-              <input type="radio" name="answer-choice" value="${index}">
-              <span>${choice}</span>
-            </label>
-          `).join("")}
-        </div>
+        ${renderQuestionMedia(current)}
+        ${renderQuestionControl(current, "answer-choice")}
         <div class="button-row">
           ${mode === "practice" || mode === "review" || mode === "bookmarks" ? `<button id="submit-answer" class="button button-success" type="button">Submit</button>` : ""}
           ${mode === "study" ? `<button id="reveal-answer" class="button button-primary" type="button">Reveal Answer</button>` : ""}
@@ -196,21 +195,11 @@ export function renderQuestionMode(ctx, mode) {
 
   if (!current) return;
 
-  const correctIndex = current.choices.findIndex((choice) => choice === current.answer);
   const bookmarkButton = ctx.root.querySelector("#bookmark-question");
   const reveal = (scoreAnswer) => {
-    const selectedInput = ctx.root.querySelector("input[name='answer-choice']:checked");
-    const selectedIndex = selectedInput ? Number(selectedInput.value) : -1;
-    const selected = selectedIndex >= 0 ? current.choices[selectedIndex] : "";
-    const isCorrect = selectedIndex === correctIndex;
-
-    ctx.root.querySelectorAll(".choice").forEach((choiceEl) => {
-      const index = Number(choiceEl.dataset.choiceIndex);
-      choiceEl.classList.toggle("selected", index === selectedIndex);
-      choiceEl.classList.toggle("correct", index === correctIndex);
-      choiceEl.classList.toggle("wrong", selectedIndex >= 0 && index === selectedIndex && index !== correctIndex);
-      choiceEl.querySelector("input").disabled = true;
-    });
+    const selected = collectAnswer(ctx.root, current, "answer-choice");
+    const isCorrect = scoreQuestion(current, selected);
+    markQuestionResult(ctx.root, current, selected, "answer-choice");
 
     ctx.root.querySelector("#answer-panel").hidden = false;
     const submit = ctx.root.querySelector("#submit-answer");
@@ -248,6 +237,7 @@ export function renderQuestionMode(ctx, mode) {
   };
 
   const selectChoice = (index) => {
+    if (!["single_choice", "diagram"].includes(questionType(current))) return;
     const input = ctx.root.querySelector(`input[name='answer-choice'][value='${index}']`);
     if (!input || input.disabled) return;
     input.checked = true;
@@ -257,13 +247,18 @@ export function renderQuestionMode(ctx, mode) {
 
   ctx.root.querySelectorAll("input[name='answer-choice']").forEach((input) => {
     input.addEventListener("change", () => {
-      ctx.root.querySelectorAll(".choice").forEach((choice) => choice.classList.remove("selected"));
-      input.closest(".choice").classList.add("selected");
+      if (input.type === "radio") {
+        ctx.root.querySelectorAll(".choice").forEach((choice) => choice.classList.remove("selected"));
+        input.closest(".choice").classList.add("selected");
+      } else {
+        input.closest(".choice").classList.toggle("selected", input.checked);
+      }
     });
   });
 
   ctx.root.querySelector("#submit-answer")?.addEventListener("click", () => {
-    if (!ctx.root.querySelector("input[name='answer-choice']:checked")) {
+    const selected = collectAnswer(ctx.root, current, "answer-choice");
+    if (!hasAnswer(current, selected)) {
       ctx.showStatus("Choose an answer first.");
       return;
     }

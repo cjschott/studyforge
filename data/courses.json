@@ -5,5 +5,12 @@
     "shortName": "D413",
     "description": "WGU Telecommunications and Wireless Communications",
     "path": "data/d413/"
+  },
+  {
+    "id": "secplus",
+    "name": "Security+ Starter Study Pack",
+    "shortName": "Security+",
+    "description": "Original StudyForge starter examples for Security+ style study workflows.",
+    "path": "data/secplus/"
   }
 ]

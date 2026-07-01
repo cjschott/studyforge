@@ -1,0 +1,16 @@
+[
+  {
+    "id": "secplus-src-001",
+    "title": "Security+ Starter Concepts",
+    "type": "generated",
+    "summary": "Original StudyForge starter examples for learning workflows and question-type support.",
+    "confidence": 5
+  },
+  {
+    "id": "secplus-src-002",
+    "title": "Common Security Operations Study Notes",
+    "type": "notes",
+    "summary": "General defensive security concepts used for starter course examples.",
+    "confidence": 6
+  }
+]

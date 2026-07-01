@@ -1,75 +1,31 @@
 # StudyForge
 
-StudyForge is a reusable, self-hosted static learning platform for course question banks. It uses plain HTML, CSS, vanilla JavaScript, JSON course packs, and browser `localStorage`.
+StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.3.0-alpha` adds a FastAPI + SQLite backend foundation for accounts, DB-backed course data, progress sync, administration, and course import/export.
 
-Version: `0.2.0`
+The existing static app is preserved. If the backend is not running, StudyForge loads JSON course packs from `data/` and stores progress in browser `localStorage`.
 
-No backend, database, CDN, or build step is required.
+## Modes
 
-## v0.2 Features
+Static mode:
 
-- Subtle app version display and `js/config.js` metadata.
-- Browser-side course validation warnings in `js/validation.js`.
-- Dashboard readiness helper text, recommended study, continue-where-left-off, high-probability topics, recent mock score, and local streak placeholder.
-- Practice and study keyboard shortcuts.
-- Missed-question notes saved per question in localStorage.
-- Similar-question navigation by topic/subtopic.
-- Mock OA start confirmation, final flagged/unanswered review, final submit confirmation, pass estimate, topic breakdown, missed review, and recommended next topics.
-- Analytics sorted weakest-to-strongest by topic, high-probability accuracy, mock trend list, most-missed topics, and JSON summary export.
-- Settings export/import for progress, current course pack export, import course-pack placeholder, and shortcut reference.
-- Course Builder placeholder for future source import and generated course-pack workflow.
+- Serve the repo over HTTP.
+- Course data loads from `data/courses.json` and course folders.
+- Progress stays in browser `localStorage` under `studyforge:v1`.
+- The sidebar shows `Local Mode`.
 
-## Current File Tree
+Backend mode:
 
-```text
-studyforge/
-├── .gitignore
-├── CHANGELOG.md
-├── VERSION
-├── index.html
-├── README.md
-├── css/
-│   └── style.css
-├── js/
-│   ├── analytics.js
-│   ├── app.js
-│   ├── config.js
-│   ├── courses.js
-│   ├── dashboard.js
-│   ├── flashcards.js
-│   ├── mockExam.js
-│   ├── practice.js
-│   ├── search.js
-│   ├── storage.js
-│   └── validation.js
-├── data/
-│   ├── courses.json
-│   └── d413/
-│       ├── course.json
-│       ├── questions.json
-│       ├── flashcards.json
-│       ├── glossary.json
-│       ├── cheatsheets.json
-│       ├── mock-exams.json
-│       └── sources.json
-└── assets/
-    └── images/
-```
+- Run the FastAPI app from `backend/`.
+- The frontend checks `/api/admin/health`.
+- If the backend is available, users sign in.
+- Courses load from SQLite exports.
+- Attempts, bookmarks, and mock results sync to the backend.
+- LocalStorage remains an immediate frontend cache so the UI stays responsive.
 
-## Local Testing
-
-Because StudyForge loads JSON with `fetch`, serve it over HTTP instead of opening `index.html` directly.
-
-Windows PowerShell:
+## Local Static Run
 
 ```powershell
 python -m http.server 8080
-```
-
-Linux:
-
-```bash
-python3 -m http.server 8080
 ```
 
 Open:
@@ -78,152 +34,143 @@ Open:
 http://127.0.0.1:8080/
 ```
 
-## Nginx Deployment
+Stop the backend to test fallback mode. The app should show `Local Mode` and still load D413 and Security+ from `data/`.
 
-Deploy under `/studyforge/`:
-
-```bash
-sudo mkdir -p /var/www/html/studyforge
-sudo cp -r studyforge/* /var/www/html/studyforge/
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
-Open:
-
-```text
-http://192.168.86.13/studyforge/
-```
-
-Deploy over the existing `/d413/` path:
+## Backend Setup
 
 ```bash
-sudo mkdir -p /var/www/html/d413
-sudo cp -r studyforge/* /var/www/html/d413/
-sudo nginx -t
-sudo systemctl reload nginx
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m app.seed
+uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Open:
+Windows PowerShell:
+
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m app.seed
+uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+SQLite database:
 
 ```text
-http://192.168.86.13/d413/
+backend/studyforge.db
 ```
 
-All fetch paths are relative, so the app can be hosted from either subdirectory.
-
-## GitHub Setup
-
-From `E:\DevWrk\studyforge`:
+Override with:
 
 ```bash
-git init
-git add .
-git commit -m "Release StudyForge v0.2"
-git branch -M main
-git remote add origin https://github.com/YOUR-USER/YOUR-REPO.git
-git push -u origin main
+export STUDYFORGE_DATABASE_URL=sqlite:////opt/studyforge/studyforge.db
 ```
 
-## Add Another Course
+## Default Admin
 
-1. Create a new folder under `data/`, for example `data/mycourse/`.
-2. Add the required JSON files:
-   - `course.json`
-   - `questions.json`
-   - `flashcards.json`
-   - `glossary.json`
-   - `cheatsheets.json`
-   - `mock-exams.json`
-   - `sources.json`
-3. Register the course in `data/courses.json`:
+Seed creates:
 
-```json
-{
-  "id": "mycourse",
-  "name": "My Course Name",
-  "shortName": "MY101",
-  "description": "Short course description",
-  "path": "data/mycourse/"
-}
+- Username: `admin`
+- Password: `changeme`
+- Role: `admin`
+
+Change this before deployment. The default password is only for local bootstrap.
+
+## Import Existing D413 Data
+
+From `backend/`:
+
+```bash
+python -m app.seed --import-static ../data/d413
 ```
 
-Keep paths relative.
+You can also import from the Administration screen after logging in as an admin.
 
-## Data Schema Overview
+## Add Security+
 
-`data/courses.json` is the manifest:
-
-```json
-[
-  {
-    "id": "d413",
-    "name": "D413 Telecommunications & Wireless Communications",
-    "shortName": "D413",
-    "description": "WGU Telecommunications and Wireless Communications",
-    "path": "data/d413/"
-  }
-]
-```
-
-`course.json` defines course metadata and topic names.
-
-`questions.json` items should include:
-
-```json
-{
-  "id": "course-q0001",
-  "topic": "Multiplexing",
-  "subtopic": "FDM",
-  "difficulty": "Medium",
-  "probability": 5,
-  "sourceTags": ["Original"],
-  "question": "Question text",
-  "choices": ["A", "B", "C", "D"],
-  "answer": "B",
-  "explanation": "Why the answer is correct.",
-  "memory": "Optional memory trick.",
-  "examTip": "Optional exam tip."
-}
-```
-
-`flashcards.json`, `glossary.json`, `cheatsheets.json`, `mock-exams.json`, and `sources.json` are optional feature data files, but each course folder should include them for consistency.
-
-## Validation
-
-`js/validation.js` runs after a course loads and logs warnings to the browser console for:
-
-- Missing required question fields.
-- Duplicate question IDs.
-- Answers not present in choices.
-- Empty topics.
-- Probability values outside `1` through `5`.
-- Question topics not listed in `course.json`.
-
-Validation warnings do not stop the app.
-
-## Progress Storage
-
-Progress is stored only in this browser under:
+Security+ starter data is under:
 
 ```text
-studyforge:v1
+data/secplus/
 ```
 
-Stored data includes answered questions, missed questions, missed notes, bookmarks, review-later items, topic stats, session history, mock exam history, flashcard stats, and settings.
+It is registered in `data/courses.json`. These are original StudyForge starter examples, not official exam questions. To import into SQLite:
 
-Use Settings to export progress JSON before:
+```bash
+cd backend
+python -m app.seed --import-static ../data/secplus
+```
 
-- Clearing browser data.
-- Moving to another browser or machine.
-- Replacing a course pack.
-- Resetting local progress.
+## Export A Course Pack
 
-## Backup Guidance
+Backend API:
 
-Use Settings for two different exports:
+```text
+GET /api/export/{course_code}
+```
 
-- `Export JSON`: backs up browser progress.
-- `Export Current Course Pack`: downloads the loaded course data as one JSON bundle.
+Frontend:
 
-The course-pack import control is a placeholder for inspection only. A static app cannot write permanent files into `/data/`; add new course folders manually and update `data/courses.json`.
+- Backend mode: Administration -> Export Active DB Course.
+- Static mode: Settings -> Export Current Course Pack.
+
+## Ubuntu / Nginx Deployment
+
+Install backend:
+
+```bash
+cd /opt/studyforge/backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m app.seed --import-static ../data/d413
+uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Serve frontend from:
+
+```text
+/var/www/html/studyforge
+```
+
+Proxy `/api` to:
+
+```text
+http://127.0.0.1:8000
+```
+
+Examples:
+
+- `deploy/nginx/studyforge.conf`
+- `deploy/systemd/studyforge-api.service`
+
+## SQLite Backup
+
+Stop writes or run during low activity, then copy the DB:
+
+```bash
+sqlite3 /opt/studyforge/backend/studyforge.db ".backup '/opt/backups/studyforge-$(date +%F).db'"
+```
+
+Also keep static course packs under version control.
+
+## Project Layout
+
+```text
+backend/                 FastAPI app, SQLite models, import/export services
+css/                     Static frontend styles
+data/                    Static course packs
+docs/                    Architecture and deployment docs
+js/                      Vanilla JS frontend modules
+tools/coursepack-builder Course Builder prompts, templates, examples
+```
+
+## Tests
+
+```bash
+python -m pytest backend/tests -q
+```

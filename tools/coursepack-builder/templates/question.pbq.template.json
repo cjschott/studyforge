@@ -1,0 +1,24 @@
+{
+  "id": "course-q0004",
+  "type": "pbq",
+  "topic": "Topic",
+  "subtopic": "Subtopic",
+  "difficulty": 4,
+  "probability": 3,
+  "sourceTags": ["Generated"],
+  "sourceType": "generated",
+  "scenario": "Scenario text.",
+  "task": "Structured task instructions.",
+  "question": "Performance-based placeholder.",
+  "choices": [],
+  "answer": {
+    "manualCheck": true,
+    "expected": ["Expected step"]
+  },
+  "explanation": "Reviewer guidance and expected solution.",
+  "memory": "",
+  "examTip": "",
+  "status": "generated",
+  "confidence": 5,
+  "lineage": { "sourceId": "source-id" }
+}

@@ -9,6 +9,14 @@ const REQUIRED_QUESTION_FIELDS = [
   "explanation"
 ];
 
+function questionType(question) {
+  return question.type || question.questionType || "single_choice";
+}
+
+function numericInRange(value, min, max) {
+  return Number.isInteger(value) && value >= min && value <= max;
+}
+
 function warn(message, detail) {
   if (detail === undefined) {
     console.warn(`[StudyForge data] ${message}`);
@@ -36,15 +44,63 @@ export function validateCourseBundle(bundle) {
       ids.add(question.id);
     }
 
-    if (!Array.isArray(question.choices) || question.choices.length < 2) {
-      warnings.push(`Question ${question.id || index + 1} should have at least two choices.`);
-    } else if (!question.choices.includes(question.answer)) {
-      warnings.push(`Question ${question.id || index + 1} answer is not present in choices.`);
+    const type = questionType(question);
+    if (["single_choice", "diagram"].includes(type)) {
+      if (!Array.isArray(question.choices) || question.choices.length < 2) {
+        warnings.push(`Question ${question.id || index + 1} should have at least two choices.`);
+      } else if (!question.choices.includes(question.answer)) {
+        warnings.push(`Question ${question.id || index + 1} answer is not present in choices.`);
+      }
+    }
+
+    if (type === "multi_select") {
+      if (!Array.isArray(question.answer)) {
+        warnings.push(`Question ${question.id || index + 1} multi_select answer must be an array.`);
+      } else if (!Array.isArray(question.choices) || question.answer.some((answer) => !question.choices.includes(answer))) {
+        warnings.push(`Question ${question.id || index + 1} multi_select answer contains values not present in choices.`);
+      }
+    }
+
+    if (type === "matching") {
+      const choicesValid = question.choices
+        && Array.isArray(question.choices.left)
+        && Array.isArray(question.choices.right);
+      if (!choicesValid || !question.answer || typeof question.answer !== "object" || Array.isArray(question.answer)) {
+        warnings.push(`Question ${question.id || index + 1} matching question is malformed.`);
+      }
+    }
+
+    if (type === "ordering" && (!Array.isArray(question.choices) || !Array.isArray(question.answer))) {
+      warnings.push(`Question ${question.id || index + 1} ordering question is malformed.`);
     }
 
     const probability = Number(question.probability);
     if (!Number.isFinite(probability) || probability < 1 || probability > 5) {
       warnings.push(`Question ${question.id || index + 1} probability should be between 1 and 5.`);
+    }
+
+    if (typeof question.difficulty === "number" && !numericInRange(question.difficulty, 1, 5)) {
+      warnings.push(`Question ${question.id || index + 1} difficulty should be between 1 and 5.`);
+    }
+
+    if (question.confidence !== undefined && !numericInRange(question.confidence, 1, 10)) {
+      warnings.push(`Question ${question.id || index + 1} confidence should be between 1 and 10.`);
+    }
+
+    if (!question.explanation) {
+      warnings.push(`Question ${question.id || index + 1} missing explanation.`);
+    }
+
+    if (!question.sourceTags?.length && !question.sourceType) {
+      warnings.push(`Question ${question.id || index + 1} missing source.`);
+    }
+
+    if (!question.status) {
+      warnings.push(`Question ${question.id || index + 1} missing status.`);
+    }
+
+    if (!question.lineage) {
+      warnings.push(`Question ${question.id || index + 1} missing lineage.`);
     }
 
     if (question.topic && topics.length && !topics.includes(question.topic)) {

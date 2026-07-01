@@ -22,6 +22,8 @@
 
       <label class="select-label" for="course-select">Course</label>
       <select id="course-select" class="course-select" aria-label="Select course"></select>
+      <div id="backend-status" class="mode-indicator local">Local Mode</div>
+      <div id="user-area" class="user-area" hidden></div>
 
       <nav class="nav-list" aria-label="Primary">
         <button class="nav-link active" data-view="dashboard" type="button">Dashboard</button>
@@ -34,6 +36,7 @@
         <button class="nav-link" data-view="search" type="button">Search</button>
         <button class="nav-link" data-view="analytics" type="button">Analytics</button>
         <button class="nav-link" data-view="courseBuilder" type="button">Course Builder</button>
+        <button class="nav-link admin-only" data-view="admin" type="button" hidden>Administration</button>
         <button class="nav-link" data-view="settings" type="button">Settings</button>
       </nav>
 

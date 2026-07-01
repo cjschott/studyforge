@@ -1,0 +1,10 @@
+{
+  "id": "course-code",
+  "name": "Course Name",
+  "shortName": "COURSE",
+  "version": "0.1",
+  "description": "Course description.",
+  "examType": "professional_certification",
+  "provider": "Provider",
+  "topics": ["Topic"]
+}

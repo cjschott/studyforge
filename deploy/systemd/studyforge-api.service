@@ -1,0 +1,15 @@
+[Unit]
+Description=StudyForge FastAPI backend
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/studyforge/backend
+Environment=STUDYFORGE_SECRET_KEY=change-this-secret
+ExecStart=/opt/studyforge/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

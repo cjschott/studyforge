@@ -1,4 +1,5 @@
 import { APP_CONFIG } from "./config.js";
+import { syncBookmark, syncMockExam, syncQuestionAttempt } from "./backendProgress.js";
 
 const STORAGE_KEY = APP_CONFIG.storageKey;
 
@@ -112,6 +113,16 @@ export function getCourseState(courseId) {
   return courseState;
 }
 
+export function replaceCourseState(courseId, courseState) {
+  const state = readState();
+  state.courses[courseId] = {
+    ...defaultCourseState(),
+    ...(courseState || {})
+  };
+  writeState(state);
+  return state.courses[courseId];
+}
+
 export function resetCourseProgress(courseId) {
   const state = readState();
   state.courses[courseId] = defaultCourseState();
@@ -187,6 +198,7 @@ export function recordQuestionAnswer(courseId, question, selected, isCorrect, op
 
   courseState.answered[question.id] = previous;
   writeState(state);
+  syncQuestionAttempt(courseId, question, selected, isCorrect, options);
   return previous;
 }
 
@@ -216,7 +228,9 @@ export function toggleBookmark(courseId, question) {
     };
   }
   writeState(state);
-  return Boolean(courseState.bookmarks[question.id]);
+  const enabled = Boolean(courseState.bookmarks[question.id]);
+  syncBookmark(question, enabled);
+  return enabled;
 }
 
 export function toggleReviewLater(courseId, question) {
@@ -251,6 +265,7 @@ export function recordMockExam(courseId, result) {
     total: result.total
   });
   writeState(state);
+  syncMockExam(courseId, result);
 }
 
 export function recordFlashcard(courseId, card, result) {

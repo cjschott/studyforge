@@ -1,0 +1,19 @@
+{
+  "id": "course-q0002",
+  "type": "multi_select",
+  "topic": "Topic",
+  "subtopic": "Subtopic",
+  "difficulty": 3,
+  "probability": 3,
+  "sourceTags": ["Generated"],
+  "sourceType": "generated",
+  "question": "Select all correct options.",
+  "choices": ["Correct A", "Correct B", "Distractor C", "Distractor D"],
+  "answer": ["Correct A", "Correct B"],
+  "explanation": "Explain all correct and incorrect options.",
+  "memory": "",
+  "examTip": "",
+  "status": "generated",
+  "confidence": 5,
+  "lineage": { "sourceId": "source-id" }
+}

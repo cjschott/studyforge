@@ -1,4 +1,5 @@
 import { calculateMetrics, progressClass } from "./analytics.js";
+import { apiGet, apiPost } from "./api.js";
 import { APP_CONFIG } from "./config.js";
 import { exportProgress, getCourseState, getSettings, importProgress, resetAllProgress, updateSettings } from "./storage.js";
 
@@ -486,4 +487,146 @@ export function renderCourseBuilder(ctx) {
       <p class="muted">StudyForge can import and export JSON in the browser, but it cannot write new files to <code>data/</code>. Permanent courses should be added as folders in the repository and registered in <code>data/courses.json</code>.</p>
     </section>
   `;
+}
+
+export function renderAdmin(ctx) {
+  ctx.root.innerHTML = `
+    <div class="view-header">
+      <div>
+        <h2>Administration</h2>
+        <p class="muted">Manage local users, database status, and course import/export.</p>
+      </div>
+      <button id="admin-refresh" class="button" type="button">Refresh</button>
+    </div>
+
+    <section class="grid grid-2">
+      <article class="card">
+        <h3>Backend Status</h3>
+        <div id="admin-health" class="admin-panel"><p class="muted">Loading status...</p></div>
+      </article>
+      <article class="card">
+        <h3>Course Import / Export</h3>
+        <p class="muted">Import the active static course into SQLite or export the DB course back to a static-compatible bundle.</p>
+        <div class="button-row">
+          <button id="admin-import-course" class="button button-primary" type="button">Import Active Static Course</button>
+          <button id="admin-export-course" class="button" type="button">Export Active DB Course</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid grid-2" style="margin-top: 1rem;">
+      <article class="card">
+        <h3>Create User</h3>
+        <form id="admin-create-user" class="grid">
+          <div class="field">
+            <label for="admin-username">Username</label>
+            <input id="admin-username" class="input" name="username" required>
+          </div>
+          <div class="field">
+            <label for="admin-display-name">Display name</label>
+            <input id="admin-display-name" class="input" name="display_name" required>
+          </div>
+          <div class="field">
+            <label for="admin-password">Temporary password</label>
+            <input id="admin-password" class="input" name="password" type="password" required minlength="6">
+          </div>
+          <div class="field">
+            <label for="admin-role">Role</label>
+            <select id="admin-role" class="course-select" name="role">
+              <option value="student">student</option>
+              <option value="instructor">instructor</option>
+              <option value="admin">admin</option>
+            </select>
+          </div>
+          <button class="button button-primary" type="submit">Create User</button>
+        </form>
+      </article>
+      <article class="card">
+        <h3>Users</h3>
+        <div id="admin-users"><p class="muted">Loading users...</p></div>
+      </article>
+    </section>
+  `;
+
+  const renderHealth = async () => {
+    const [health, stats] = await Promise.all([
+      apiGet("/api/admin/health"),
+      apiGet("/api/admin/db-stats")
+    ]);
+    ctx.root.querySelector("#admin-health").innerHTML = `
+      <table class="data-table">
+        <tbody>
+          <tr><th>Service</th><td>${health.service}</td></tr>
+          <tr><th>Users</th><td>${stats.users}</td></tr>
+          <tr><th>Courses</th><td>${stats.courses}</td></tr>
+          <tr><th>Questions</th><td>${stats.questions}</td></tr>
+          <tr><th>Attempts</th><td>${stats.attempts}</td></tr>
+        </tbody>
+      </table>
+    `;
+  };
+
+  const renderUsers = async () => {
+    const users = await apiGet("/api/users");
+    ctx.root.querySelector("#admin-users").innerHTML = `
+      <table class="data-table">
+        <thead><tr><th>User</th><th>Role</th><th>Status</th></tr></thead>
+        <tbody>
+          ${users.map((user) => `
+            <tr>
+              <td>${user.display_name}<br><small>${user.username}</small></td>
+              <td>${user.role}</td>
+              <td>${user.is_active ? "Active" : "Disabled"}</td>
+            </tr>
+          `).join("") || `<tr><td colspan="3">No users.</td></tr>`}
+        </tbody>
+      </table>
+    `;
+  };
+
+  const refresh = async () => {
+    try {
+      await Promise.all([renderHealth(), renderUsers()]);
+    } catch (error) {
+      ctx.showStatus(`Admin refresh failed: ${error.message}`);
+    }
+  };
+
+  ctx.root.querySelector("#admin-refresh").addEventListener("click", refresh);
+  ctx.root.querySelector("#admin-create-user").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    try {
+      await apiPost("/api/users", {
+        username: String(data.get("username") || ""),
+        display_name: String(data.get("display_name") || ""),
+        password: String(data.get("password") || ""),
+        role: String(data.get("role") || "student")
+      });
+      event.currentTarget.reset();
+      ctx.showStatus("User created.");
+      await renderUsers();
+    } catch (error) {
+      ctx.showStatus(`User create failed: ${error.message}`);
+    }
+  });
+  ctx.root.querySelector("#admin-import-course").addEventListener("click", async () => {
+    try {
+      const result = await apiPost(`/api/import/legacy-static-course/${ctx.bundle.meta.id}`, {});
+      ctx.showStatus(`Imported ${result.result.course_code}.`);
+      await refresh();
+    } catch (error) {
+      ctx.showStatus(`Import failed: ${error.message}`);
+    }
+  });
+  ctx.root.querySelector("#admin-export-course").addEventListener("click", async () => {
+    try {
+      const exported = await apiGet(`/api/export/${ctx.bundle.meta.id}`);
+      downloadJson(`studyforge-db-export-${ctx.bundle.meta.id}.json`, exported);
+    } catch (error) {
+      ctx.showStatus(`Export failed: ${error.message}`);
+    }
+  });
+
+  refresh();
 }

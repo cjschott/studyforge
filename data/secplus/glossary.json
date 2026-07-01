@@ -1,0 +1,38 @@
+[
+  {
+    "term": "Confidentiality",
+    "topic": "Core Principles",
+    "definition": "Protection against unauthorized disclosure of information.",
+    "examTip": "Disclosure scenarios map to confidentiality."
+  },
+  {
+    "term": "MFA",
+    "topic": "Identity and Access",
+    "definition": "Authentication using factors from more than one category.",
+    "examTip": "Two passwords are the same factor category."
+  },
+  {
+    "term": "Ransomware",
+    "topic": "Threats",
+    "definition": "Malware that denies access to data or systems and demands payment.",
+    "examTip": "Backups and recovery testing matter."
+  },
+  {
+    "term": "TLS",
+    "topic": "Cryptography",
+    "definition": "Protocol suite used to secure transport sessions such as HTTPS.",
+    "examTip": "Certificate and handshake clues often point to TLS."
+  },
+  {
+    "term": "SIEM",
+    "topic": "Security Operations",
+    "definition": "Platform for aggregating and correlating security events and logs.",
+    "examTip": "Correlation across log sources points to SIEM."
+  },
+  {
+    "term": "Zero Trust",
+    "topic": "Identity and Access",
+    "definition": "Security model that avoids implicit trust and continuously verifies access.",
+    "examTip": "Look for least privilege, continuous verification, and microsegmentation."
+  }
+]

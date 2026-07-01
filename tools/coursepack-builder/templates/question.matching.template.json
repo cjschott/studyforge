@@ -1,0 +1,25 @@
+{
+  "id": "course-q0003",
+  "type": "matching",
+  "topic": "Topic",
+  "subtopic": "Subtopic",
+  "difficulty": 3,
+  "probability": 3,
+  "sourceTags": ["Generated"],
+  "sourceType": "generated",
+  "question": "Match each item.",
+  "choices": {
+    "left": ["Term A", "Term B"],
+    "right": ["Definition A", "Definition B"]
+  },
+  "answer": {
+    "Term A": "Definition A",
+    "Term B": "Definition B"
+  },
+  "explanation": "Explain the mappings.",
+  "memory": "",
+  "examTip": "",
+  "status": "generated",
+  "confidence": 5,
+  "lineage": { "sourceId": "source-id" }
+}

@@ -1,0 +1,8 @@
+{
+  "id": "secplus-mini",
+  "name": "Security+ Mini Example",
+  "shortName": "SEC+ Mini",
+  "version": "0.1",
+  "description": "Tiny example pack for Course Builder prompt testing.",
+  "topics": ["Identity and Access"]
+}

@@ -7,3 +7,7 @@ dist/
 build/
 .vscode/
 .idea/
+backend/.venv/
+backend/studyforge.db
+__pycache__/
+.pytest_cache/

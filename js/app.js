@@ -1,12 +1,15 @@
 import { loadCourseBundle, loadCourses } from "./courses.js";
 import { calculateMetrics } from "./analytics.js";
 import { APP_CONFIG } from "./config.js";
-import { renderAnalytics, renderCourseBuilder, renderDashboard, renderSettings, renderStudyGuide } from "./dashboard.js";
+import { apiState, detectBackend, isBackendMode } from "./api.js";
+import { fetchCurrentUser, login, logout, renderLoginView } from "./authClient.js";
+import { loadBackendCourseState } from "./backendProgress.js";
+import { renderAdmin, renderAnalytics, renderCourseBuilder, renderDashboard, renderSettings, renderStudyGuide } from "./dashboard.js";
 import { renderFlashcards } from "./flashcards.js";
 import { renderMockExam } from "./mockExam.js";
 import { renderQuestionMode } from "./practice.js";
 import { renderSearch } from "./search.js";
-import { ensureCourseState, getCourseState, getSettings, resetCourseProgress, updateSettings } from "./storage.js";
+import { ensureCourseState, getCourseState, getSettings, replaceCourseState, resetCourseProgress, updateSettings } from "./storage.js";
 import { validateCourseBundle } from "./validation.js";
 
 const root = document.querySelector("#main-view");
@@ -19,6 +22,9 @@ const topbarMode = document.querySelector("#topbar-mode");
 const resetCourseButton = document.querySelector("#reset-course");
 const statusRegion = document.querySelector("#status-region");
 const appVersion = document.querySelector("#app-version");
+const backendStatus = document.querySelector("#backend-status");
+const userArea = document.querySelector("#user-area");
+const adminNav = document.querySelector("[data-view='admin']");
 
 const viewLabels = {
   dashboard: "Dashboard",
@@ -32,6 +38,7 @@ const viewLabels = {
   search: "Search",
   analytics: "Analytics",
   courseBuilder: "Course Builder",
+  admin: "Administration",
   settings: "Settings"
 };
 
@@ -42,7 +49,8 @@ const app = {
   view: "dashboard",
   params: {},
   cleanupCallbacks: [],
-  mockExam: null
+  mockExam: null,
+  user: null
 };
 
 function showStatus(message) {
@@ -98,6 +106,36 @@ function updateChrome() {
   topbarMode.textContent = viewLabels[app.view] || "Study";
 }
 
+function updateBackendChrome() {
+  const backend = apiState();
+  backendStatus.classList.toggle("api", backend.available && backend.authenticated);
+  backendStatus.classList.toggle("local", !backend.available || !backend.authenticated);
+  backendStatus.textContent = backend.available
+    ? backend.authenticated ? "Backend Mode" : "Backend Login"
+    : "Local Mode";
+
+  if (app.user) {
+    userArea.hidden = false;
+    userArea.innerHTML = `
+      <span>${app.user.display_name || app.user.username}</span>
+      <small>${app.user.role}</small>
+      <button id="logout-button" class="button" type="button">Logout</button>
+    `;
+    userArea.querySelector("#logout-button").addEventListener("click", async () => {
+      await logout();
+      app.user = null;
+      window.location.reload();
+    });
+  } else {
+    userArea.hidden = true;
+    userArea.innerHTML = "";
+  }
+
+  if (adminNav) {
+    adminNav.hidden = app.user?.role !== "admin";
+  }
+}
+
 function renderError(error) {
   root.innerHTML = `
     <section class="empty-state">
@@ -128,6 +166,7 @@ function render() {
   if (app.view === "search") renderSearch(ctx);
   if (app.view === "analytics") renderAnalytics(ctx);
   if (app.view === "courseBuilder") renderCourseBuilder(ctx);
+  if (app.view === "admin") renderAdmin(ctx);
   if (app.view === "settings") renderSettings(ctx);
 }
 
@@ -135,12 +174,27 @@ async function setCourse(courseId) {
   const course = app.courses.find((item) => item.id === courseId) || app.courses[0];
   if (!course) throw new Error("No courses are defined in data/courses.json.");
   app.course = course;
-  app.bundle = await loadCourseBundle(course);
+  app.bundle = await loadCourseBundle(course, { backend: isBackendMode() });
   validateCourseBundle(app.bundle);
   app.mockExam = null;
   ensureCourseState(course.id);
+  if (isBackendMode()) {
+    const backendState = await loadBackendCourseState(course.id);
+    if (backendState) replaceCourseState(course.id, backendState);
+  }
   courseSelect.value = course.id;
   render();
+}
+
+async function loadApplicationData() {
+  app.courses = await loadCourses({ backend: isBackendMode() });
+  courseSelect.innerHTML = app.courses.map((course) => `
+    <option value="${course.id}">${course.shortName || course.name}</option>
+  `).join("");
+
+  const settings = getSettings();
+  const defaultCourse = settings.defaultCourse || app.courses[0]?.id;
+  await setCourse(defaultCourse);
 }
 
 function setupEvents() {
@@ -172,14 +226,22 @@ function setupEvents() {
 async function init() {
   try {
     setupEvents();
-    app.courses = await loadCourses();
-    courseSelect.innerHTML = app.courses.map((course) => `
-      <option value="${course.id}">${course.shortName || course.name}</option>
-    `).join("");
-
-    const settings = getSettings();
-    const defaultCourse = settings.defaultCourse || app.courses[0]?.id;
-    await setCourse(defaultCourse);
+    await detectBackend();
+    if (apiState().available) {
+      try {
+        app.user = await fetchCurrentUser();
+      } catch (error) {
+        updateBackendChrome();
+        renderLoginView(root, async (username, password) => {
+          app.user = await login(username, password);
+          updateBackendChrome();
+          await loadApplicationData();
+        });
+        return;
+      }
+    }
+    updateBackendChrome();
+    await loadApplicationData();
   } catch (error) {
     console.error(error);
     renderError(error);

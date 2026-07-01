@@ -1,0 +1,19 @@
+[
+  {
+    "id": "secplus-mini-q0001",
+    "type": "single_choice",
+    "topic": "Identity and Access",
+    "subtopic": "AAA",
+    "difficulty": 2,
+    "probability": 5,
+    "sourceTags": ["Generated"],
+    "sourceType": "generated",
+    "question": "Which AAA function determines what a user may access?",
+    "choices": ["Authentication", "Authorization", "Accounting", "Attestation"],
+    "answer": "Authorization",
+    "explanation": "Authorization determines access after authentication succeeds.",
+    "status": "generated",
+    "confidence": 5,
+    "lineage": { "sourceId": "secplus-mini-src-001" }
+  }
+]

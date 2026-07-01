@@ -1,0 +1,11 @@
+[
+  {
+    "id": "secplus-mock-001",
+    "title": "Security+ Starter Mixed Practice",
+    "questionCount": 20,
+    "timeLimitMinutes": 30,
+    "selection": {
+      "shuffle": true
+    }
+  }
+]

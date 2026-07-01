@@ -1,0 +1,28 @@
+[
+  {
+    "id": "secplus-cs0001",
+    "title": "Core Security Comparisons",
+    "topic": "Core Principles",
+    "priority": 5,
+    "content": [
+      { "label": "Confidentiality", "value": "Prevents unauthorized disclosure." },
+      { "label": "Integrity", "value": "Prevents or detects unauthorized changes." },
+      { "label": "Availability", "value": "Keeps systems and data reachable." },
+      { "label": "Authentication", "value": "Proves identity." },
+      { "label": "Authorization", "value": "Determines allowed access." },
+      { "label": "Accounting", "value": "Records activity." }
+    ]
+  },
+  {
+    "id": "secplus-cs0002",
+    "title": "Secure Protocol Replacements",
+    "topic": "Network Security",
+    "priority": 4,
+    "content": [
+      { "label": "Telnet", "value": "Use SSH." },
+      { "label": "FTP", "value": "Use SFTP or FTPS." },
+      { "label": "HTTP admin", "value": "Use HTTPS." },
+      { "label": "Insecure remote desktop exposure", "value": "Use VPN, ZTNA, MFA, and restricted access." }
+    ]
+  }
+]

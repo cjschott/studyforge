@@ -1,0 +1,18 @@
+{
+  "id": "secplus",
+  "name": "Security+ Starter Study Pack",
+  "shortName": "Security+",
+  "version": "0.1-starter",
+  "description": "Starter examples for Security+ style study. These are original StudyForge practice items, not official exam questions.",
+  "examType": "professional_certification",
+  "provider": "CompTIA",
+  "topics": [
+    "Core Principles",
+    "Identity and Access",
+    "Threats",
+    "Cryptography",
+    "Network Security",
+    "Security Operations",
+    "Risk and Governance"
+  ]
+}
