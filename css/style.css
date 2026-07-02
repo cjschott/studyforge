@@ -687,6 +687,30 @@ small {
   white-space: pre-wrap;
 }
 
+.source-selection-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.source-selection-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-2);
+  padding: 0.78rem;
+}
+
+.source-selection-row strong,
+.source-selection-row small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .flashcard {
   min-height: 270px;
   display: grid;

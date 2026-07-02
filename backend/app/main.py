@@ -14,7 +14,7 @@ async def lifespan(_app: FastAPI):
     yield
 
 
-app = FastAPI(title="StudyForge API", version="0.4.0-alpha.1", lifespan=lifespan)
+app = FastAPI(title="StudyForge API", version="0.4.0-alpha.2", lifespan=lifespan)
 settings = get_settings()
 
 app.add_middleware(

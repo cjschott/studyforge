@@ -1,6 +1,6 @@
 # StudyForge
 
-StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.4.0-alpha.1` adds a Source Library foundation for storing uploaded source material, extracting text, and previewing chunks before future AI ingestion.
+StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.4.0-alpha.2` stabilizes Source Library metadata and adds Course Builder source selection for future course-pack drafting.
 
 The existing static app is preserved. If the backend is not running, StudyForge loads JSON course packs from `data/` and stores progress in browser `localStorage`.
 
@@ -21,6 +21,7 @@ Backend mode:
 - Courses load from SQLite exports.
 - Attempts, bookmarks, and mock results sync to the backend.
 - Source Library uploads, extraction, and chunks are available after login.
+- Course Builder can select extracted source materials and preview the selected context.
 - LocalStorage remains an immediate frontend cache so the UI stays responsive.
 
 ## Local Static Run
@@ -122,6 +123,10 @@ Extraction support is practical but intentionally simple:
 - DOCX uses `python-docx`.
 - PDF uses `pypdf`.
 - OCR, PPTX, Anki, vector search, and LLM generation are not part of v0.4.
+
+## Course Builder Source Selection
+
+Backend mode Course Builder can load source libraries, select source materials, and summarize the selected context by source count, chunk count, extraction readiness, and source type. This is only a preparation stage for future AI workflows; it does not generate concepts, questions, flashcards, or course packs yet.
 
 ## Add Security+
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.0-alpha.2
+
+- Stabilized Source Library material responses with chunk counts, extraction status, and extraction messages.
+- Stopped exposing absolute backend upload paths in source material API responses.
+- Added admin source-material delete cleanup for stored original files.
+- Added Course Builder source selection for backend-mode source libraries and materials.
+- Added selected-source context summaries for future course-pack drafting without enabling AI generation.
+
 ## v0.4.0-alpha.1
 
 - Added Source Library foundation with authenticated source-library CRUD APIs.

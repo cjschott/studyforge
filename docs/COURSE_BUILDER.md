@@ -1,12 +1,14 @@
 # Course Builder
 
-The v0.3 Course Builder is a foundation, not an automated generation pipeline.
+The v0.4 Course Builder is a source-selection workspace, not an automated generation pipeline.
 
 Files live under:
 
 ```text
 tools/coursepack-builder/
 ```
+
+The interactive frontend screen can load backend Source Libraries, list uploaded source materials, show extraction status and chunk counts, and summarize the selected source context. This context is local UI state for now; no AI job or course-pack generation job is created.
 
 Principles:
 
@@ -20,9 +22,13 @@ Principles:
 
 Workflow:
 
-1. Extract concepts.
-2. Generate draft questions by type.
-3. Generate supporting flashcards and glossary.
-4. Validate course pack quality.
-5. Human-review and update statuses.
-6. Import to SQLite.
+1. Upload and extract source material in Source Library.
+2. Open Course Builder and select the library.
+3. Choose extracted source materials for the draft context.
+4. Review chunk readiness and source type mix.
+5. Future pass: extract concepts.
+6. Future pass: generate draft questions by type.
+7. Future pass: generate supporting flashcards and glossary.
+8. Future pass: validate course pack quality.
+9. Future pass: human-review and update statuses.
+10. Future pass: import to SQLite.

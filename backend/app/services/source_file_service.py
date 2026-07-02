@@ -52,3 +52,19 @@ def write_original_file(content: bytes, safe_name: str, checksum: str) -> str:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid source file path")
     stored_path.write_bytes(content)
     return str(stored_path)
+
+
+def stored_path_for_display(stored_path: str) -> str:
+    name = Path(stored_path).name
+    return f"sources/originals/{name}" if name else ""
+
+
+def delete_original_file(stored_path: str) -> bool:
+    upload_dir = Path(get_settings().source_originals_dir).resolve()
+    target = Path(stored_path).resolve()
+    if upload_dir not in target.parents:
+        return False
+    if not target.exists():
+        return False
+    target.unlink()
+    return True

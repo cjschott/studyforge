@@ -212,6 +212,9 @@ class SourceMaterialOut(BaseModel):
     original_url: str
     checksum: str
     uploaded_by: int
+    chunk_count: int = 0
+    extraction_status: str = "not_extracted"
+    extraction_message: str = ""
     created_at: str
     updated_at: str
 

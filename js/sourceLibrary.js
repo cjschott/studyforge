@@ -69,6 +69,17 @@ export function uploadSourceMaterial(fields, file, apiFetchFn = apiFetch) {
 }
 
 
+export function sourceMaterialStatusSummary(material) {
+  const status = material.extraction_status || "not_extracted";
+  const chunks = Number(material.chunk_count || 0);
+  return {
+    status,
+    chunkLabel: `${chunks} ${chunks === 1 ? "chunk" : "chunks"}`,
+    statusClass: status === "completed" && chunks > 0 ? "green" : "yellow"
+  };
+}
+
+
 async function renderLibraryList(ctx) {
   ctx.root.innerHTML = `
     <div class="view-header">
@@ -263,17 +274,21 @@ async function renderLibraryDetail(ctx, libraryId) {
           <table class="data-table">
             <thead><tr><th>Title</th><th>Metadata</th><th>Actions</th></tr></thead>
             <tbody>
-              ${materials.map((material) => `
+              ${materials.map((material) => {
+                const status = sourceMaterialStatusSummary(material);
+                return `
                 <tr>
                   <td>${escapeHtml(material.title)}<br><small>${escapeHtml(material.original_filename)}</small></td>
                   <td>
                     <span class="tag blue">${escapeHtml(material.source_type)}</span>
                     <span class="tag yellow">Authority ${material.authority_level}</span>
                     <span class="tag">${escapeHtml(material.confidence)}</span>
+                    <span class="tag ${status.statusClass}">${escapeHtml(status.status)}</span>
+                    <span class="tag blue">${escapeHtml(status.chunkLabel)}</span>
                   </td>
                   <td><button class="button" data-source-material-open="${material.id}" type="button">Open</button></td>
                 </tr>
-              `).join("")}
+              `; }).join("")}
             </tbody>
           </table>
         ` : `<p class="muted">No materials in this library yet.</p>`}

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { buildSourceUploadFormData, uploadSourceMaterial } from "./sourceLibrary.js";
+import { buildSourceUploadFormData, sourceMaterialStatusSummary, uploadSourceMaterial } from "./sourceLibrary.js";
 
 test("source upload form data includes library metadata and file", () => {
   const file = new File(["Security+ notes"], "security-notes.md", { type: "text/markdown" });
@@ -50,4 +50,15 @@ test("source upload keeps backend duplicate message", async () => {
     ),
     /Duplicate source upload detected/
   );
+});
+
+test("source material status summary includes extraction status and chunks", () => {
+  const summary = sourceMaterialStatusSummary({
+    extraction_status: "completed",
+    chunk_count: 3
+  });
+
+  assert.equal(summary.status, "completed");
+  assert.equal(summary.chunkLabel, "3 chunks");
+  assert.equal(summary.statusClass, "green");
 });

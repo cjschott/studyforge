@@ -84,8 +84,11 @@ def test_upload_source_material_stores_safe_file_and_metadata(tmp_path, monkeypa
     assert body["verification_status"] == "needs_review"
     assert body["copyright_status"] == "owned"
     assert body["checksum"] == hashlib.sha256(content).hexdigest()
+    assert body["chunk_count"] == 0
+    assert body["extraction_status"] == "not_extracted"
     assert ".." not in body["original_filename"]
     assert ".." not in body["stored_path"]
+    assert not Path(body["stored_path"]).is_absolute()
     assert (upload_dir / Path(body["stored_path"]).name).exists()
 
 
@@ -133,6 +136,12 @@ def test_extract_text_source_creates_chunks_and_lists_them(tmp_path, monkeypatch
     assert "Identity controls" in chunks.json()[0]["text"]
     assert len(chunks.json()[0]["checksum"]) == 64
 
+    material = client.get(f"/api/source-materials/{uploaded.json()['id']}")
+    assert material.status_code == 200
+    assert material.json()["chunk_count"] == extraction.json()["chunks"]
+    assert material.json()["extraction_status"] == "completed"
+    assert "Extracted" in material.json()["extraction_message"]
+
 
 def test_csv_extraction_reads_rows_as_text(tmp_path, monkeypatch):
     client, library_id, _ = make_client(tmp_path, monkeypatch)
@@ -145,3 +154,17 @@ def test_csv_extraction_reads_rows_as_text(tmp_path, monkeypatch):
     assert extraction.status_code == 200
     assert chunks.json()[0]["text"].startswith("term definition")
     assert "MFA Multiple factors" in chunks.json()[0]["text"]
+
+
+def test_admin_delete_source_material_removes_stored_original(tmp_path, monkeypatch):
+    client, library_id, upload_dir = make_client(tmp_path, monkeypatch)
+    uploaded = upload_source(client, library_id, "delete-me.txt", b"temporary source")
+    stored_file = upload_dir / Path(uploaded.json()["stored_path"]).name
+
+    response = client.delete(f"/api/source-materials/{uploaded.json()['id']}")
+    fetched = client.get(f"/api/source-materials/{uploaded.json()['id']}")
+
+    assert stored_file.exists() is False
+    assert response.status_code == 200
+    assert response.json()["ok"] is True
+    assert fetched.status_code == 404

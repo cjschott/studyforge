@@ -15,7 +15,7 @@ from app.schemas import (
 )
 from app.services.source_chunking_service import chunk_extracted_text
 from app.services.source_extraction_service import extract_source_text
-from app.services.source_file_service import read_upload, write_original_file
+from app.services.source_file_service import delete_original_file, read_upload, stored_path_for_display, write_original_file
 
 
 router = APIRouter(tags=["source-libraries"])
@@ -60,7 +60,14 @@ def source_library_out(library: SourceLibrary) -> dict:
     }
 
 
-def source_material_out(material: SourceMaterial) -> dict:
+def source_material_out(material: SourceMaterial, db: Session) -> dict:
+    latest_job = (
+        db.query(SourceImportJob)
+        .filter_by(source_id=material.id)
+        .order_by(SourceImportJob.started_at.desc(), SourceImportJob.id.desc())
+        .first()
+    )
+    chunk_count = db.query(SourceChunk).filter_by(source_id=material.id).count()
     return {
         "id": material.id,
         "library_id": material.library_id,
@@ -71,10 +78,13 @@ def source_material_out(material: SourceMaterial) -> dict:
         "verification_status": material.verification_status,
         "copyright_status": material.copyright_status,
         "original_filename": material.original_filename,
-        "stored_path": material.stored_path,
+        "stored_path": stored_path_for_display(material.stored_path),
         "original_url": material.original_url,
         "checksum": material.checksum,
         "uploaded_by": material.uploaded_by,
+        "chunk_count": chunk_count,
+        "extraction_status": latest_job.status if latest_job else "not_extracted",
+        "extraction_message": latest_job.message if latest_job else "",
         "created_at": iso(material.created_at),
         "updated_at": iso(material.updated_at),
     }
@@ -186,7 +196,7 @@ def list_source_materials(
     if library_id is not None:
         query = query.filter(SourceMaterial.library_id == library_id)
     materials = query.order_by(SourceMaterial.created_at.desc(), SourceMaterial.id.desc()).all()
-    return [source_material_out(material) for material in materials]
+    return [source_material_out(material, db) for material in materials]
 
 
 @router.post("/api/source-materials/upload", response_model=SourceMaterialOut, status_code=status.HTTP_201_CREATED)
@@ -237,7 +247,7 @@ async def upload_source_material(
     db.add(material)
     db.commit()
     db.refresh(material)
-    return source_material_out(material)
+    return source_material_out(material, db)
 
 
 @router.get("/api/source-materials/{material_id}", response_model=SourceMaterialOut)
@@ -246,7 +256,7 @@ def get_source_material(
     db: Session = Depends(get_db),
     _: User = Depends(get_current_user),
 ):
-    return source_material_out(get_material_or_404(db, material_id))
+    return source_material_out(get_material_or_404(db, material_id), db)
 
 
 @router.put("/api/source-materials/{material_id}", response_model=SourceMaterialOut)
@@ -277,7 +287,7 @@ def update_source_material(
     db.add(material)
     db.commit()
     db.refresh(material)
-    return source_material_out(material)
+    return source_material_out(material, db)
 
 
 @router.delete("/api/source-materials/{material_id}")
@@ -287,8 +297,10 @@ def delete_source_material(
     _: User = Depends(require_roles("admin")),
 ):
     material = get_material_or_404(db, material_id)
+    stored_path = material.stored_path
     db.delete(material)
     db.commit()
+    delete_original_file(stored_path)
     return {"ok": True}
 
 
