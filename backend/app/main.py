@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.database import init_db
-from app.routers import admin, auth, courses, import_export, progress, questions, users
+from app.routers import admin, auth, courses, import_export, progress, questions, source_libraries, users
 
 
 @asynccontextmanager
@@ -14,7 +14,7 @@ async def lifespan(_app: FastAPI):
     yield
 
 
-app = FastAPI(title="StudyForge API", version="0.3.0-alpha.2", lifespan=lifespan)
+app = FastAPI(title="StudyForge API", version="0.4.0-alpha.1", lifespan=lifespan)
 settings = get_settings()
 
 app.add_middleware(
@@ -32,3 +32,4 @@ app.include_router(courses.router)
 app.include_router(questions.router)
 app.include_router(progress.router)
 app.include_router(import_export.router)
+app.include_router(source_libraries.router)

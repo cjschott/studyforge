@@ -14,3 +14,4 @@ backend/*.db
 __pycache__/
 .pytest_cache/
 *.pyc
+backend/data/sources/originals/

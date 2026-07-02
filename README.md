@@ -1,6 +1,6 @@
 # StudyForge
 
-StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.3.0-alpha.2` adds a more usable FastAPI + SQLite alpha for accounts, DB-backed course data, synced progress, administration, question review, and course import/export.
+StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.4.0-alpha.1` adds a Source Library foundation for storing uploaded source material, extracting text, and previewing chunks before future AI ingestion.
 
 The existing static app is preserved. If the backend is not running, StudyForge loads JSON course packs from `data/` and stores progress in browser `localStorage`.
 
@@ -20,6 +20,7 @@ Backend mode:
 - If the backend is available, users sign in.
 - Courses load from SQLite exports.
 - Attempts, bookmarks, and mock results sync to the backend.
+- Source Library uploads, extraction, and chunks are available after login.
 - LocalStorage remains an immediate frontend cache so the UI stays responsive.
 
 ## Local Static Run
@@ -71,6 +72,7 @@ export STUDYFORGE_DATABASE_URL=sqlite:////opt/studyforge/studyforge.db
 export STUDYFORGE_SECRET_KEY='replace-with-a-long-random-secret'
 export STUDYFORGE_ADMIN_PASSWORD='replace-default-password'
 export STUDYFORGE_ENV=production
+export STUDYFORGE_SOURCE_ORIGINALS_DIR=/opt/studyforge/backend/data/sources/originals
 ```
 
 ## Default Admin
@@ -92,6 +94,34 @@ python -m app.seed --import-static ../data/d413
 ```
 
 You can also import from the Administration screen after logging in as an admin.
+
+## Source Library
+
+Backend mode includes a Source Library section in the sidebar after login.
+
+Supported initial uploads:
+
+- PDF
+- DOCX
+- TXT
+- Markdown
+- CSV
+
+Original files are stored under the backend service directory by default:
+
+```text
+backend/data/sources/originals/
+```
+
+Set `STUDYFORGE_SOURCE_ORIGINALS_DIR` to move this directory. Keep it outside the static frontend web root. Uploaded files are checksumed with SHA256 and duplicate uploads are rejected with a friendly conflict message.
+
+Extraction support is practical but intentionally simple:
+
+- TXT and Markdown are read directly.
+- CSV rows are joined into readable text.
+- DOCX uses `python-docx`.
+- PDF uses `pypdf`.
+- OCR, PPTX, Anki, vector search, and LLM generation are not part of v0.4.
 
 ## Add Security+
 
@@ -141,6 +171,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 export STUDYFORGE_ADMIN_PASSWORD='replace-default-password'
+export STUDYFORGE_SOURCE_ORIGINALS_DIR=/opt/studyforge/backend/data/sources/originals
 python -m app.seed --import-static ../data/d413
 python -m app.seed --import-static ../data/secplus
 sudo cp -r ../index.html ../css ../js ../data /var/www/html/studyforge/
@@ -175,6 +206,8 @@ Also keep static course packs under version control.
 - Diagram questions render images and choices but do not support clickable regions yet.
 - Course Builder files are prompt/template scaffolding, not an automated source-ingestion UI.
 - Security+ content is generated/example starter material, not official exam content and not verified.
+- Source Library extraction does not OCR scans and does not create questions automatically.
+- The AI provider is intentionally disabled until a local LLM provider is configured in a later release.
 
 ## Project Layout
 

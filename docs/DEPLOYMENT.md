@@ -25,6 +25,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 export STUDYFORGE_ADMIN_PASSWORD='replace-default-password'
+export STUDYFORGE_SOURCE_ORIGINALS_DIR=/opt/studyforge/backend/data/sources/originals
 python -m app.seed --import-static ../data/d413
 python -m app.seed --import-static ../data/secplus
 ```
@@ -70,9 +71,10 @@ http://schweb2/studyforge/
 
 ```bash
 sqlite3 /opt/studyforge/backend/studyforge.db ".backup '/opt/backups/studyforge-$(date +%F).db'"
+sudo tar -C /opt/studyforge/backend -czf "/opt/backups/studyforge-sources-$(date +%F).tar.gz" data/sources/originals
 ```
 
-Back up static course packs and the SQLite database.
+Back up static course packs, the SQLite database, and backend-local Source Library originals.
 
 Export course packs from the API:
 

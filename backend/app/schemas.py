@@ -163,3 +163,72 @@ class ImportPathRequest(BaseModel):
 
 class JsonCoursePackImport(BaseModel):
     bundle: dict[str, Any]
+
+
+class SourceLibraryCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=255)
+    description: str = ""
+    category: str = ""
+
+
+class SourceLibraryPatch(BaseModel):
+    name: str | None = Field(default=None, min_length=1, max_length=255)
+    description: str | None = None
+    category: str | None = None
+
+
+class SourceLibraryOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    description: str
+    category: str
+    created_at: str
+    updated_at: str
+
+
+class SourceMaterialPatch(BaseModel):
+    title: str | None = Field(default=None, min_length=1, max_length=255)
+    source_type: str | None = None
+    authority_level: int | None = Field(default=None, ge=1, le=5)
+    confidence: str | None = None
+    verification_status: str | None = None
+    copyright_status: str | None = None
+    original_url: str | None = None
+
+
+class SourceMaterialOut(BaseModel):
+    id: int
+    library_id: int
+    title: str
+    source_type: str
+    authority_level: int
+    confidence: str
+    verification_status: str
+    copyright_status: str
+    original_filename: str
+    stored_path: str
+    original_url: str
+    checksum: str
+    uploaded_by: int
+    created_at: str
+    updated_at: str
+
+
+class SourceChunkOut(BaseModel):
+    id: int
+    source_id: int
+    chunk_number: int
+    page_number: int | None = None
+    heading: str
+    text: str
+    checksum: str
+    created_at: str
+
+
+class SourceExtractionOut(BaseModel):
+    source_id: int
+    status: str
+    message: str
+    chunks: int

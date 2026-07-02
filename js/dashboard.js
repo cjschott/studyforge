@@ -489,7 +489,44 @@ export function renderCourseBuilder(ctx) {
   `;
 }
 
+export async function handleAdminCreateUserSubmit(event, options = {}) {
+  event?.preventDefault?.();
+
+  const {
+    apiPostFn = apiPost,
+    formDataFactory = (form) => new FormData(form),
+    renderUsers = async () => {},
+    showStatus = () => {}
+  } = options;
+  const form = event?.currentTarget || null;
+
+  if (!form) {
+    showStatus("User create failed: form is unavailable.");
+    return;
+  }
+
+  const data = formDataFactory(form);
+
+  try {
+    await apiPostFn("/api/users", {
+      username: String(data.get("username") || ""),
+      display_name: String(data.get("display_name") || ""),
+      password: String(data.get("password") || ""),
+      role: String(data.get("role") || "student")
+    });
+    if (typeof form.reset === "function") {
+      form.reset();
+    }
+    showStatus("User created.");
+    await renderUsers();
+  } catch (error) {
+    showStatus(`User create failed: ${error.message}`);
+  }
+}
+
 export function renderAdmin(ctx) {
+  if (!ctx?.root) return;
+
   ctx.root.innerHTML = `
     <div class="view-header">
       <div>
@@ -574,7 +611,9 @@ export function renderAdmin(ctx) {
       apiGet("/api/admin/health"),
       apiGet("/api/admin/db-stats")
     ]);
-    ctx.root.querySelector("#admin-health").innerHTML = `
+    const healthPanel = ctx.root.querySelector("#admin-health");
+    if (!healthPanel) return;
+    healthPanel.innerHTML = `
       <table class="data-table">
         <tbody>
           <tr><th>Service</th><td>${health.service}</td></tr>
@@ -589,7 +628,9 @@ export function renderAdmin(ctx) {
 
   const renderUsers = async () => {
     const users = await apiGet("/api/users");
-    ctx.root.querySelector("#admin-users").innerHTML = `
+    const usersPanel = ctx.root.querySelector("#admin-users");
+    if (!usersPanel) return;
+    usersPanel.innerHTML = `
       <table class="data-table">
         <thead><tr><th>User</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
@@ -652,7 +693,9 @@ export function renderAdmin(ctx) {
 
   const renderQuestionCounts = async () => {
     const counts = await apiGet("/api/questions/status-counts");
-    ctx.root.querySelector("#admin-question-counts").innerHTML = `
+    const countsPanel = ctx.root.querySelector("#admin-question-counts");
+    if (!countsPanel) return;
+    countsPanel.innerHTML = `
       <div class="button-row">
         ${["generated", "reviewed", "verified", "retired"].map((status) => `<span class="tag ${status === "verified" ? "green" : status === "retired" ? "red" : status === "reviewed" ? "blue" : "yellow"}">${status}: ${counts[status] || 0}</span>`).join("")}
       </div>
@@ -660,7 +703,9 @@ export function renderAdmin(ctx) {
   };
 
   const renderReviewList = (items) => {
-    ctx.root.querySelector("#admin-review-list").innerHTML = items.length ? `
+    const reviewList = ctx.root.querySelector("#admin-review-list");
+    if (!reviewList) return;
+    reviewList.innerHTML = items.length ? `
       <div class="admin-review-list">
         ${items.slice(0, 15).map((question) => `
           <article class="review-item" data-review-question="${question.id}">
@@ -713,39 +758,31 @@ export function renderAdmin(ctx) {
     }
   };
 
-  ctx.root.querySelector("#admin-refresh").addEventListener("click", refresh);
-  ctx.root.querySelector("#admin-load-generated").addEventListener("click", () => loadReviewQueue("/api/questions?status=generated"));
-  ctx.root.querySelector("#admin-load-low-confidence").addEventListener("click", () => loadReviewQueue("/api/questions/low-confidence?threshold=6"));
-  ctx.root.querySelector("#admin-load-warnings").addEventListener("click", () => loadReviewQueue("/api/questions/validation-warnings"));
-  ctx.root.querySelector("#admin-create-user").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    try {
-      await apiPost("/api/users", {
-        username: String(data.get("username") || ""),
-        display_name: String(data.get("display_name") || ""),
-        password: String(data.get("password") || ""),
-        role: String(data.get("role") || "student")
-      });
-      event.currentTarget.reset();
-      ctx.showStatus("User created.");
-      await renderUsers();
-    } catch (error) {
-      ctx.showStatus(`User create failed: ${error.message}`);
-    }
+  ctx.root.querySelector("#admin-refresh")?.addEventListener("click", refresh);
+  ctx.root.querySelector("#admin-load-generated")?.addEventListener("click", () => loadReviewQueue("/api/questions?status=generated"));
+  ctx.root.querySelector("#admin-load-low-confidence")?.addEventListener("click", () => loadReviewQueue("/api/questions/low-confidence?threshold=6"));
+  ctx.root.querySelector("#admin-load-warnings")?.addEventListener("click", () => loadReviewQueue("/api/questions/validation-warnings"));
+  ctx.root.querySelector("#admin-create-user")?.addEventListener("submit", (event) => {
+    handleAdminCreateUserSubmit(event, {
+      renderUsers,
+      showStatus: ctx.showStatus
+    });
   });
-  ctx.root.querySelector("#admin-import-course").addEventListener("click", async () => {
+  ctx.root.querySelector("#admin-import-course")?.addEventListener("click", async () => {
     try {
-      const importPath = ctx.root.querySelector("#admin-import-path").value.trim();
+      const importPath = ctx.root.querySelector("#admin-import-path")?.value?.trim() || "";
       const result = await apiPost(`/api/import/legacy-static-course/${ctx.bundle.meta.id}`, importPath ? { path: importPath } : {});
-      ctx.root.querySelector("#admin-import-result").textContent = `Imported ${result.result.course_code}: ${result.result.questions} questions, ${result.result.flashcards} flashcards, ${result.result.glossary || 0} glossary terms.`;
+      const importResult = ctx.root.querySelector("#admin-import-result");
+      if (importResult) {
+        importResult.textContent = `Imported ${result.result.course_code}: ${result.result.questions} questions, ${result.result.flashcards} flashcards, ${result.result.glossary || 0} glossary terms.`;
+      }
       ctx.showStatus(`Imported ${result.result.course_code}.`);
       await refresh();
     } catch (error) {
       ctx.showStatus(`Import failed: ${error.message}`);
     }
   });
-  ctx.root.querySelector("#admin-export-course").addEventListener("click", async () => {
+  ctx.root.querySelector("#admin-export-course")?.addEventListener("click", async () => {
     try {
       const exported = await apiGet(`/api/export/${ctx.bundle.meta.id}`);
       downloadJson(`studyforge-db-export-${ctx.bundle.meta.id}.json`, exported);

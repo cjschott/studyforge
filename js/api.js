@@ -102,6 +102,13 @@ export function apiPatch(path, payload = {}) {
   });
 }
 
+export function apiPut(path, payload = {}) {
+  return apiFetch(path, {
+    method: "PUT",
+    body: JSON.stringify(payload)
+  });
+}
+
 export function apiDelete(path) {
   return apiFetch(path, { method: "DELETE" });
 }

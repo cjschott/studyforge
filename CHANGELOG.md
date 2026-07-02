@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.4.0-alpha.1
+
+- Added Source Library foundation with authenticated source-library CRUD APIs.
+- Added source material upload APIs for PDF, DOCX, TXT, Markdown, and CSV files.
+- Added backend-local source file storage, SHA256 checksums, safe filename handling, duplicate upload detection, and chunk persistence.
+- Added practical text extraction and 1000-1500 character chunking for AI-ready ingestion.
+- Added frontend Source Library screens for library management, uploads, extraction, and chunk preview.
+- Added disabled AI provider and placeholder agent modules for future local LLM integration.
+
 ## v0.3.0-alpha.2
 
 - Improved auth/admin workflow with disabled-user handling, role changes, enable/disable controls, duplicate username validation, and password reset.

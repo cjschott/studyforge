@@ -670,6 +670,23 @@ small {
   border-bottom: 0;
 }
 
+.chunk-preview {
+  display: grid;
+  gap: 0.65rem;
+  border-top: 1px solid var(--border);
+  padding: 0.9rem 0;
+}
+
+.chunk-preview:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.chunk-preview p {
+  margin-bottom: 0;
+  white-space: pre-wrap;
+}
+
 .flashcard {
   min-height: 270px;
   display: grid;

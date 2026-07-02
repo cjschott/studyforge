@@ -15,6 +15,7 @@ class Settings:
     session_minutes: int
     cookie_secure: bool
     cors_origins: list[str]
+    source_originals_dir: str
 
 
 def get_settings() -> Settings:
@@ -31,4 +32,8 @@ def get_settings() -> Settings:
         session_minutes=int(os.getenv("STUDYFORGE_SESSION_MINUTES", "10080")),
         cookie_secure=os.getenv("STUDYFORGE_COOKIE_SECURE", "false").lower() == "true",
         cors_origins=[origin.strip() for origin in origins.split(",") if origin.strip()],
+        source_originals_dir=os.getenv(
+            "STUDYFORGE_SOURCE_ORIGINALS_DIR",
+            str(BACKEND_DIR / "data" / "sources" / "originals"),
+        ),
     )

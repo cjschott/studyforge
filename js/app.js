@@ -9,6 +9,7 @@ import { renderFlashcards } from "./flashcards.js";
 import { renderMockExam } from "./mockExam.js";
 import { renderQuestionMode } from "./practice.js";
 import { renderSearch } from "./search.js";
+import { renderSourceLibrary } from "./sourceLibrary.js";
 import { ensureCourseState, getCourseState, getSettings, replaceCourseState, resetCourseProgress, updateSettings } from "./storage.js";
 import { validateCourseBundle } from "./validation.js";
 
@@ -25,6 +26,7 @@ const appVersion = document.querySelector("#app-version");
 const backendStatus = document.querySelector("#backend-status");
 const userArea = document.querySelector("#user-area");
 const adminNav = document.querySelector("[data-view='admin']");
+const sourceNav = document.querySelector("[data-view='sources']");
 
 const viewLabels = {
   dashboard: "Dashboard",
@@ -37,6 +39,7 @@ const viewLabels = {
   bookmarks: "Bookmarks",
   search: "Search",
   analytics: "Analytics",
+  sources: "Source Library",
   courseBuilder: "Course Builder",
   admin: "Administration",
   settings: "Settings"
@@ -135,6 +138,9 @@ function updateBackendChrome() {
   if (adminNav) {
     adminNav.hidden = app.user?.role !== "admin";
   }
+  if (sourceNav) {
+    sourceNav.hidden = !app.user;
+  }
 }
 
 function renderError(error) {
@@ -166,6 +172,7 @@ function render() {
   if (app.view === "bookmarks") renderQuestionMode(ctx, "bookmarks");
   if (app.view === "search") renderSearch(ctx);
   if (app.view === "analytics") renderAnalytics(ctx);
+  if (app.view === "sources") renderSourceLibrary(ctx);
   if (app.view === "courseBuilder") renderCourseBuilder(ctx);
   if (app.view === "admin") renderAdmin(ctx);
   if (app.view === "settings") renderSettings(ctx);

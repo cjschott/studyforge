@@ -10,6 +10,7 @@ Environment=STUDYFORGE_ENV=production
 Environment=STUDYFORGE_DATABASE_URL=sqlite:////opt/studyforge/backend/studyforge.db
 Environment=STUDYFORGE_SECRET_KEY=change-this-secret
 Environment=STUDYFORGE_ADMIN_PASSWORD=replace-default-password
+Environment=STUDYFORGE_SOURCE_ORIGINALS_DIR=/opt/studyforge/backend/data/sources/originals
 ExecStart=/opt/studyforge/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
 Restart=always
 RestartSec=5

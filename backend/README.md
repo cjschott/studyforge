@@ -1,6 +1,6 @@
 # StudyForge Backend
 
-FastAPI backend foundation for StudyForge v0.3 alpha.
+FastAPI backend foundation for StudyForge v0.4 alpha.
 
 ## Local Setup
 
@@ -30,6 +30,19 @@ Change this before using the backend with real data.
 - `STUDYFORGE_SESSION_MINUTES`: session lifetime in minutes.
 - `STUDYFORGE_COOKIE_SECURE`: set `true` when serving over HTTPS.
 - `STUDYFORGE_CORS_ORIGINS`: comma-separated development origins. Same-origin nginx proxying does not require browser CORS.
+- `STUDYFORGE_SOURCE_ORIGINALS_DIR`: backend-local directory for uploaded source files. Defaults to `backend/data/sources/originals`.
+
+## Source Library
+
+Authenticated users can create source libraries, upload PDF/DOCX/TXT/Markdown/CSV materials, extract text, and preview stored chunks.
+
+Uploaded originals should stay outside the static frontend web root. The default backend-local path is ignored by git:
+
+```text
+backend/data/sources/originals/
+```
+
+Duplicate source uploads are blocked by SHA256 checksum. Extraction does not use OCR and does not call an AI provider.
 
 ## Import Existing Static Course Data
 

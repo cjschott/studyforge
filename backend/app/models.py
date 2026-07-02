@@ -84,6 +84,71 @@ class Source(Base, TimestampMixin):
     questions = relationship("Question", back_populates="source")
 
 
+class SourceLibrary(Base, TimestampMixin):
+    __tablename__ = "source_libraries"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False)
+    description = Column(Text, default="", nullable=False)
+    category = Column(String(120), default="", nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False)
+
+    materials = relationship("SourceMaterial", back_populates="library", cascade="all, delete-orphan")
+
+
+class SourceMaterial(Base, TimestampMixin):
+    __tablename__ = "source_materials"
+
+    id = Column(Integer, primary_key=True)
+    library_id = Column(Integer, ForeignKey("source_libraries.id"), nullable=False)
+    title = Column(String(255), nullable=False)
+    source_type = Column(String(80), nullable=False)
+    authority_level = Column(Integer, default=3, nullable=False)
+    confidence = Column(String(40), default="unverified", nullable=False)
+    verification_status = Column(String(40), default="not_reviewed", nullable=False)
+    copyright_status = Column(String(40), default="unknown", nullable=False)
+    original_filename = Column(String(255), nullable=False)
+    stored_path = Column(Text, nullable=False)
+    original_url = Column(Text, default="", nullable=False)
+    checksum = Column(String(64), unique=True, index=True, nullable=False)
+    uploaded_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False)
+
+    library = relationship("SourceLibrary", back_populates="materials")
+    uploader = relationship("User")
+    chunks = relationship("SourceChunk", back_populates="source", cascade="all, delete-orphan")
+    import_jobs = relationship("SourceImportJob", back_populates="source", cascade="all, delete-orphan")
+
+
+class SourceChunk(Base):
+    __tablename__ = "source_chunks"
+    __table_args__ = (UniqueConstraint("source_id", "chunk_number", name="uq_source_chunk_number"),)
+
+    id = Column(Integer, primary_key=True)
+    source_id = Column(Integer, ForeignKey("source_materials.id"), nullable=False)
+    chunk_number = Column(Integer, nullable=False)
+    page_number = Column(Integer, nullable=True)
+    heading = Column(String(255), default="", nullable=False)
+    text = Column(Text, nullable=False)
+    checksum = Column(String(64), nullable=False)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+
+    source = relationship("SourceMaterial", back_populates="chunks")
+
+
+class SourceImportJob(Base):
+    __tablename__ = "source_import_jobs"
+
+    id = Column(Integer, primary_key=True)
+    source_id = Column(Integer, ForeignKey("source_materials.id"), nullable=False)
+    status = Column(String(40), default="pending", nullable=False)
+    message = Column(Text, default="", nullable=False)
+    started_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+    finished_at = Column(DateTime(timezone=True), nullable=True)
+
+    source = relationship("SourceMaterial", back_populates="import_jobs")
+
+
 class Concept(Base, TimestampMixin):
     __tablename__ = "concepts"
     __table_args__ = (UniqueConstraint("course_id", "name", name="uq_concept_course_name"),)
