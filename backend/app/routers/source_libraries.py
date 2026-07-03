@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile, status
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.auth import get_current_user, require_roles
 from app.database import get_db
-from app.models import SourceChunk, SourceImportJob, SourceLibrary, SourceMaterial, User, utcnow
+from app.models import SourceChunk, SourceConflict, SourceImportJob, SourceLibrary, SourceMaterial, User, utcnow
 from app.schemas import (
     SourceChunkOut,
     SourceExtractionOut,
@@ -68,6 +69,11 @@ def source_material_out(material: SourceMaterial, db: Session) -> dict:
         .first()
     )
     chunk_count = db.query(SourceChunk).filter_by(source_id=material.id).count()
+    conflict_query = db.query(SourceConflict).filter(
+        or_(SourceConflict.source_id_a == material.id, SourceConflict.source_id_b == material.id)
+    )
+    conflict_count = conflict_query.count()
+    unresolved_conflict_count = conflict_query.filter(~SourceConflict.status.in_(["resolved", "rejected"])).count()
     return {
         "id": material.id,
         "library_id": material.library_id,
@@ -85,6 +91,8 @@ def source_material_out(material: SourceMaterial, db: Session) -> dict:
         "chunk_count": chunk_count,
         "extraction_status": latest_job.status if latest_job else "not_extracted",
         "extraction_message": latest_job.message if latest_job else "",
+        "conflict_count": conflict_count,
+        "unresolved_conflict_count": unresolved_conflict_count,
         "created_at": iso(material.created_at),
         "updated_at": iso(material.updated_at),
     }

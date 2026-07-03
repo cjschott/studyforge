@@ -5,6 +5,7 @@ from sqlalchemy import (
     Column,
     DateTime,
     ForeignKey,
+    Float,
     Integer,
     String,
     Text,
@@ -118,6 +119,9 @@ class SourceMaterial(Base, TimestampMixin):
     uploader = relationship("User")
     chunks = relationship("SourceChunk", back_populates="source", cascade="all, delete-orphan")
     import_jobs = relationship("SourceImportJob", back_populates="source", cascade="all, delete-orphan")
+    concept_links = relationship("SourceConcept", back_populates="source", cascade="all, delete-orphan")
+    conflicts_a = relationship("SourceConflict", foreign_keys="SourceConflict.source_id_a", back_populates="source_a")
+    conflicts_b = relationship("SourceConflict", foreign_keys="SourceConflict.source_id_b", back_populates="source_b")
 
 
 class SourceChunk(Base):
@@ -134,6 +138,9 @@ class SourceChunk(Base):
     created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
 
     source = relationship("SourceMaterial", back_populates="chunks")
+    concept_links = relationship("SourceConcept", back_populates="chunk", cascade="all, delete-orphan")
+    conflicts_a = relationship("SourceConflict", foreign_keys="SourceConflict.source_chunk_id_a", back_populates="chunk_a")
+    conflicts_b = relationship("SourceConflict", foreign_keys="SourceConflict.source_chunk_id_b", back_populates="chunk_b")
 
 
 class SourceImportJob(Base):
@@ -154,17 +161,106 @@ class Concept(Base, TimestampMixin):
     __table_args__ = (UniqueConstraint("course_id", "name", name="uq_concept_course_name"),)
 
     id = Column(Integer, primary_key=True)
-    course_id = Column(Integer, ForeignKey("courses.id"), nullable=False)
+    course_id = Column(Integer, ForeignKey("courses.id"), nullable=True)
     name = Column(String(255), nullable=False)
+    normalized_name = Column(String(255), index=True, nullable=True)
+    description = Column(Text, default="", nullable=False)
+    course_code = Column(String(80), nullable=True)
+    status = Column(String(40), default="generated", nullable=False)
     topic = Column(String(160), default="", nullable=False)
     subtopic = Column(String(160), default="", nullable=False)
     aliases_json = Column(JSON, default=list, nullable=False)
     related_concepts_json = Column(JSON, default=list, nullable=False)
-    confidence = Column(Integer, default=5, nullable=False)
+    confidence = Column(String(40), default="unverified", nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False)
 
     course = relationship("Course", back_populates="concepts")
+    aliases = relationship("ConceptAlias", back_populates="concept", cascade="all, delete-orphan")
+    source_links = relationship("SourceConcept", back_populates="concept", cascade="all, delete-orphan")
+    conflicts = relationship("SourceConflict", back_populates="concept")
+    relationships_a = relationship(
+        "ConceptRelationship",
+        foreign_keys="ConceptRelationship.concept_a_id",
+        back_populates="concept_a",
+    )
+    relationships_b = relationship(
+        "ConceptRelationship",
+        foreign_keys="ConceptRelationship.concept_b_id",
+        back_populates="concept_b",
+    )
     questions = relationship("Question", back_populates="concept")
     flashcards = relationship("Flashcard", back_populates="concept")
+
+
+class ConceptAlias(Base):
+    __tablename__ = "concept_aliases"
+    __table_args__ = (UniqueConstraint("concept_id", "normalized_alias", name="uq_concept_alias_normalized"),)
+
+    id = Column(Integer, primary_key=True)
+    concept_id = Column(Integer, ForeignKey("concepts.id"), nullable=False)
+    alias = Column(String(255), nullable=False)
+    normalized_alias = Column(String(255), nullable=False)
+
+    concept = relationship("Concept", back_populates="aliases")
+
+
+class SourceConcept(Base):
+    __tablename__ = "source_concepts"
+    __table_args__ = (UniqueConstraint("source_chunk_id", "concept_id", name="uq_source_chunk_concept"),)
+
+    id = Column(Integer, primary_key=True)
+    source_id = Column(Integer, ForeignKey("source_materials.id"), nullable=False)
+    source_chunk_id = Column(Integer, ForeignKey("source_chunks.id"), nullable=False)
+    concept_id = Column(Integer, ForeignKey("concepts.id"), nullable=False)
+    evidence_text = Column(Text, default="", nullable=False)
+    confidence_score = Column(Float, default=0.0, nullable=False)
+    extraction_method = Column(String(40), default="manual", nullable=False)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+
+    source = relationship("SourceMaterial", back_populates="concept_links")
+    chunk = relationship("SourceChunk", back_populates="concept_links")
+    concept = relationship("Concept", back_populates="source_links")
+
+
+class ConceptRelationship(Base):
+    __tablename__ = "concept_relationships"
+
+    id = Column(Integer, primary_key=True)
+    concept_a_id = Column(Integer, ForeignKey("concepts.id"), nullable=False)
+    concept_b_id = Column(Integer, ForeignKey("concepts.id"), nullable=False)
+    relationship_type = Column(String(40), nullable=False)
+    confidence_score = Column(Float, default=0.0, nullable=False)
+    status = Column(String(40), default="generated", nullable=False)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+
+    concept_a = relationship("Concept", foreign_keys=[concept_a_id], back_populates="relationships_a")
+    concept_b = relationship("Concept", foreign_keys=[concept_b_id], back_populates="relationships_b")
+
+
+class SourceConflict(Base):
+    __tablename__ = "source_conflicts"
+
+    id = Column(Integer, primary_key=True)
+    concept_id = Column(Integer, ForeignKey("concepts.id"), nullable=True)
+    source_id_a = Column(Integer, ForeignKey("source_materials.id"), nullable=True)
+    source_chunk_id_a = Column(Integer, ForeignKey("source_chunks.id"), nullable=True)
+    source_id_b = Column(Integer, ForeignKey("source_materials.id"), nullable=True)
+    source_chunk_id_b = Column(Integer, ForeignKey("source_chunks.id"), nullable=True)
+    conflict_type = Column(String(80), nullable=False)
+    summary = Column(Text, nullable=False)
+    evidence_a = Column(Text, default="", nullable=False)
+    evidence_b = Column(Text, default="", nullable=False)
+    severity = Column(String(40), default="medium", nullable=False)
+    status = Column(String(40), default="generated", nullable=False)
+    detection_method = Column(String(40), default="rule_based", nullable=False)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False)
+
+    concept = relationship("Concept", back_populates="conflicts")
+    source_a = relationship("SourceMaterial", foreign_keys=[source_id_a], back_populates="conflicts_a")
+    source_b = relationship("SourceMaterial", foreign_keys=[source_id_b], back_populates="conflicts_b")
+    chunk_a = relationship("SourceChunk", foreign_keys=[source_chunk_id_a], back_populates="conflicts_a")
+    chunk_b = relationship("SourceChunk", foreign_keys=[source_chunk_id_b], back_populates="conflicts_b")
 
 
 class Question(Base, TimestampMixin):

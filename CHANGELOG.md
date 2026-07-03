@@ -1,5 +1,33 @@
 # Changelog
 
+## v0.5.0-alpha.3
+
+- Added `source_conflicts` storage for source/concept validation findings with conflict type, severity, review status, evidence snippets, detection method, and preserved source lineage.
+- Added authenticated conflict APIs for listing, filtering, reviewing, resolving, and detecting conflicts from source materials or concepts.
+- Added rule-based conflict detection for legacy Security+ exam references, answer-key-like chunks, low-authority/unverified sources, missing concept lineage, duplicate-looking concepts, and verified concepts tied to weak evidence.
+- Added Conflicts UI with severity/status/type/search filters, evidence detail view, source trust metadata, review/resolve/reject actions, and note capture.
+- Added Source Material and Concept detail conflict detection controls with conflict counts and related conflict sections.
+- Updated Course Builder selected-source stats with unresolved conflict counts and a high-severity warning before future generation steps.
+
+## v0.5.0-alpha.2
+
+- Added concept review action APIs for reviewed, verified, rejected, and restore workflows.
+- Added concept alias list/create/delete APIs with normalized duplicate prevention.
+- Added concept merge API that moves aliases, source-concept lineage, and relationships to a target concept while keeping the source concept rejected instead of hard-deleted.
+- Added concept evidence API with source title, type, confidence, verification status, chunk number, page number, and evidence text.
+- Added relationship update and delete APIs plus frontend controls for relationship status review.
+- Improved Concepts UI with alias management, evidence display, merge controls, relationship creation/status controls, and relationship counts.
+- Improved Course Builder selected-source stats with concept, verified concept, rejected concept, and relationship counts.
+
+## v0.5.0-alpha.1
+
+- Added authenticated concept CRUD APIs with review, verification, rejection, aliases, source lineage, and relationship endpoints.
+- Added rule-based concept extraction from source chunks using headings, glossary-like lines, repeated capitalized terms, and a Security+/networking keyword seed list.
+- Added concept source-link storage with evidence snippets, confidence scores, extraction method, and chunk lineage.
+- Added Concepts frontend section with search, status/course filters, detail review controls, linked source evidence, and relationships.
+- Added Source Material concept extraction controls and Course Builder selected-source concept counts.
+- Kept LLM integration, embeddings/vector DB, and question generation disabled and out of scope.
+
 ## v0.4.0-alpha.2
 
 - Stabilized Source Library material responses with chunk counts, extraction status, and extraction messages.

@@ -4,6 +4,8 @@ import { APP_CONFIG } from "./config.js";
 import { apiState, detectBackend, isBackendMode } from "./api.js";
 import { fetchCurrentUser, login, logout, renderLoginView } from "./authClient.js";
 import { loadBackendCourseState } from "./backendProgress.js";
+import { renderConflicts } from "./conflicts.js";
+import { renderConcepts } from "./concepts.js";
 import { renderCourseBuilder } from "./courseBuilder.js";
 import { renderAdmin, renderAnalytics, renderDashboard, renderSettings, renderStudyGuide } from "./dashboard.js";
 import { renderFlashcards } from "./flashcards.js";
@@ -28,6 +30,8 @@ const backendStatus = document.querySelector("#backend-status");
 const userArea = document.querySelector("#user-area");
 const adminNav = document.querySelector("[data-view='admin']");
 const sourceNav = document.querySelector("[data-view='sources']");
+const conceptNav = document.querySelector("[data-view='concepts']");
+const conflictNav = document.querySelector("[data-view='conflicts']");
 
 const viewLabels = {
   dashboard: "Dashboard",
@@ -41,6 +45,8 @@ const viewLabels = {
   search: "Search",
   analytics: "Analytics",
   sources: "Source Library",
+  concepts: "Concepts",
+  conflicts: "Conflicts",
   courseBuilder: "Course Builder",
   admin: "Administration",
   settings: "Settings"
@@ -142,6 +148,12 @@ function updateBackendChrome() {
   if (sourceNav) {
     sourceNav.hidden = !app.user;
   }
+  if (conceptNav) {
+    conceptNav.hidden = !app.user;
+  }
+  if (conflictNav) {
+    conflictNav.hidden = !app.user;
+  }
 }
 
 function renderError(error) {
@@ -174,6 +186,8 @@ function render() {
   if (app.view === "search") renderSearch(ctx);
   if (app.view === "analytics") renderAnalytics(ctx);
   if (app.view === "sources") renderSourceLibrary(ctx);
+  if (app.view === "concepts") renderConcepts(ctx);
+  if (app.view === "conflicts") renderConflicts(ctx);
   if (app.view === "courseBuilder") renderCourseBuilder(ctx);
   if (app.view === "admin") renderAdmin(ctx);
   if (app.view === "settings") renderSettings(ctx);

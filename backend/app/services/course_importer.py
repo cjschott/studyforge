@@ -5,6 +5,7 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from app.models import CheatSheet, Concept, Course, Flashcard, GlossaryTerm, Question, Source
+from app.services.concept_extraction_service import normalize_concept_name, normalized_confidence
 
 
 SOURCE_TYPE_MAP = {
@@ -109,11 +110,17 @@ def source_for_question(sources: list[Source], question: dict[str, Any]) -> Sour
 
 
 def upsert_concept(db: Session, course_id: int, term: str, topic: str = "", confidence: int = 5) -> Concept:
-    concept = db.query(Concept).filter_by(course_id=course_id, name=term).one_or_none()
+    normalized = normalize_concept_name(term)
+    concept = db.query(Concept).filter_by(course_id=course_id, normalized_name=normalized).one_or_none()
     if not concept:
-        concept = Concept(course_id=course_id, name=term)
+        concept = db.query(Concept).filter_by(course_id=course_id, name=term).one_or_none()
+    if not concept:
+        concept = Concept(course_id=course_id, name=term, normalized_name=normalized, status="reviewed")
+    course = db.get(Course, course_id)
+    concept.normalized_name = normalized
+    concept.course_code = course.course_code if course else concept.course_code
     concept.topic = topic or concept.topic or ""
-    concept.confidence = confidence
+    concept.confidence = normalized_confidence(confidence)
     db.add(concept)
     return concept
 

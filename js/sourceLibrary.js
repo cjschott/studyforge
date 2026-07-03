@@ -1,4 +1,6 @@
 import { apiDelete, apiFetch, apiGet, apiPost, apiPut, isBackendMode } from "./api.js";
+import { handleExtractConceptsClick, renderSourceConceptSummary } from "./concepts.js";
+import { renderConflictList } from "./conflicts.js";
 
 
 const SOURCE_TYPES = [
@@ -364,12 +366,15 @@ async function renderMaterialDetail(ctx, libraryId, materialId) {
   ctx.root.querySelector("#source-library-back")?.addEventListener("click", () => ctx.navigate("sources", { libraryId }));
 
   const loadMaterial = async () => {
-    const [material, chunks] = await Promise.all([
+    const [material, chunks, conceptLinks, conflicts] = await Promise.all([
       apiGet(`/api/source-materials/${materialId}`),
-      apiGet(`/api/source-materials/${materialId}/chunks`)
+      apiGet(`/api/source-materials/${materialId}/chunks`),
+      apiGet(`/api/source-materials/${materialId}/concepts`),
+      apiGet(`/api/conflicts?source_id=${materialId}&include_resolved=true`)
     ]);
     const panel = ctx.root.querySelector("#source-material-detail");
     if (!panel) return;
+    const unresolvedConflicts = conflicts.filter((conflict) => !["resolved", "rejected"].includes(conflict.status));
     panel.innerHTML = `
       <section class="grid grid-2">
         <article class="card">
@@ -391,8 +396,24 @@ async function renderMaterialDetail(ctx, libraryId, materialId) {
           <h3>Extraction</h3>
           <span class="tag ${chunks.length ? "green" : "yellow"}">${chunks.length ? "extracted" : "not_reviewed"}</span>
           <p class="muted">${chunks.length} chunks available.</p>
-          <button id="source-run-extract" class="button button-primary" type="button">Extract</button>
+          <div class="button-row">
+            <button id="source-run-extract" class="button button-primary" type="button">Extract Chunks</button>
+            <button id="source-run-concept-extract" class="button" type="button" ${chunks.length ? "" : "disabled"}>Extract Concepts</button>
+            <button id="source-run-conflict-detect" class="button" type="button" ${chunks.length ? "" : "disabled"}>Detect Conflicts</button>
+          </div>
+          <div class="button-row" style="margin-top: 0.9rem;">
+            <span class="tag ${conflicts.length ? "yellow" : "green"}">${conflicts.length} conflicts</span>
+            <span class="tag ${unresolvedConflicts.length ? "red" : "green"}">${unresolvedConflicts.length} unresolved</span>
+          </div>
         </article>
+      </section>
+      <section class="card" style="margin-top: 1rem;">
+        <h3>Concepts Found</h3>
+        ${renderSourceConceptSummary(conceptLinks)}
+      </section>
+      <section class="card" style="margin-top: 1rem;">
+        <h3>Conflicts</h3>
+        ${renderConflictList(conflicts)}
       </section>
       <section class="card" style="margin-top: 1rem;">
         <h3>Chunks</h3>
@@ -417,6 +438,31 @@ async function renderMaterialDetail(ctx, libraryId, materialId) {
       } catch (error) {
         ctx.showStatus(`Extraction failed: ${error.message}`);
       }
+    });
+
+    panel.querySelector("#source-run-concept-extract")?.addEventListener("click", async () => {
+      try {
+        await handleExtractConceptsClick(materialId, {
+          showStatus: ctx.showStatus,
+          reload: loadMaterial
+        });
+      } catch (error) {
+        ctx.showStatus(`Concept extraction failed: ${error.message}`);
+      }
+    });
+
+    panel.querySelector("#source-run-conflict-detect")?.addEventListener("click", async () => {
+      try {
+        const result = await apiPost(`/api/source-materials/${materialId}/detect-conflicts`, {});
+        ctx.showStatus(result.message || "Conflict detection completed.");
+        await loadMaterial();
+      } catch (error) {
+        ctx.showStatus(`Conflict detection failed: ${error.message}`);
+      }
+    });
+
+    panel.querySelectorAll("[data-conflict-open]").forEach((button) => {
+      button.addEventListener("click", () => ctx.navigate("conflicts", { conflictId: button.dataset.conflictOpen }));
     });
   };
 

@@ -1,6 +1,6 @@
 # StudyForge
 
-StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.4.0-alpha.2` stabilizes Source Library metadata and adds Course Builder source selection for future course-pack drafting.
+StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.5.0-alpha.3` adds rule-based conflict detection and source validation review on top of Source Library chunks and concept review.
 
 The existing static app is preserved. If the backend is not running, StudyForge loads JSON course packs from `data/` and stores progress in browser `localStorage`.
 
@@ -21,7 +21,9 @@ Backend mode:
 - Courses load from SQLite exports.
 - Attempts, bookmarks, and mock results sync to the backend.
 - Source Library uploads, extraction, and chunks are available after login.
-- Course Builder can select extracted source materials and preview the selected context.
+- Concepts can be extracted from source chunks, reviewed, verified, rejected/restored, merged, aliased, related to other concepts, and traced back to source evidence.
+- Conflicts can be detected from source materials and concepts, reviewed, resolved, rejected, and traced back to source/concept evidence.
+- Course Builder can select extracted source materials and preview source, chunk, concept, verified concept, rejected concept, relationship, and unresolved conflict counts.
 - LocalStorage remains an immediate frontend cache so the UI stays responsive.
 
 ## Local Static Run
@@ -116,17 +118,52 @@ backend/data/sources/originals/
 
 Set `STUDYFORGE_SOURCE_ORIGINALS_DIR` to move this directory. Keep it outside the static frontend web root. Uploaded files are checksumed with SHA256 and duplicate uploads are rejected with a friendly conflict message.
 
-Extraction support is practical but intentionally simple:
+Source text extraction support is practical but intentionally simple:
 
 - TXT and Markdown are read directly.
 - CSV rows are joined into readable text.
 - DOCX uses `python-docx`.
 - PDF uses `pypdf`.
-- OCR, PPTX, Anki, vector search, and LLM generation are not part of v0.4.
+- OCR, PPTX, Anki, vector search, and LLM generation are not part of v0.5.
+
+## Concepts
+
+Backend mode includes a Concepts section in the sidebar after login. Concepts are extracted from existing `source_chunks` with a rule-based extractor only:
+
+- source headings
+- glossary-looking lines such as `Term: definition`
+- repeated capitalized technical terms
+- a small Security+/networking keyword seed list
+
+Extracted concepts are stored as `generated` with `generated` confidence and are linked back to source chunks through short evidence snippets. Rejected concepts remain in SQLite for lineage but are hidden from the concept list by default.
+
+The Concepts screen supports:
+
+- review, verify, reject, and restore actions
+- editing name, description, and course code
+- aliases with normalized duplicate prevention
+- evidence views with source title, source type, source confidence, verification status, chunk number, page number, and evidence text
+- relationship creation and status review
+- admin merge controls that move aliases, source links, and relationships into the target concept without hard-deleting the source concept
+
+## Conflicts
+
+Backend mode includes a Conflicts section in the sidebar after login. Conflict detection is rule-based only and stores short evidence snippets rather than logging full source chunks.
+
+The first validation checks flag:
+
+- legacy Security+ exam references such as `SY0-501` or `SY0-601`
+- answer-key-like text in unverified source chunks
+- low-authority, unverified, or community-derived source material
+- duplicate-looking concept names
+- concepts with missing source lineage
+- verified concepts linked to weak source evidence
+
+Conflicts can be filtered by severity, status, type, and search text. Reviewers can mark conflicts reviewed, resolved, or rejected. No conflict action hard-deletes concepts, sources, chunks, or lineage.
 
 ## Course Builder Source Selection
 
-Backend mode Course Builder can load source libraries, select source materials, and summarize the selected context by source count, chunk count, extraction readiness, and source type. This is only a preparation stage for future AI workflows; it does not generate concepts, questions, flashcards, or course packs yet.
+Backend mode Course Builder can load source libraries, select source materials, and summarize the selected context by source count, chunk count, concept count, verified concept count, rejected concept count, relationship count, unresolved conflict count, extraction readiness, and source type. Concept Extraction is shown as active only when selected sources already have extracted concepts. A high-severity conflict warning appears when selected context has unresolved high-severity findings. This remains a preparation stage; it does not generate questions, flashcards, or course packs.
 
 ## Add Security+
 
@@ -206,12 +243,13 @@ Also keep static course packs under version control.
 
 ## Known Limitations
 
-- v0.3 remains an alpha: permissions are intentionally simple and not full RBAC.
+- v0.5 remains an alpha: permissions are intentionally simple and not full RBAC.
 - PBQ questions are manual-check placeholders unless a simplified answer is configured.
 - Diagram questions render images and choices but do not support clickable regions yet.
 - Course Builder files are prompt/template scaffolding, not an automated source-ingestion UI.
 - Security+ content is generated/example starter material, not official exam content and not verified.
 - Source Library extraction does not OCR scans and does not create questions automatically.
+- Concept extraction is rule-based and review-oriented; it does not use a real LLM, embeddings, vector search, or question generation.
 - The AI provider is intentionally disabled until a local LLM provider is configured in a later release.
 
 ## Project Layout
@@ -229,4 +267,5 @@ tools/coursepack-builder Course Builder prompts, templates, examples
 
 ```bash
 python -m pytest backend/tests -q
+node --test js/dashboard.admin.test.mjs js/sourceLibrary.test.mjs js/courseBuilder.test.mjs js/concepts.test.mjs
 ```
