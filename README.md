@@ -1,6 +1,6 @@
 # StudyForge
 
-StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.5.0-alpha.3` adds rule-based conflict detection and source validation review on top of Source Library chunks and concept review.
+StudyForge is a self-hosted learning platform that still works as a static HTML/CSS/vanilla JS app. Version `0.6.0-alpha.3` hardens the publish pipeline with publish history, immutable lineage snapshots, reversible retire/restore controls, and course-pack export validation.
 
 The existing static app is preserved. If the backend is not running, StudyForge loads JSON course packs from `data/` and stores progress in browser `localStorage`.
 
@@ -23,7 +23,9 @@ Backend mode:
 - Source Library uploads, extraction, and chunks are available after login.
 - Concepts can be extracted from source chunks, reviewed, verified, rejected/restored, merged, aliased, related to other concepts, and traced back to source evidence.
 - Conflicts can be detected from source materials and concepts, reviewed, resolved, rejected, and traced back to source/concept evidence.
-- Course Builder can select extracted source materials and preview source, chunk, concept, verified concept, rejected concept, relationship, and unresolved conflict counts.
+- Question drafts can be created from sources, concepts, or Course Builder selected sources, then reviewed with structured warnings and explanation quality checks before publishing to the real question bank.
+- Published questions retain publish history and lineage snapshots, can be retired/restored without hard deletion, and can be exported with review metadata.
+- Course Builder can select extracted source materials and preview source, chunk, concept, relationship, conflict, draft, warning, ready-to-publish, published, retired, and export-readiness counts.
 - LocalStorage remains an immediate frontend cache so the UI stays responsive.
 
 ## Local Static Run
@@ -124,7 +126,7 @@ Source text extraction support is practical but intentionally simple:
 - CSV rows are joined into readable text.
 - DOCX uses `python-docx`.
 - PDF uses `pypdf`.
-- OCR, PPTX, Anki, vector search, and LLM generation are not part of v0.5.
+- OCR, PPTX, Anki, vector search, and LLM generation are not part of v0.6.
 
 ## Concepts
 
@@ -161,9 +163,20 @@ The first validation checks flag:
 
 Conflicts can be filtered by severity, status, type, and search text. Reviewers can mark conflicts reviewed, resolved, or rejected. No conflict action hard-deletes concepts, sources, chunks, or lineage.
 
+## Question Drafts
+
+Backend mode includes a Question Drafts section in the sidebar after login. Drafting is rule-based only:
+
+- practice-question-like chunks can be parsed into draft stems, choices, answers, and explanations when possible
+- concept drafts use reviewable placeholder choices and require human completion
+- all generated drafts start as `needs_review` with `generated` confidence
+- lineage is stored separately for source material, source chunk, concept, evidence text, and lineage reason
+
+Drafts show validation warnings without blocking edits. Warnings flag missing explanation, missing answer, missing lineage, missing wrong-answer explanations, unverified sources, and unresolved conflicts. Publishing is explicit: the first publish creates a real course question and stores the published question id on the draft; later publishes update that same question instead of creating duplicates.
+
 ## Course Builder Source Selection
 
-Backend mode Course Builder can load source libraries, select source materials, and summarize the selected context by source count, chunk count, concept count, verified concept count, rejected concept count, relationship count, unresolved conflict count, extraction readiness, and source type. Concept Extraction is shown as active only when selected sources already have extracted concepts. A high-severity conflict warning appears when selected context has unresolved high-severity findings. This remains a preparation stage; it does not generate questions, flashcards, or course packs.
+Backend mode Course Builder can load source libraries, select source materials, summarize the selected context, warn on unresolved high-severity conflicts, and create draft questions from selected sources. Drafts enter review and do not become live questions until published by a reviewer/admin. It still does not use a real LLM, generate flashcards, or export a finished course pack automatically.
 
 ## Add Security+
 
@@ -243,13 +256,13 @@ Also keep static course packs under version control.
 
 ## Known Limitations
 
-- v0.5 remains an alpha: permissions are intentionally simple and not full RBAC.
+- v0.6 remains an alpha: permissions are intentionally simple and not full RBAC.
 - PBQ questions are manual-check placeholders unless a simplified answer is configured.
 - Diagram questions render images and choices but do not support clickable regions yet.
-- Course Builder files are prompt/template scaffolding, not an automated source-ingestion UI.
+- Course Builder creates review-gated draft questions only; it does not auto-publish course content.
 - Security+ content is generated/example starter material, not official exam content and not verified.
-- Source Library extraction does not OCR scans and does not create questions automatically.
-- Concept extraction is rule-based and review-oriented; it does not use a real LLM, embeddings, vector search, or question generation.
+- Source Library extraction does not OCR scans and does not create live questions automatically.
+- Concept extraction and question drafting are rule-based and review-oriented; they do not use a real LLM, embeddings, or vector search.
 - The AI provider is intentionally disabled until a local LLM provider is configured in a later release.
 
 ## Project Layout

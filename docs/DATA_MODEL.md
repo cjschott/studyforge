@@ -14,6 +14,11 @@ Primary backend models:
 - `SourceConcept`: source-material and source-chunk lineage for extracted/manual concepts, including evidence text, confidence score, and extraction method.
 - `ConceptRelationship`: typed and reviewable relationships between concepts.
 - `SourceConflict`: source/concept validation findings with conflict type, severity, review status, evidence snippets, detection method, and preserved source/chunk lineage.
+- `QuestionDraft`: review-gated draft question with source/chunk/concept references, stem, choices, answer, plain or structured explanation, status, confidence, generation method, and optional published question link.
+- `QuestionDraftLineage`: evidence rows for draft questions with source material, source chunk, concept, evidence text, and lineage reason.
+- `QuestionDraftWarning`: persisted draft validation warning with code, severity, message, and creation timestamp.
+- `QuestionPublishHistory`: append-only publish pipeline audit rows for publish, republish, retire, and restore actions.
+- `PublishedQuestionLineage`: immutable source/chunk/concept lineage snapshots captured when a draft is published.
 - `Question`: question body, type, choices, answer, explanation, workflow status, confidence, lineage.
 - `Flashcard`: front/back recall cards.
 - `GlossaryTerm`: definitions and exam tips.
@@ -65,3 +70,21 @@ Source conflict enum values:
 - `detection_method`: `rule_based`, `manual`, `ai_disabled_stub`
 
 Conflict review behavior preserves lineage. Resolve and reject update review status only; no source material, chunk, concept, or source-concept link is hard-deleted.
+
+Question draft enum values:
+
+- `status`: `generated`, `needs_review`, `reviewed`, `verified`, `rejected`, `published`
+- `confidence`: `generated`, `reviewed`, `verified`, `unverified`
+- `generation_method`: `manual`, `rule_based`, `ai_disabled_stub`
+- `warning.severity`: `low`, `medium`, `high`
+
+Question drafts support plain `explanation` text and optional structured `explanation_json` with `correct` and `incorrect` rationale fields. Validation warnings refresh when drafts are saved or reviewed. High-severity warnings block verification and publishing, while reviewed and rejected states remain available for human workflow.
+
+Question draft publishing behavior preserves draft lineage. The first publish creates a real `questions` row and stores that id in `question_drafts.published_question_id`; later publishes update the same question row instead of creating duplicates. Structured wrong-answer explanations publish into `questions.why_wrong_json`.
+
+Published question behavior:
+
+- `question_publish_history.action`: `published`, `republished`, `unpublished`, `retired`, `restored`
+- Publish and republish copy current draft lineage into `published_question_lineage`.
+- Retire and restore update question status and append publish history; they never hard-delete questions.
+- Normal course question lists hide `retired` questions by default. Admin/review APIs can still list them, and export includes them only when requested.

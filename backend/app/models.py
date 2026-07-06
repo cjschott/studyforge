@@ -42,6 +42,7 @@ class User(Base, TimestampMixin):
     bookmarks = relationship("UserBookmark", back_populates="user", cascade="all, delete-orphan")
     mock_sessions = relationship("MockExamSession", back_populates="user", cascade="all, delete-orphan")
     review_notes = relationship("ReviewNote", back_populates="user", cascade="all, delete-orphan")
+    question_drafts = relationship("QuestionDraft", back_populates="creator")
 
 
 class Course(Base, TimestampMixin):
@@ -122,6 +123,8 @@ class SourceMaterial(Base, TimestampMixin):
     concept_links = relationship("SourceConcept", back_populates="source", cascade="all, delete-orphan")
     conflicts_a = relationship("SourceConflict", foreign_keys="SourceConflict.source_id_a", back_populates="source_a")
     conflicts_b = relationship("SourceConflict", foreign_keys="SourceConflict.source_id_b", back_populates="source_b")
+    question_drafts = relationship("QuestionDraft", back_populates="source")
+    draft_lineage = relationship("QuestionDraftLineage", back_populates="source")
 
 
 class SourceChunk(Base):
@@ -141,6 +144,8 @@ class SourceChunk(Base):
     concept_links = relationship("SourceConcept", back_populates="chunk", cascade="all, delete-orphan")
     conflicts_a = relationship("SourceConflict", foreign_keys="SourceConflict.source_chunk_id_a", back_populates="chunk_a")
     conflicts_b = relationship("SourceConflict", foreign_keys="SourceConflict.source_chunk_id_b", back_populates="chunk_b")
+    question_drafts = relationship("QuestionDraft", back_populates="chunk")
+    draft_lineage = relationship("QuestionDraftLineage", back_populates="chunk")
 
 
 class SourceImportJob(Base):
@@ -190,6 +195,8 @@ class Concept(Base, TimestampMixin):
     )
     questions = relationship("Question", back_populates="concept")
     flashcards = relationship("Flashcard", back_populates="concept")
+    question_drafts = relationship("QuestionDraft", back_populates="concept")
+    draft_lineage = relationship("QuestionDraftLineage", back_populates="concept")
 
 
 class ConceptAlias(Base):
@@ -295,6 +302,113 @@ class Question(Base, TimestampMixin):
     attempts = relationship("QuestionAttempt", back_populates="question", cascade="all, delete-orphan")
     bookmarks = relationship("UserBookmark", back_populates="question", cascade="all, delete-orphan")
     review_notes = relationship("ReviewNote", back_populates="question", cascade="all, delete-orphan")
+    publish_history = relationship("QuestionPublishHistory", back_populates="question", cascade="all, delete-orphan")
+    published_lineage = relationship("PublishedQuestionLineage", back_populates="question", cascade="all, delete-orphan")
+
+
+class QuestionDraft(Base, TimestampMixin):
+    __tablename__ = "question_drafts"
+
+    id = Column(Integer, primary_key=True)
+    course_code = Column(String(80), index=True, nullable=False)
+    source_id = Column(Integer, ForeignKey("source_materials.id"), nullable=True)
+    source_chunk_id = Column(Integer, ForeignKey("source_chunks.id"), nullable=True)
+    concept_id = Column(Integer, ForeignKey("concepts.id"), nullable=True)
+    published_question_id = Column(Integer, ForeignKey("questions.id"), nullable=True)
+    question_type = Column(String(40), default="single_choice", nullable=False)
+    stem = Column(Text, nullable=False)
+    choices_json = Column(JSON, default=list, nullable=False)
+    correct_answer_json = Column(JSON, default=list, nullable=False)
+    explanation = Column(Text, default="", nullable=False)
+    explanation_json = Column(JSON, default=dict, nullable=False)
+    difficulty = Column(Integer, default=3, nullable=False)
+    oa_probability = Column(Integer, default=3, nullable=False)
+    status = Column(String(40), default="needs_review", nullable=False)
+    confidence = Column(String(40), default="generated", nullable=False)
+    generation_method = Column(String(40), default="manual", nullable=False)
+    created_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False)
+
+    source = relationship("SourceMaterial", back_populates="question_drafts")
+    chunk = relationship("SourceChunk", back_populates="question_drafts")
+    concept = relationship("Concept", back_populates="question_drafts")
+    creator = relationship("User", back_populates="question_drafts")
+    published_question = relationship("Question")
+    lineage = relationship("QuestionDraftLineage", back_populates="draft", cascade="all, delete-orphan")
+    warnings = relationship("QuestionDraftWarning", back_populates="draft", cascade="all, delete-orphan")
+    publish_history = relationship("QuestionPublishHistory", back_populates="draft")
+
+
+class QuestionDraftLineage(Base):
+    __tablename__ = "question_draft_lineage"
+
+    id = Column(Integer, primary_key=True)
+    draft_id = Column(Integer, ForeignKey("question_drafts.id"), nullable=False)
+    source_id = Column(Integer, ForeignKey("source_materials.id"), nullable=True)
+    source_chunk_id = Column(Integer, ForeignKey("source_chunks.id"), nullable=True)
+    concept_id = Column(Integer, ForeignKey("concepts.id"), nullable=True)
+    evidence_text = Column(Text, default="", nullable=False)
+    lineage_reason = Column(String(120), default="", nullable=False)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+
+    draft = relationship("QuestionDraft", back_populates="lineage")
+    source = relationship("SourceMaterial", back_populates="draft_lineage")
+    chunk = relationship("SourceChunk", back_populates="draft_lineage")
+    concept = relationship("Concept", back_populates="draft_lineage")
+
+
+class QuestionDraftWarning(Base):
+    __tablename__ = "question_draft_warnings"
+
+    id = Column(Integer, primary_key=True)
+    draft_id = Column(Integer, ForeignKey("question_drafts.id"), nullable=False)
+    code = Column(String(120), nullable=False)
+    severity = Column(String(40), default="medium", nullable=False)
+    message = Column(Text, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+
+    draft = relationship("QuestionDraft", back_populates="warnings")
+
+
+class QuestionPublishHistory(Base):
+    __tablename__ = "question_publish_history"
+
+    id = Column(Integer, primary_key=True)
+    draft_id = Column(Integer, ForeignKey("question_drafts.id"), nullable=True)
+    question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
+    course_code = Column(String(80), nullable=False)
+    action = Column(String(40), nullable=False)
+    previous_status = Column(String(40), nullable=True)
+    new_status = Column(String(40), nullable=False)
+    published_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    notes = Column(Text, default="", nullable=False)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+
+    draft = relationship("QuestionDraft", back_populates="publish_history")
+    question = relationship("Question", back_populates="publish_history")
+    publisher = relationship("User")
+
+
+class PublishedQuestionLineage(Base):
+    __tablename__ = "published_question_lineage"
+
+    id = Column(Integer, primary_key=True)
+    question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
+    source_id = Column(Integer, ForeignKey("source_materials.id"), nullable=True)
+    source_chunk_id = Column(Integer, ForeignKey("source_chunks.id"), nullable=True)
+    concept_id = Column(Integer, ForeignKey("concepts.id"), nullable=True)
+    evidence_text = Column(Text, default="", nullable=False)
+    lineage_reason = Column(String(120), default="", nullable=False)
+    source_title = Column(String(255), default="", nullable=False)
+    source_type = Column(String(80), default="", nullable=False)
+    source_confidence = Column(String(40), default="", nullable=False)
+    source_verification_status = Column(String(40), default="", nullable=False)
+    created_at = Column(DateTime(timezone=True), default=utcnow, nullable=False)
+
+    question = relationship("Question", back_populates="published_lineage")
+    source = relationship("SourceMaterial")
+    chunk = relationship("SourceChunk")
+    concept = relationship("Concept")
 
 
 class Flashcard(Base, TimestampMixin):

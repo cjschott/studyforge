@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.6.0-alpha.3
+
+- Added publish history storage for draft publish, republish, retire, and restore actions.
+- Added immutable published-question lineage snapshots so source title/type/confidence/verification metadata survives later source edits.
+- Updated draft publishing to snapshot lineage, record actor/action history, block high-severity warnings, and keep idempotent published-question updates.
+- Added question publish-history and lineage APIs plus restore support for retired questions.
+- Hid retired questions from normal course question lists by default while keeping them visible through admin/review queries.
+- Hardened course export with `include_retired`, `include_drafts`, `include_lineage`, and `include_review_metadata` options.
+- Added export validation warnings for unpublished verified drafts, missing lineage, generated questions, high-severity conflicts, and rejected concepts linked to published questions.
+- Improved Question Drafts, Admin Review, Administration export, and Course Builder UI surfaces for publish history, lineage, retire/restore, export options, and export readiness.
+
+## v0.6.0-alpha.2
+
+- Added persisted `question_draft_warnings` with structured code, severity, message, and refresh-on-save/review validation.
+- Added draft validation service checks for missing stem, choices, answers, explanations, lineage, rejected linked sources/concepts, unresolved high-severity conflicts, and duplicate-looking stems.
+- Added optional structured draft explanations with separate correct-answer and wrong-answer rationale while keeping plain explanation text compatible.
+- Added warning APIs for `GET /api/question-drafts/{id}/warnings` and `POST /api/question-drafts/{id}/validate`.
+- Hardened review flow so reviewed is allowed with warnings, reject is always allowed, and verify/publish are blocked by high-severity warnings.
+- Improved Question Drafts UI with grouped warnings, high-severity filtering, lineage trust metadata, structured explanation editing, and ready-to-publish status.
+- Updated Admin Review Queue draft tabs and Course Builder draft stats for warnings, ready-to-publish drafts, and published drafts.
+
+## v0.6.0-alpha.1
+
+- Added `question_drafts` and `question_draft_lineage` storage for draft questions, source/chunk/concept lineage, draft status, confidence, and rule-based/manual generation method.
+- Added authenticated question draft APIs for list/detail/create/update, review, verify, reject, publish, source drafting, concept drafting, and Course Builder drafting.
+- Added non-AI rule-based drafting from practice-question-like source chunks and reviewable concept prompts with placeholder choices.
+- Added draft validation warnings for missing explanation, missing answer, missing lineage, missing wrong-answer explanations, unverified sources, and unresolved conflicts.
+- Added idempotent publishing: first publish creates a real `questions` row and later publishes update that same row through the stored `published_question_id`.
+- Added Question Drafts frontend screen, Admin review queue access, Source/Concept detail draft buttons, and Course Builder draft counts/action.
+- Kept generated drafts out of the live question bank until an explicit human publish action.
+
 ## v0.5.0-alpha.3
 
 - Added `source_conflicts` storage for source/concept validation findings with conflict type, severity, review status, evidence snippets, detection method, and preserved source lineage.

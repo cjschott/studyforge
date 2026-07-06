@@ -142,12 +142,36 @@ def _migrate_sqlite_concepts(bind_engine):
         raw.close()
 
 
+def _migrate_sqlite_question_drafts(bind_engine):
+    if bind_engine.dialect.name != "sqlite":
+        return
+
+    raw = bind_engine.raw_connection()
+    cursor = raw.cursor()
+    try:
+        cursor.execute("PRAGMA table_info(question_drafts)")
+        rows = cursor.fetchall()
+        if not rows:
+            return
+        columns = {row[1] for row in rows}
+        if "explanation_json" not in columns:
+            cursor.execute("ALTER TABLE question_drafts ADD COLUMN explanation_json JSON NOT NULL DEFAULT '{}'")
+        raw.commit()
+    except Exception:
+        raw.rollback()
+        raise
+    finally:
+        cursor.close()
+        raw.close()
+
+
 def init_db(bind_engine=None):
     from app import models  # noqa: F401
 
     target_engine = bind_engine or engine
     Base.metadata.create_all(bind=target_engine)
     _migrate_sqlite_concepts(target_engine)
+    _migrate_sqlite_question_drafts(target_engine)
 
 
 

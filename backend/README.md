@@ -1,6 +1,6 @@
 # StudyForge Backend
 
-FastAPI backend foundation for StudyForge v0.5 alpha.
+FastAPI backend foundation for StudyForge v0.6 alpha.
 
 ## Local Setup
 
@@ -80,6 +80,48 @@ POST /api/concepts/{id}/detect-conflicts
 ```
 
 Detection is rule-based only. It flags legacy Security+ exam references, low-authority or unverified source material, answer-key-like chunks without verified lineage, duplicate-looking concepts, missing source lineage, and verified concepts tied to weak evidence. Conflict evidence is stored as short snippets and source/concept lineage is preserved.
+
+## Question Drafts
+
+v0.6 alpha adds authenticated draft-question APIs:
+
+```text
+GET  /api/question-drafts
+POST /api/question-drafts
+GET  /api/question-drafts/{id}
+PUT  /api/question-drafts/{id}
+POST /api/question-drafts/{id}/review
+POST /api/question-drafts/{id}/verify
+POST /api/question-drafts/{id}/reject
+POST /api/question-drafts/{id}/publish
+GET  /api/question-drafts/{id}/warnings
+POST /api/question-drafts/{id}/validate
+POST /api/source-materials/{id}/draft-questions
+POST /api/concepts/{id}/draft-questions
+POST /api/course-builder/draft-questions
+```
+
+Drafting is rule-based only. Drafts preserve source/chunk/concept lineage and start as `needs_review` with `generated` confidence. Validation warnings are persisted in `question_draft_warnings` and refreshed when drafts are saved or reviewed. Drafts may use plain explanation text or structured `explanation_json` with separate correct and incorrect-answer rationales.
+
+Publishing requires admin or instructor role and no high-severity validation warnings. The first publish creates a real `questions` row; later publishes update the same row through the draft's stored `published_question_id`.
+
+v0.6 alpha.3 adds publish history and lineage snapshot APIs:
+
+```text
+POST /api/questions/{id}/retire
+POST /api/questions/{id}/restore
+GET  /api/questions/{id}/publish-history
+GET  /api/questions/{id}/lineage
+GET  /api/export/{course_code}/validate
+```
+
+Publishing records `question_publish_history` rows and copies draft lineage into `published_question_lineage`. Retired questions stay in SQLite, are hidden from normal course question lists by default, and are included in exports only with `include_retired=true`.
+
+Course export supports:
+
+```text
+GET /api/export/{course_code}?include_retired=false&include_drafts=false&include_lineage=true&include_review_metadata=true
+```
 
 ## Import Existing Static Course Data
 

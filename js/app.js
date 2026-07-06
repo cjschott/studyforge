@@ -11,6 +11,7 @@ import { renderAdmin, renderAnalytics, renderDashboard, renderSettings, renderSt
 import { renderFlashcards } from "./flashcards.js";
 import { renderMockExam } from "./mockExam.js";
 import { renderQuestionMode } from "./practice.js";
+import { renderQuestionDrafts } from "./questionDrafts.js";
 import { renderSearch } from "./search.js";
 import { renderSourceLibrary } from "./sourceLibrary.js";
 import { ensureCourseState, getCourseState, getSettings, replaceCourseState, resetCourseProgress, updateSettings } from "./storage.js";
@@ -32,6 +33,7 @@ const adminNav = document.querySelector("[data-view='admin']");
 const sourceNav = document.querySelector("[data-view='sources']");
 const conceptNav = document.querySelector("[data-view='concepts']");
 const conflictNav = document.querySelector("[data-view='conflicts']");
+const draftNav = document.querySelector("[data-view='questionDrafts']");
 
 const viewLabels = {
   dashboard: "Dashboard",
@@ -47,6 +49,7 @@ const viewLabels = {
   sources: "Source Library",
   concepts: "Concepts",
   conflicts: "Conflicts",
+  questionDrafts: "Question Drafts",
   courseBuilder: "Course Builder",
   admin: "Administration",
   settings: "Settings"
@@ -154,6 +157,9 @@ function updateBackendChrome() {
   if (conflictNav) {
     conflictNav.hidden = !app.user;
   }
+  if (draftNav) {
+    draftNav.hidden = !app.user;
+  }
 }
 
 function renderError(error) {
@@ -188,6 +194,7 @@ function render() {
   if (app.view === "sources") renderSourceLibrary(ctx);
   if (app.view === "concepts") renderConcepts(ctx);
   if (app.view === "conflicts") renderConflicts(ctx);
+  if (app.view === "questionDrafts") renderQuestionDrafts(ctx);
   if (app.view === "courseBuilder") renderCourseBuilder(ctx);
   if (app.view === "admin") renderAdmin(ctx);
   if (app.view === "settings") renderSettings(ctx);

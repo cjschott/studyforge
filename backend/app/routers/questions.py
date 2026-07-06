@@ -8,6 +8,7 @@ from app.models import Course, Question, User
 from app.routers.common import get_course_or_404, get_question_or_404
 from app.schemas import QuestionCreate, QuestionPatch
 from app.services.course_exporter import question_to_static
+from app.services.question_publish_service import published_lineage_to_dict, publish_history_to_dict, record_publish_history
 from app.services.validation_service import validate_db_question
 
 
@@ -27,9 +28,17 @@ def find_course_for_payload(db: Session, payload: QuestionCreate) -> Course:
 
 
 @router.get("/api/courses/{course_code}/questions")
-def list_course_questions(course_code: str, db: Session = Depends(get_db), _: User = Depends(get_current_user)):
+def list_course_questions(
+    course_code: str,
+    include_retired: bool = Query(default=False),
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user),
+):
     course = get_course_or_404(db, course_code)
-    questions = db.query(Question).filter_by(course_id=course.id).order_by(Question.id).all()
+    query = db.query(Question).filter_by(course_id=course.id)
+    if not include_retired:
+        query = query.filter(Question.status != "retired")
+    questions = query.order_by(Question.id).all()
     return [question_to_static(question) for question in questions]
 
 
@@ -37,6 +46,7 @@ def list_course_questions(course_code: str, db: Session = Depends(get_db), _: Us
 def list_questions(
     status_filter: str | None = Query(default=None, alias="status"),
     course_code: str | None = None,
+    include_retired: bool = Query(default=False),
     limit: int = Query(default=100, ge=1, le=500),
     db: Session = Depends(get_db),
     _: User = Depends(require_roles("admin", "instructor")),
@@ -44,6 +54,8 @@ def list_questions(
     query = db.query(Question)
     if status_filter:
         query = query.filter(Question.status == status_filter)
+    elif not include_retired:
+        query = query.filter(Question.status != "retired")
     if course_code:
         course = get_course_or_404(db, course_code)
         query = query.filter(Question.course_id == course.id)
@@ -83,6 +95,26 @@ def questions_with_validation_warnings(db: Session = Depends(get_db), _: User = 
 @router.get("/api/questions/{question_id}")
 def get_question(question_id: str, db: Session = Depends(get_db), _: User = Depends(get_current_user)):
     return question_to_static(get_question_or_404(db, question_id))
+
+
+@router.get("/api/questions/{question_id}/publish-history")
+def get_question_publish_history(
+    question_id: str,
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user),
+):
+    question = get_question_or_404(db, question_id)
+    return [publish_history_to_dict(row) for row in sorted(question.publish_history, key=lambda item: item.id)]
+
+
+@router.get("/api/questions/{question_id}/lineage")
+def get_question_lineage(
+    question_id: str,
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user),
+):
+    question = get_question_or_404(db, question_id)
+    return [published_lineage_to_dict(row) for row in sorted(question.published_lineage, key=lambda item: item.id)]
 
 
 @router.post("/api/questions", status_code=status.HTTP_201_CREATED)
@@ -150,12 +182,30 @@ def patch_question(
     return question_to_static(question)
 
 
-def set_status(question_id: str, next_status: str, db: Session) -> dict:
+def set_status(
+    question_id: str,
+    next_status: str,
+    db: Session,
+    *,
+    current_user: User | None = None,
+    history_action: str | None = None,
+) -> dict:
     question = get_question_or_404(db, question_id)
     if next_status not in {"generated", "reviewed", "verified", "retired"}:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid question status")
+    previous_status = question.status
     question.status = next_status
     db.add(question)
+    db.flush()
+    if history_action:
+        record_publish_history(
+            db,
+            question=question,
+            action=history_action,
+            previous_status=previous_status,
+            new_status=next_status,
+            published_by=current_user.id if current_user else None,
+        )
     db.commit()
     return {"id": question.legacy_id or str(question.id), "status": question.status, "warnings": validate_db_question(question)}
 
@@ -177,4 +227,9 @@ def verify_question(question_id: str, db: Session = Depends(get_db), _: User = D
 
 @router.post("/api/questions/{question_id}/retire")
 def retire_question(question_id: str, db: Session = Depends(get_db), _: User = Depends(require_roles("admin", "instructor"))):
-    return set_status(question_id, "retired", db)
+    return set_status(question_id, "retired", db, current_user=_, history_action="retired")
+
+
+@router.post("/api/questions/{question_id}/restore")
+def restore_question(question_id: str, db: Session = Depends(get_db), _: User = Depends(require_roles("admin", "instructor"))):
+    return set_status(question_id, "verified", db, current_user=_, history_action="restored")

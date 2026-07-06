@@ -1,7 +1,63 @@
 import { calculateMetrics, progressClass } from "./analytics.js";
 import { apiGet, apiPatch, apiPost } from "./api.js";
 import { APP_CONFIG } from "./config.js";
+import { draftWarnings, hasHighSeverityWarnings, renderDraftList } from "./questionDrafts.js";
 import { exportProgress, getCourseState, getSettings, importProgress, resetAllProgress, updateSettings } from "./storage.js";
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function warningText(warning) {
+  if (typeof warning === "string") return warning;
+  return warning?.message || warning?.code || "Validation warning";
+}
+
+export function buildAdminExportQuery(courseCode, formData) {
+  const params = new URLSearchParams();
+  params.set("include_lineage", formData.get("include_lineage") ? "true" : "false");
+  params.set("include_review_metadata", formData.get("include_review_metadata") ? "true" : "false");
+  params.set("include_retired", formData.get("include_retired") ? "true" : "false");
+  return `/api/export/${encodeURIComponent(courseCode)}?${params.toString()}`;
+}
+
+export function retireQuestion(questionId, apiPostFn = apiPost) {
+  return apiPostFn(`/api/questions/${encodeURIComponent(questionId)}/retire`, {});
+}
+
+export function restoreQuestion(questionId, apiPostFn = apiPost) {
+  return apiPostFn(`/api/questions/${encodeURIComponent(questionId)}/restore`, {});
+}
+
+export function renderQuestionLineage(lineage = []) {
+  if (!lineage.length) return `<p class="muted">No published lineage snapshot recorded.</p>`;
+  return `
+    <table class="data-table">
+      <thead><tr><th>Source</th><th>Evidence</th><th>Reason</th></tr></thead>
+      <tbody>
+        ${lineage.map((row) => `
+          <tr>
+            <td>
+              ${escapeHtml(row.source_title || "Unknown source")}
+              <br><small>${escapeHtml(row.source_type || "")}</small>
+              <div class="button-row">
+                ${row.source_confidence ? `<span class="tag">${escapeHtml(row.source_confidence)}</span>` : ""}
+                ${row.source_verification_status ? `<span class="tag">${escapeHtml(row.source_verification_status)}</span>` : ""}
+              </div>
+            </td>
+            <td>${escapeHtml(row.evidence_text || "")}</td>
+            <td><span class="tag blue">${escapeHtml(row.lineage_reason || "")}</span></td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
 
 function progressBar(value) {
   return `<div class="progress ${progressClass(value)}" aria-label="${value}%"><span style="--value:${value}%"></span></div>`;
@@ -552,7 +608,22 @@ export function renderAdmin(ctx) {
           <button id="admin-import-course" class="button button-primary" type="button">Import Static Course</button>
           <button id="admin-export-course" class="button" type="button">Export Active DB Course</button>
         </div>
+        <form id="admin-export-options" class="grid grid-3" style="margin-top: 0.75rem;">
+          <label class="toggle-row" style="border-bottom: 0; padding-bottom: 0;">
+            <span>Include lineage</span>
+            <input name="include_lineage" type="checkbox" checked>
+          </label>
+          <label class="toggle-row" style="border-bottom: 0; padding-bottom: 0;">
+            <span>Review metadata</span>
+            <input name="include_review_metadata" type="checkbox" checked>
+          </label>
+          <label class="toggle-row" style="border-bottom: 0; padding-bottom: 0;">
+            <span>Retired questions</span>
+            <input name="include_retired" type="checkbox">
+          </label>
+        </form>
         <div id="admin-import-result" class="helper-text"></div>
+        <div id="admin-export-validation"></div>
       </article>
     </section>
 
@@ -595,6 +666,12 @@ export function renderAdmin(ctx) {
         <div id="admin-question-counts"><p class="muted">Loading question status counts...</p></div>
         <div class="button-row" style="margin-top: 0.75rem;">
           <button id="admin-load-generated" class="button" type="button">Generated</button>
+          <button id="admin-load-drafts" class="button" type="button">Question Drafts</button>
+          <button id="admin-load-drafts-needs-review" class="button" type="button">Needs Review</button>
+          <button id="admin-load-drafts-warnings" class="button" type="button">Has Warnings</button>
+          <button id="admin-load-drafts-ready" class="button" type="button">Ready to Verify</button>
+          <button id="admin-load-drafts-rejected" class="button" type="button">Rejected</button>
+          <button id="admin-load-drafts-published" class="button" type="button">Published</button>
           <button id="admin-load-low-confidence" class="button" type="button">Low Confidence</button>
           <button id="admin-load-warnings" class="button" type="button">Validation Warnings</button>
         </div>
@@ -716,13 +793,17 @@ export function renderAdmin(ctx) {
             </div>
             <h4>${question.id}</h4>
             <p>${question.question}</p>
-            ${question.warnings?.length ? `<ul class="warning-list">${question.warnings.map((warning) => `<li>${warning}</li>`).join("")}</ul>` : ""}
+            ${question.warnings?.length ? `<ul class="warning-list">${question.warnings.map((warning) => `<li>${escapeHtml(warningText(warning))}</li>`).join("")}</ul>` : ""}
             <div class="button-row">
               <button class="button" data-status-target="${question.id}" data-status-value="generated" type="button">Generated</button>
               <button class="button" data-status-target="${question.id}" data-status-value="review" type="button">Reviewed</button>
               <button class="button button-success" data-status-target="${question.id}" data-status-value="verify" type="button">Verified</button>
-              <button class="button button-danger" data-status-target="${question.id}" data-status-value="retire" type="button">Retire</button>
+              ${question.status === "retired"
+                ? `<button class="button button-success" data-question-restore="${question.id}" type="button">Restore</button>`
+                : `<button class="button button-danger" data-question-retire="${question.id}" type="button">Retire</button>`}
+              <button class="button" data-question-lineage="${question.id}" type="button">Lineage</button>
             </div>
+            <div data-question-lineage-panel="${question.id}"></div>
           </article>
         `).join("")}
       </div>
@@ -740,6 +821,41 @@ export function renderAdmin(ctx) {
         }
       });
     });
+    ctx.root.querySelectorAll("[data-question-retire]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        try {
+          await retireQuestion(button.dataset.questionRetire);
+          ctx.showStatus("Question retired.");
+          await renderQuestionCounts();
+          button.closest(".review-item")?.remove();
+        } catch (error) {
+          ctx.showStatus(`Question retire failed: ${error.message}`);
+        }
+      });
+    });
+    ctx.root.querySelectorAll("[data-question-restore]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        try {
+          await restoreQuestion(button.dataset.questionRestore);
+          ctx.showStatus("Question restored.");
+          await renderQuestionCounts();
+          button.closest(".review-item")?.remove();
+        } catch (error) {
+          ctx.showStatus(`Question restore failed: ${error.message}`);
+        }
+      });
+    });
+    ctx.root.querySelectorAll("[data-question-lineage]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const panel = ctx.root.querySelector(`[data-question-lineage-panel="${button.dataset.questionLineage}"]`);
+        if (!panel) return;
+        try {
+          panel.innerHTML = renderQuestionLineage(await apiGet(`/api/questions/${encodeURIComponent(button.dataset.questionLineage)}/lineage`));
+        } catch (error) {
+          ctx.showStatus(`Question lineage failed: ${error.message}`);
+        }
+      });
+    });
   };
 
   const loadReviewQueue = async (path) => {
@@ -747,6 +863,30 @@ export function renderAdmin(ctx) {
       renderReviewList(await apiGet(path));
     } catch (error) {
       ctx.showStatus(`Review queue failed: ${error.message}`);
+    }
+  };
+
+  const draftQueueFilters = {
+    all: (draft) => draft.status !== "published",
+    needsReview: (draft) => draft.status === "needs_review",
+    warnings: (draft) => draftWarnings(draft).length > 0,
+    ready: (draft) => draft.status === "reviewed" && !hasHighSeverityWarnings(draft),
+    rejected: (draft) => draft.status === "rejected",
+    published: (draft) => draft.status === "published"
+  };
+
+  const loadDraftReviewQueue = async (filterName = "all") => {
+    try {
+      const reviewList = ctx.root.querySelector("#admin-review-list");
+      if (!reviewList) return;
+      const drafts = await apiGet("/api/question-drafts?include_rejected=true");
+      const filter = draftQueueFilters[filterName] || draftQueueFilters.all;
+      reviewList.innerHTML = renderDraftList(drafts.filter(filter));
+      reviewList.querySelectorAll("[data-draft-open]").forEach((button) => {
+        button.addEventListener("click", () => ctx.navigate("questionDrafts", { draftId: button.dataset.draftOpen }));
+      });
+    } catch (error) {
+      ctx.showStatus(`Question draft queue failed: ${error.message}`);
     }
   };
 
@@ -760,6 +900,12 @@ export function renderAdmin(ctx) {
 
   ctx.root.querySelector("#admin-refresh")?.addEventListener("click", refresh);
   ctx.root.querySelector("#admin-load-generated")?.addEventListener("click", () => loadReviewQueue("/api/questions?status=generated"));
+  ctx.root.querySelector("#admin-load-drafts")?.addEventListener("click", () => loadDraftReviewQueue("all"));
+  ctx.root.querySelector("#admin-load-drafts-needs-review")?.addEventListener("click", () => loadDraftReviewQueue("needsReview"));
+  ctx.root.querySelector("#admin-load-drafts-warnings")?.addEventListener("click", () => loadDraftReviewQueue("warnings"));
+  ctx.root.querySelector("#admin-load-drafts-ready")?.addEventListener("click", () => loadDraftReviewQueue("ready"));
+  ctx.root.querySelector("#admin-load-drafts-rejected")?.addEventListener("click", () => loadDraftReviewQueue("rejected"));
+  ctx.root.querySelector("#admin-load-drafts-published")?.addEventListener("click", () => loadDraftReviewQueue("published"));
   ctx.root.querySelector("#admin-load-low-confidence")?.addEventListener("click", () => loadReviewQueue("/api/questions/low-confidence?threshold=6"));
   ctx.root.querySelector("#admin-load-warnings")?.addEventListener("click", () => loadReviewQueue("/api/questions/validation-warnings"));
   ctx.root.querySelector("#admin-create-user")?.addEventListener("submit", (event) => {
@@ -784,7 +930,16 @@ export function renderAdmin(ctx) {
   });
   ctx.root.querySelector("#admin-export-course")?.addEventListener("click", async () => {
     try {
-      const exported = await apiGet(`/api/export/${ctx.bundle.meta.id}`);
+      const validation = await apiGet(`/api/export/${encodeURIComponent(ctx.bundle.meta.id)}/validate`);
+      const validationPanel = ctx.root.querySelector("#admin-export-validation");
+      if (validationPanel) {
+        validationPanel.innerHTML = validation.warnings?.length
+          ? `<div class="warning-list" style="margin-top: 0.75rem;"><strong>Export warnings</strong><ul>${validation.warnings.map((warning) => `<li><code>${escapeHtml(warning.code)}</code> ${escapeHtml(warning.message)}</li>`).join("")}</ul></div>`
+          : `<p class="helper-text">Export validation passed.</p>`;
+      }
+      const optionsForm = ctx.root.querySelector("#admin-export-options");
+      const query = buildAdminExportQuery(ctx.bundle.meta.id, new FormData(optionsForm));
+      const exported = await apiGet(query);
       downloadJson(`studyforge-db-export-${ctx.bundle.meta.id}.json`, exported);
     } catch (error) {
       ctx.showStatus(`Export failed: ${error.message}`);

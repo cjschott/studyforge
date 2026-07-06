@@ -1,5 +1,6 @@
 import { apiDelete, apiGet, apiPost, apiPut, isBackendMode } from "./api.js";
 import { renderConflictList } from "./conflicts.js";
+import { renderDraftList } from "./questionDrafts.js";
 
 
 const STATUS_VALUES = ["generated", "reviewed", "verified", "rejected"];
@@ -339,18 +340,20 @@ async function renderConceptDetail(ctx, conceptId) {
   ctx.root.querySelector("#concept-back")?.addEventListener("click", () => ctx.navigate("concepts"));
 
   const loadConcept = async () => {
-    const [concept, aliases, evidence, relationships, conflicts, allConcepts] = await Promise.all([
+    const [concept, aliases, evidence, relationships, conflicts, drafts, allConcepts] = await Promise.all([
       apiGet(`/api/concepts/${conceptId}`),
       apiGet(`/api/concepts/${conceptId}/aliases`),
       apiGet(`/api/concepts/${conceptId}/evidence`),
       apiGet(`/api/concepts/${conceptId}/relationships`),
       apiGet(`/api/conflicts?concept_id=${conceptId}&include_resolved=true`),
+      apiGet(`/api/question-drafts?concept_id=${conceptId}&include_rejected=true`),
       apiGet("/api/concepts?include_rejected=true")
     ]);
     const panel = ctx.root.querySelector("#concept-detail");
     if (!panel) return;
     const isAdmin = ctx.app.user?.role === "admin";
     const unresolvedConflicts = conflicts.filter((conflict) => !["resolved", "rejected"].includes(conflict.status));
+    const activeDrafts = drafts.filter((draft) => draft.status !== "rejected");
     const activeConceptOptions = allConcepts
       .filter((item) => Number(item.id) !== Number(conceptId) && item.status !== "rejected")
       .map((item) => `<option value="${item.id}">${escapeHtml(item.name)}</option>`)
@@ -397,6 +400,7 @@ async function renderConceptDetail(ctx, conceptId) {
             <span class="tag blue">${escapeHtml(sourceCountLabel(concept.source_count))}</span>
             <span class="tag blue">${escapeHtml(relationshipCountLabel(concept.relationship_count))}</span>
             <span class="tag ${unresolvedConflicts.length ? "red" : "green"}">${unresolvedConflicts.length} unresolved conflicts</span>
+            <span class="tag ${activeDrafts.length ? "blue" : "yellow"}">${activeDrafts.length} drafts</span>
           </div>
           <div class="button-row" style="margin-top: 0.9rem;">
             <button class="button" data-concept-review-status="reviewed" type="button">Reviewed</button>
@@ -404,6 +408,7 @@ async function renderConceptDetail(ctx, conceptId) {
             <button class="button button-danger" data-concept-review-status="rejected" type="button">Rejected</button>
             ${concept.status === "rejected" ? `<button class="button" data-concept-review-status="restore" type="button">Restore</button>` : ""}
             <button id="concept-detect-conflicts" class="button" type="button">Detect Conflicts</button>
+            <button id="concept-draft-questions" class="button" type="button">Draft Questions</button>
           </div>
         </article>
       </section>
@@ -439,6 +444,11 @@ async function renderConceptDetail(ctx, conceptId) {
       <section class="card" style="margin-top: 1rem;">
         <h3>Related Conflicts</h3>
         ${renderConflictList(conflicts)}
+      </section>
+
+      <section class="card" style="margin-top: 1rem;">
+        <h3>Question Drafts</h3>
+        ${renderDraftList(drafts)}
       </section>
 
       <section class="card" style="margin-top: 1rem;">
@@ -507,6 +517,18 @@ async function renderConceptDetail(ctx, conceptId) {
         await loadConcept();
       } catch (error) {
         ctx.showStatus(`Conflict detection failed: ${error.message}`);
+      }
+    });
+
+    panel.querySelector("#concept-draft-questions")?.addEventListener("click", async () => {
+      try {
+        const result = await apiPost(`/api/concepts/${conceptId}/draft-questions`, {
+          course_code: concept.course_code || ctx.bundle?.meta?.id || ctx.app.course?.id || undefined
+        });
+        ctx.showStatus(`Created ${result.drafts_created || 0} question drafts.`);
+        await loadConcept();
+      } catch (error) {
+        ctx.showStatus(`Question drafting failed: ${error.message}`);
       }
     });
 
@@ -588,6 +610,9 @@ async function renderConceptDetail(ctx, conceptId) {
 
     panel.querySelectorAll("[data-conflict-open]").forEach((button) => {
       button.addEventListener("click", () => ctx.navigate("conflicts", { conflictId: button.dataset.conflictOpen }));
+    });
+    panel.querySelectorAll("[data-draft-open]").forEach((button) => {
+      button.addEventListener("click", () => ctx.navigate("questionDrafts", { draftId: button.dataset.draftOpen }));
     });
   };
 

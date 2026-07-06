@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   attachConceptCounts,
   buildCourseBuilderSelection,
+  renderExportReadiness,
   renderHighSeverityConflictWarning,
   selectedMaterialIdsFromFormData
 } from "./courseBuilder.js";
@@ -31,6 +32,15 @@ test("course builder summarizes selected source materials", () => {
       ],
       conflicts: [
         { id: 31, severity: "high", status: "needs_review" }
+      ],
+      drafts: [
+        {
+          id: 41,
+          status: "needs_review",
+          warnings: [{ code: "missing_lineage", severity: "high", message: "Question draft must be linked to source or concept lineage." }]
+        },
+        { id: 42, status: "reviewed", warnings: [] },
+        { id: 44, status: "verified", warnings: [] }
       ]
     },
     { id: 2, title: "Personal Notes", source_type: "markdown", chunk_count: 0, extraction_status: "not_extracted" },
@@ -47,6 +57,9 @@ test("course builder summarizes selected source materials", () => {
       conflicts: [
         { id: 32, severity: "medium", status: "reviewed" },
         { id: 33, severity: "high", status: "resolved" }
+      ],
+      drafts: [
+        { id: 43, status: "published", published_question_id: 88, published_question_status: "retired", warnings: [] }
       ]
     }
   ];
@@ -62,6 +75,22 @@ test("course builder summarizes selected source materials", () => {
   assert.equal(selection.unresolvedConflictCount, 2);
   assert.equal(selection.highSeverityConflictCount, 1);
   assert.equal(selection.hasHighSeverityConflicts, true);
+  assert.equal(selection.draftCount, 4);
+  assert.equal(selection.readyForReviewDraftCount, 1);
+  assert.equal(selection.verifiedDraftCount, 1);
+  assert.equal(selection.warningCount, 1);
+  assert.equal(selection.readyToPublishDraftCount, 2);
+  assert.equal(selection.publishedDraftCount, 1);
+  assert.equal(selection.retiredQuestionCount, 1);
+  assert.equal(selection.exportReady, false);
+  assert.equal(selection.exportReadinessLabel, "export blocked");
+  assert.equal(selection.draftLabel, "4 drafts");
+  assert.equal(selection.readyForReviewDraftLabel, "1 ready for review");
+  assert.equal(selection.verifiedDraftLabel, "1 verified draft");
+  assert.equal(selection.warningLabel, "1 warning");
+  assert.equal(selection.readyToPublishDraftLabel, "2 ready to publish");
+  assert.equal(selection.publishedDraftLabel, "1 published");
+  assert.equal(selection.retiredQuestionLabel, "1 retired");
   assert.equal(selection.readyCount, 2);
   assert.equal(selection.missingExtractionCount, 0);
   assert.deepEqual(selection.sourceTypes, ["csv", "official_course_material"]);
@@ -92,14 +121,28 @@ test("course builder attaches concept counts for source materials", async () => 
         { id: 102, severity: "low", status: "resolved" }
       ];
     }
+    if (path.includes("/api/question-drafts")) {
+      return [
+        { id: 201, status: "reviewed", warnings: [] },
+        {
+          id: 202,
+          status: "needs_review",
+          warnings: [{ code: "missing_lineage", severity: "high", message: "Missing lineage." }]
+        },
+        { id: 203, status: "published", published_question_id: 89, published_question_status: "verified", warnings: [] },
+        { id: 204, status: "verified", warnings: [] }
+      ];
+    }
     return [];
   });
 
   assert.deepEqual(calls, [
     "/api/source-materials/1/concepts?include_rejected=true",
     "/api/conflicts?source_id=1&include_resolved=true",
+    "/api/question-drafts?source_id=1&include_rejected=true",
     "/api/source-materials/2/concepts?include_rejected=true",
-    "/api/conflicts?source_id=2&include_resolved=true"
+    "/api/conflicts?source_id=2&include_resolved=true",
+    "/api/question-drafts?source_id=2&include_rejected=true"
   ]);
   assert.equal(enriched[0].concept_count, 2);
   assert.equal(enriched[0].verified_concept_count, 1);
@@ -107,6 +150,13 @@ test("course builder attaches concept counts for source materials", async () => 
   assert.equal(enriched[0].relationship_count, 3);
   assert.equal(enriched[0].unresolved_conflict_count, 1);
   assert.equal(enriched[0].high_severity_conflict_count, 1);
+  assert.equal(enriched[0].draft_count, 4);
+  assert.equal(enriched[0].ready_for_review_draft_count, 1);
+  assert.equal(enriched[0].verified_draft_count, 1);
+  assert.equal(enriched[0].draft_warning_count, 1);
+  assert.equal(enriched[0].ready_to_publish_draft_count, 2);
+  assert.equal(enriched[0].published_draft_count, 1);
+  assert.equal(enriched[0].retired_question_count, 0);
   assert.deepEqual(enriched[0].concept_ids, [7, 8]);
   assert.equal(enriched[1].concept_count, 0);
 });
@@ -117,4 +167,15 @@ test("course builder warning renders for high-severity conflicts", () => {
     /High-severity conflicts exist\. Review before generating course content\./
   );
   assert.equal(renderHighSeverityConflictWarning({ hasHighSeverityConflicts: false }), "");
+});
+
+test("course builder export readiness renders status and warnings", () => {
+  assert.match(
+    renderExportReadiness({ exportReady: false, exportReadinessLabel: "export blocked", warningCount: 2 }),
+    /export blocked/
+  );
+  assert.match(
+    renderExportReadiness({ exportReady: true, exportReadinessLabel: "export ready", warningCount: 0 }),
+    /export ready/
+  );
 });

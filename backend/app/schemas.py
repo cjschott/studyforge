@@ -31,6 +31,10 @@ SourceConflictType = Literal[
 SourceConflictSeverity = Literal["low", "medium", "high"]
 SourceConflictStatus = Literal["generated", "needs_review", "reviewed", "resolved", "rejected"]
 SourceConflictDetectionMethod = Literal["rule_based", "manual", "ai_disabled_stub"]
+QuestionDraftStatus = Literal["generated", "needs_review", "reviewed", "verified", "rejected", "published"]
+QuestionDraftConfidence = Literal["generated", "reviewed", "verified", "unverified"]
+QuestionDraftGenerationMethod = Literal["manual", "rule_based", "ai_disabled_stub"]
+QuestionDraftWarningSeverity = Literal["low", "medium", "high"]
 
 
 class UserOut(BaseModel):
@@ -447,3 +451,140 @@ class ConflictDetectionOut(BaseModel):
     target_id: int
     conflicts_created: int
     conflicts: list[SourceConflictOut]
+
+
+class QuestionDraftLineageCreate(BaseModel):
+    source_id: int | None = None
+    source_chunk_id: int | None = None
+    concept_id: int | None = None
+    evidence_text: str = ""
+    lineage_reason: str = "manual"
+
+
+class QuestionDraftLineageOut(BaseModel):
+    id: int
+    draft_id: int
+    source_id: int | None = None
+    source_title: str | None = None
+    source_type: str | None = None
+    source_authority_level: int | None = None
+    source_confidence: str | None = None
+    source_verification_status: str | None = None
+    source_chunk_id: int | None = None
+    source_chunk_number: int | None = None
+    source_page_number: int | None = None
+    concept_id: int | None = None
+    concept_name: str | None = None
+    concept_status: str | None = None
+    evidence_text: str
+    lineage_reason: str
+    created_at: str | None = None
+
+
+class QuestionDraftWarningOut(BaseModel):
+    id: int | None = None
+    draft_id: int | None = None
+    code: str
+    severity: QuestionDraftWarningSeverity
+    message: str
+    created_at: str | None = None
+
+
+class QuestionPublishHistoryOut(BaseModel):
+    id: int
+    draft_id: int | None = None
+    question_id: int
+    course_code: str
+    action: str
+    previous_status: str | None = None
+    new_status: str
+    published_by: int | None = None
+    notes: str = ""
+    created_at: str | None = None
+
+
+class QuestionDraftCreate(BaseModel):
+    course_code: str = Field(min_length=1, max_length=80)
+    source_id: int | None = None
+    source_chunk_id: int | None = None
+    concept_id: int | None = None
+    question_type: str = "single_choice"
+    stem: str = Field(min_length=1)
+    choices: Any = Field(default_factory=list)
+    correct_answer: Any = Field(default_factory=list)
+    explanation: str = ""
+    explanation_json: dict[str, Any] = Field(default_factory=dict)
+    difficulty: int = Field(default=3, ge=1, le=5)
+    oa_probability: int = Field(default=3, ge=1, le=5)
+    status: QuestionDraftStatus = "needs_review"
+    confidence: QuestionDraftConfidence = "generated"
+    generation_method: QuestionDraftGenerationMethod = "manual"
+    lineage: list[QuestionDraftLineageCreate] = Field(default_factory=list)
+
+
+class QuestionDraftPatch(BaseModel):
+    course_code: str | None = Field(default=None, min_length=1, max_length=80)
+    source_id: int | None = None
+    source_chunk_id: int | None = None
+    concept_id: int | None = None
+    question_type: str | None = None
+    stem: str | None = Field(default=None, min_length=1)
+    choices: Any | None = None
+    correct_answer: Any | None = None
+    explanation: str | None = None
+    explanation_json: dict[str, Any] | None = None
+    difficulty: int | None = Field(default=None, ge=1, le=5)
+    oa_probability: int | None = Field(default=None, ge=1, le=5)
+    status: QuestionDraftStatus | None = None
+    confidence: QuestionDraftConfidence | None = None
+    generation_method: QuestionDraftGenerationMethod | None = None
+    lineage: list[QuestionDraftLineageCreate] | None = None
+
+
+class QuestionDraftGenerationRequest(BaseModel):
+    course_code: str | None = Field(default=None, max_length=80)
+    source_material_ids: list[int] = Field(default_factory=list)
+    concept_ids: list[int] = Field(default_factory=list)
+    limit: int = Field(default=10, ge=1, le=100)
+
+
+class QuestionDraftOut(BaseModel):
+    id: int
+    course_code: str
+    source_id: int | None = None
+    source_title: str | None = None
+    source_type: str | None = None
+    source_authority_level: int | None = None
+    source_confidence: str | None = None
+    source_verification_status: str | None = None
+    source_chunk_id: int | None = None
+    source_chunk_number: int | None = None
+    concept_id: int | None = None
+    concept_name: str | None = None
+    concept_status: str | None = None
+    published_question_id: int | None = None
+    question_type: str
+    stem: str
+    choices: Any
+    correct_answer: Any
+    explanation: str
+    explanation_json: dict[str, Any] = Field(default_factory=dict)
+    difficulty: int
+    oa_probability: int
+    status: QuestionDraftStatus
+    confidence: QuestionDraftConfidence
+    generation_method: QuestionDraftGenerationMethod
+    created_by: int
+    created_at: str | None = None
+    updated_at: str | None = None
+    lineage: list[QuestionDraftLineageOut] = Field(default_factory=list)
+    warnings: list[QuestionDraftWarningOut] = Field(default_factory=list)
+    publish_history: list[QuestionPublishHistoryOut] = Field(default_factory=list)
+    published_question_status: str | None = None
+
+
+class QuestionDraftGenerationOut(BaseModel):
+    target_type: str
+    target_id: int | None = None
+    drafts_created: int
+    drafts: list[QuestionDraftOut]

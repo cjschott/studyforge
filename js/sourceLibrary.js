@@ -1,6 +1,7 @@
 import { apiDelete, apiFetch, apiGet, apiPost, apiPut, isBackendMode } from "./api.js";
 import { handleExtractConceptsClick, renderSourceConceptSummary } from "./concepts.js";
 import { renderConflictList } from "./conflicts.js";
+import { renderDraftList } from "./questionDrafts.js";
 
 
 const SOURCE_TYPES = [
@@ -366,15 +367,17 @@ async function renderMaterialDetail(ctx, libraryId, materialId) {
   ctx.root.querySelector("#source-library-back")?.addEventListener("click", () => ctx.navigate("sources", { libraryId }));
 
   const loadMaterial = async () => {
-    const [material, chunks, conceptLinks, conflicts] = await Promise.all([
+    const [material, chunks, conceptLinks, conflicts, drafts] = await Promise.all([
       apiGet(`/api/source-materials/${materialId}`),
       apiGet(`/api/source-materials/${materialId}/chunks`),
       apiGet(`/api/source-materials/${materialId}/concepts`),
-      apiGet(`/api/conflicts?source_id=${materialId}&include_resolved=true`)
+      apiGet(`/api/conflicts?source_id=${materialId}&include_resolved=true`),
+      apiGet(`/api/question-drafts?source_id=${materialId}&include_rejected=true`)
     ]);
     const panel = ctx.root.querySelector("#source-material-detail");
     if (!panel) return;
     const unresolvedConflicts = conflicts.filter((conflict) => !["resolved", "rejected"].includes(conflict.status));
+    const activeDrafts = drafts.filter((draft) => draft.status !== "rejected");
     panel.innerHTML = `
       <section class="grid grid-2">
         <article class="card">
@@ -400,10 +403,12 @@ async function renderMaterialDetail(ctx, libraryId, materialId) {
             <button id="source-run-extract" class="button button-primary" type="button">Extract Chunks</button>
             <button id="source-run-concept-extract" class="button" type="button" ${chunks.length ? "" : "disabled"}>Extract Concepts</button>
             <button id="source-run-conflict-detect" class="button" type="button" ${chunks.length ? "" : "disabled"}>Detect Conflicts</button>
+            <button id="source-run-draft-questions" class="button" type="button" ${chunks.length ? "" : "disabled"}>Draft Questions</button>
           </div>
           <div class="button-row" style="margin-top: 0.9rem;">
             <span class="tag ${conflicts.length ? "yellow" : "green"}">${conflicts.length} conflicts</span>
             <span class="tag ${unresolvedConflicts.length ? "red" : "green"}">${unresolvedConflicts.length} unresolved</span>
+            <span class="tag ${activeDrafts.length ? "blue" : "yellow"}">${activeDrafts.length} drafts</span>
           </div>
         </article>
       </section>
@@ -414,6 +419,10 @@ async function renderMaterialDetail(ctx, libraryId, materialId) {
       <section class="card" style="margin-top: 1rem;">
         <h3>Conflicts</h3>
         ${renderConflictList(conflicts)}
+      </section>
+      <section class="card" style="margin-top: 1rem;">
+        <h3>Question Drafts</h3>
+        ${renderDraftList(drafts)}
       </section>
       <section class="card" style="margin-top: 1rem;">
         <h3>Chunks</h3>
@@ -461,8 +470,23 @@ async function renderMaterialDetail(ctx, libraryId, materialId) {
       }
     });
 
+    panel.querySelector("#source-run-draft-questions")?.addEventListener("click", async () => {
+      try {
+        const result = await apiPost(`/api/source-materials/${materialId}/draft-questions`, {
+          course_code: ctx.bundle?.meta?.id || ctx.app.course?.id || undefined
+        });
+        ctx.showStatus(`Created ${result.drafts_created || 0} question drafts.`);
+        await loadMaterial();
+      } catch (error) {
+        ctx.showStatus(`Question drafting failed: ${error.message}`);
+      }
+    });
+
     panel.querySelectorAll("[data-conflict-open]").forEach((button) => {
       button.addEventListener("click", () => ctx.navigate("conflicts", { conflictId: button.dataset.conflictOpen }));
+    });
+    panel.querySelectorAll("[data-draft-open]").forEach((button) => {
+      button.addEventListener("click", () => ctx.navigate("questionDrafts", { draftId: button.dataset.draftOpen }));
     });
   };
 
